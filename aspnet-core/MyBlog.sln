@@ -5,15 +5,15 @@ VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{032539A4-C4CC-4548-8E7E-A8623191C724}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.Core", "MyBlog.Core\MyBlog.Core.csproj", "{73667D92-113F-4C72-BDFF-56ABD0AD1593}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.Core", "src\MyBlog.Core\MyBlog.Core.csproj", "{73667D92-113F-4C72-BDFF-56ABD0AD1593}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.DataAccess", "MyBlog.DataAccess\MyBlog.DataAccess.csproj", "{C65BE060-3F9A-47E2-A288-2A40D9D5FCD0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.DataAccess", "src\MyBlog.DataAccess\MyBlog.DataAccess.csproj", "{C65BE060-3F9A-47E2-A288-2A40D9D5FCD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.Entities", "MyBlog.Entities\MyBlog.Entities.csproj", "{E318A326-556B-4501-9A37-FF0B95C4334D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.Entities", "src\MyBlog.Entities\MyBlog.Entities.csproj", "{E318A326-556B-4501-9A37-FF0B95C4334D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.Application", "MyBlog.Application\MyBlog.Application.csproj", "{EDF779E3-3AB1-4498-B79C-92E574D50BF1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.Application", "src\MyBlog.Application\MyBlog.Application.csproj", "{EDF779E3-3AB1-4498-B79C-92E574D50BF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.WebAPI", "MyBlog.WebAPI\MyBlog.WebAPI.csproj", "{057CD7EA-8374-4440-9811-2718599E8726}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.WebAPI", "src\MyBlog.WebAPI\MyBlog.WebAPI.csproj", "{057CD7EA-8374-4440-9811-2718599E8726}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
