@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace MyBlog.Core.DataAccess.EntityFrameworkCore
 {
-    public class EfCoreRepositoryBase<TEntity, TDbContext> : IRepository<TEntity>
+    public abstract class EfCoreRepositoryBase<TEntity, TDbContext> : IRepository<TEntity>
         where TEntity : class, IEntity, new()
         where TDbContext : DbContext, new()
     {
@@ -17,26 +17,26 @@ namespace MyBlog.Core.DataAccess.EntityFrameworkCore
         {
             _dbContext = dbContext;
         }
-        public TEntity Add(TEntity entity)
+        public virtual TEntity Add(TEntity entity)
         {
             _dbContext.Add(entity);
             _dbContext.SaveChanges();
             return entity;
         }
-        public void Delete(TEntity entity)
+        public virtual void Delete(TEntity entity)
         {
             _dbContext.Remove(entity);
             _dbContext.SaveChanges();
         }
-        public TEntity Get(Expression<Func<TEntity, bool>> predicate)
+        public virtual TEntity Get(Expression<Func<TEntity, bool>> predicate)
         {
             return _dbContext.Set<TEntity>().FirstOrDefault(predicate);
         }
-        public IQueryable<TEntity> GetAll()
+        public virtual IQueryable<TEntity> GetAll()
         {
             return GetAllIncluding();
         }
-        public IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] propertySelectors)
+        public virtual IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] propertySelectors)
         {
             var query = Table.AsQueryable();
             if (propertySelectors.Length != 0)
@@ -48,15 +48,15 @@ namespace MyBlog.Core.DataAccess.EntityFrameworkCore
             }
             return query;
         }
-        public List<TEntity> GetAllList(Expression<Func<TEntity, bool>> predicate)
+        public virtual List<TEntity> GetAllList(Expression<Func<TEntity, bool>> predicate)
         {
             return GetAll().Where(predicate).ToList();
         }
-        public List<TEntity> GetAllList()
+        public virtual List<TEntity> GetAllList()
         {
             return GetAll().ToList();
         }
-        public TEntity Update(TEntity entity)
+        public virtual TEntity Update(TEntity entity)
         {
             _dbContext.Update(entity);
             _dbContext.SaveChanges();
