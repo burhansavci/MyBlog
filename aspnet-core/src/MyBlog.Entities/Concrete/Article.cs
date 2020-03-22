@@ -13,8 +13,8 @@ namespace MyBlog.Entities.Concrete
         public int UserId { get; set; }
         public  User User { get; set; }
 
-        public  ICollection<ArticleTranslation> ArticleTranslation { get; set; }
-        public  ICollection<Comment> Comment { get; set; }
-        public  ICollection<Picture> Picture { get; set; }
+        public  ICollection<ArticleTranslation> ArticleTranslations { get; set; }
+        public  ICollection<Comment> Comments { get; set; }
+        public  ICollection<Picture> Pictures { get; set; }
     }
 }

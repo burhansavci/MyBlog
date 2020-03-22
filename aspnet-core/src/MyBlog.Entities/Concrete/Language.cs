@@ -8,7 +8,7 @@ namespace MyBlog.Entities.Concrete
         public string Name { get; set; }
         public bool IsDefault { get; set; }
 
-        public virtual ICollection<ArticleTranslation> ArticleTranslation { get; set; }
-        public virtual ICollection<CategoryTranslation> CategoryTranslation { get; set; }
+        public virtual ICollection<ArticleTranslation> ArticleTranslations { get; set; }
+        public virtual ICollection<CategoryTranslation> CategoryTranslations { get; set; }
     }
 }
