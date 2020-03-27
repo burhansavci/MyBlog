@@ -5,9 +5,9 @@ using MyBlog.Entities.Concrete;
 
 namespace MyBlog.DataAccess.Concrete.EntityFrameworkCore.Repositories
 {
-    public class CommentRepository : EfCoreRepositoryBase<Comment, MyBlogDbContext>, ICommentRepository
+    public class EfCoreCommentRepository : EfCoreRepositoryBase<Comment, MyBlogDbContext>, ICommentRepository
     {
-        public CommentRepository(DbContext dbContext) : base(dbContext)
+        public EfCoreCommentRepository(DbContext dbContext) : base(dbContext)
         {
         }
     }

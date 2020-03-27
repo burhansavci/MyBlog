@@ -5,9 +5,9 @@ using MyBlog.Entities.Concrete;
 
 namespace MyBlog.DataAccess.Concrete.EntityFrameworkCore.Repositories
 {
-    public class LanguageRepository : EfCoreRepositoryBase<Language, MyBlogDbContext>, ILanguageRepository
+    public class EfCoreLanguageRepository : EfCoreRepositoryBase<Language, MyBlogDbContext>, ILanguageRepository
     {
-        public LanguageRepository(DbContext dbContext) : base(dbContext)
+        public EfCoreLanguageRepository(DbContext dbContext) : base(dbContext)
         {
         }
     }

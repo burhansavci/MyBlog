@@ -5,9 +5,9 @@ using MyBlog.Entities.Concrete;
 
 namespace MyBlog.DataAccess.Concrete.EntityFrameworkCore.Repositories
 {
-    public class PictureRepository : EfCoreRepositoryBase<Picture, MyBlogDbContext>, IPictureRepository
+    public class EfCorePictureRepository : EfCoreRepositoryBase<Picture, MyBlogDbContext>, IPictureRepository
     {
-        public PictureRepository(DbContext dbContext) : base(dbContext)
+        public EfCorePictureRepository(DbContext dbContext) : base(dbContext)
         {
         }
     }
