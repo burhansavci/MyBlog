@@ -17,7 +17,7 @@ namespace MyBlog.Core.DataAccess.EntityFrameworkCore
         {
             _dbContext = dbContext;
         }
-        public virtual TEntity Add(TEntity entity)
+        public virtual TEntity Insert(TEntity entity)
         {
             _dbContext.Add(entity);
             _dbContext.SaveChanges();
