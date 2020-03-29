@@ -1,4 +1,6 @@
-﻿namespace MyBlog.Entities.Concrete
+﻿using MyBlog.Core.Entities.Concrete;
+
+namespace MyBlog.Entities.Concrete
 {
     public class CategoryTranslation : Entity
     {

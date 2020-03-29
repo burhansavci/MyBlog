@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyBlog.Core.Entities.Concrete;
+using System;
 using System.Collections.Generic;
 
 namespace MyBlog.Entities.Concrete

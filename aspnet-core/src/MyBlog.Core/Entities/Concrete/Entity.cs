@@ -1,6 +1,4 @@
-﻿using MyBlog.Core.Entities;
-
-namespace MyBlog.Entities.Concrete
+﻿namespace MyBlog.Core.Entities.Concrete
 {
     public class Entity : IEntity
     {
