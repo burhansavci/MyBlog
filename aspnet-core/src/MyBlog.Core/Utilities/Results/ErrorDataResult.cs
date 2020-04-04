@@ -9,5 +9,13 @@
         public ErrorDataResult(string message, T data) : base(false, message, data)
         {
         }
+
+        public ErrorDataResult(string message) : base(false, message, default)
+        {
+        }
+
+        public ErrorDataResult() : base(false, default)
+        {
+        }
     }
 }
