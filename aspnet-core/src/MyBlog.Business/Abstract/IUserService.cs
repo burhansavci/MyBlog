@@ -9,6 +9,7 @@ namespace MyBlog.Business.Abstract
     public interface IUserService
     {
         IDataResult<User> GetByEmail(string email);
+        IDataResult<User> GetByUserName(string userName);
         IDataResult<User> InsertUser(User user);
     }
 }

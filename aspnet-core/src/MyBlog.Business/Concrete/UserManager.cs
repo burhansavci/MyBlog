@@ -23,5 +23,10 @@ namespace MyBlog.Business.Concrete
         {
             return new SuccessDataResult<User>(_userRepository.Get(x => x.Email == email));
         }
+
+        public IDataResult<User> GetByUserName(string userName)
+        {
+            return new SuccessDataResult<User>(_userRepository.Get(x => x.Username == userName));
+        }
     }
 }
