@@ -34,7 +34,7 @@ namespace MyBlog.Business.Concrete
 
         public IDataResult<User> Register(UserRegisterDto userForRegisterDto)
         {
-            if (!UserAlreadyExists(userForRegisterDto.Email).Success)
+            if (!UserAlreadyExists(userForRegisterDto.Email, userForRegisterDto.Username).Success)
                 return new ErrorDataResult<User>(Messages.UserAlreadyExists);
 
             byte[] passwordHash, passwordSalt;
@@ -52,9 +52,12 @@ namespace MyBlog.Business.Concrete
 
         }
 
-        public IResult UserAlreadyExists(string email)
+        public IResult UserAlreadyExists(string email, string userName)
         {
             if (_userService.GetByEmail(email).Data != null)
+                return new ErrorResult(Messages.UserAlreadyExists);
+
+            if (_userService.GetByUserName(userName).Data != null)
                 return new ErrorResult(Messages.UserAlreadyExists);
 
             return new SuccessResult();
