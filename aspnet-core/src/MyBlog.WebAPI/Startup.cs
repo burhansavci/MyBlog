@@ -1,15 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using MyBlog.Core.Utilities.Security.Encryption;
+using MyBlog.Core.Utilities.Security.Jwt;
 
 namespace MyBlog.WebAPI
 {
@@ -26,6 +23,25 @@ namespace MyBlog.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddCors(options => options.AddPolicy("AllowOrigin", builder =>
+            {
+                builder.WithOrigins("http://localhost4200");
+            }));
+            var tokenAuthOption = Configuration.GetSection("TokenAuthOption").Get<TokenAuthOption>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuer = true,
+                            ValidIssuer = tokenAuthOption.Issuer,
+                            ValidateAudience = true,
+                            ValidAudience = tokenAuthOption.Audience,
+                            ValidateLifetime = true,
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenAuthOption.SecurityKey)
+                        };
+                    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,9 +52,13 @@ namespace MyBlog.WebAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(builder => builder.WithOrigins("http://localhost4200").AllowAnyHeader());
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
