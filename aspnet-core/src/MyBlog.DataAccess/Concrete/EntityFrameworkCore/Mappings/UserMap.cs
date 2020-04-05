@@ -26,7 +26,7 @@ namespace MyBlog.DataAccess.Concrete.EntityFrameworkCore.Mappings
                    .HasColumnName("password_salt")
                    .IsRequired();
 
-            builder.Property(e => e.Username)
+            builder.Property(e => e.UserName)
                    .HasColumnName("username")
                    .HasMaxLength(50)
                    .IsRequired();

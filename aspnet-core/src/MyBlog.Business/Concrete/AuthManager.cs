@@ -41,7 +41,7 @@ namespace MyBlog.Business.Concrete
             HashingHelper.CreatePasswordHash(userForRegisterDto.Password, out passwordHash, out passwordSalt);
             var user = new User
             {
-                Username = userForRegisterDto.Username,
+                UserName = userForRegisterDto.Username,
                 Email = userForRegisterDto.Email,
                 PasswordSalt = passwordSalt,
                 PasswordHash = passwordHash,

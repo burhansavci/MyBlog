@@ -9,7 +9,7 @@ namespace MyBlog.Business.Abstract
     {
         IDataResult<User> Register(UserRegisterDto userRegisterDto);
         IDataResult<User> Login(UserLoginDto userLoginDto);
-        IResult UserAlreadyExists(string email);
+        IResult UserAlreadyExists(string email, string userName);
         IDataResult<AccessToken> CreateAccessToken(User user);
     }
 }
