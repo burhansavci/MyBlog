@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MyBlog.Core.Entities
+﻿namespace MyBlog.Core.Entities
 {
     public interface IEntity
     {
-        public int Id { get; set; }
     }
 }
