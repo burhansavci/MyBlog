@@ -26,6 +26,10 @@ namespace MyBlog.DataAccess.Concrete.EntityFrameworkCore.Mappings
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .IsRequired();
+
+            builder.HasIndex(e => e.LanguageCode)
+                   .HasName("language_code_unique")
+                   .IsUnique();
         }
     }
 }
