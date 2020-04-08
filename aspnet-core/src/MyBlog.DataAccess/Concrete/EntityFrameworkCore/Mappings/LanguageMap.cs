@@ -8,7 +8,7 @@ namespace MyBlog.DataAccess.Concrete.EntityFrameworkCore.Mappings
     {
         public void Configure(EntityTypeBuilder<Language> builder)
         {
-            builder.HasKey(e => e.Id)
+            builder.HasKey(e => e.LanguageCode)
                    .HasName("language_pkey");
 
             builder.Property(e => e.IsDefault)
@@ -27,9 +27,6 @@ namespace MyBlog.DataAccess.Concrete.EntityFrameworkCore.Mappings
                 .IsUnicode(false)
                 .IsRequired();
 
-            builder.HasIndex(e => e.LanguageCode)
-                   .HasName("language_code_unique")
-                   .IsUnique();
         }
     }
 }

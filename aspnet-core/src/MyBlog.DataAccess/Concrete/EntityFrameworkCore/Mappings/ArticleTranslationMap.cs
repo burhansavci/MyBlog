@@ -31,8 +31,11 @@ namespace MyBlog.DataAccess.Concrete.EntityFrameworkCore.Mappings
                    .HasColumnName("article_id")
                    .IsRequired();
 
-            builder.Property(e => e.LanguageId)
-                   .HasColumnName("language_id")
+            builder.Property(e => e.LanguageCode)
+                   .HasColumnName("language_code")
+                   .HasMaxLength(5)
+                   .IsUnicode(false)
+                   .IsFixedLength()
                    .IsRequired();
 
             builder.HasOne(d => d.Article)
@@ -43,15 +46,15 @@ namespace MyBlog.DataAccess.Concrete.EntityFrameworkCore.Mappings
 
             builder.HasOne(d => d.Language)
                    .WithMany(p => p.ArticleTranslations)
-                   .HasForeignKey(d => d.LanguageId)
+                   .HasForeignKey(d => d.LanguageCode)
                    .OnDelete(DeleteBehavior.Restrict)
-                   .HasConstraintName("article_translation_language_id_fkey");
+                   .HasConstraintName("article_translation_language_code_fkey");
 
             builder.HasIndex(e => e.ArticleId)
                    .HasName("article_translation_ix_article_id");
 
-            builder.HasIndex(e => e.LanguageId)
-                   .HasName("article_translation_ix_language_id");
+            builder.HasIndex(e => e.LanguageCode)
+                   .HasName("article_translation_ix_language_code");
         }
     }
 }
