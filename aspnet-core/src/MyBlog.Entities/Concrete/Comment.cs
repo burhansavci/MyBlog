@@ -1,11 +1,12 @@
-﻿using MyBlog.Core.Entities.Concrete;
+﻿using MyBlog.Core.Entities;
 using System;
 using System.Collections.Generic;
 
 namespace MyBlog.Entities.Concrete
 {
-    public class Comment : Entity
+    public class Comment : IEntity
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string ContentMain { get; set; }
         public DateTime PublishDate { get; set; }

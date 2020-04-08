@@ -1,9 +1,9 @@
-﻿using MyBlog.Core.Entities.Concrete;
+﻿using MyBlog.Core.Entities;
 using System.Collections.Generic;
 
 namespace MyBlog.Entities.Concrete
 {
-    public class Language : Entity
+    public class Language : IEntity
     {
         public string LanguageCode { get; set; }
         public string Name { get; set; }

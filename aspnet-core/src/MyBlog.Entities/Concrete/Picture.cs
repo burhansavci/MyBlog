@@ -1,9 +1,10 @@
-﻿using MyBlog.Core.Entities.Concrete;
+﻿using MyBlog.Core.Entities;
 
 namespace MyBlog.Entities.Concrete
 {
-    public class Picture : Entity
+    public class Picture : IEntity
     {
+        public int Id { get; set; }
         public bool IsMain { get; set; }
         public string Url { get; set; }
         public string PublicId { get; set; }
