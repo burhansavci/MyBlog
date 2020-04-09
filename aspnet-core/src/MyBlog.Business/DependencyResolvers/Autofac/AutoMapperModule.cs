@@ -13,6 +13,7 @@ namespace MyBlog.Business.DependencyResolvers.Autofac
                 var config = new MapperConfiguration(x =>
                 {
                     x.AddProfile(new CategoryMapperProfile());
+                    x.AddProfile(new LanguageMapperProfile());
                 });
 
                 return config;
