@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MyBlog.Entities.Concrete;
 using MyBlog.Entities.Dtos;
+using System;
 
 namespace MyBlog.Business.Mapping.AutoMapper
 {
@@ -8,10 +9,14 @@ namespace MyBlog.Business.Mapping.AutoMapper
     {
         public CategoryMapperProfile()
         {
-            CreateMap<CategoryTranslation, CategoryDto>().IncludeMembers(x => x.Language, x => x.Category);
-
-            CreateMap<Language, CategoryDto>(MemberList.None);
+            CreateMap<CategoryTranslation, CategoryDto>().IncludeMembers(x => x.Category);
             CreateMap<Category, CategoryDto>(MemberList.None);
+
+
+            CreateMap<CategoryTranslation, CategoryDto>()
+                .IncludeMembers( x => x.Category)
+                .ReverseMap();
+            CreateMap<CategoryDto, Category>(MemberList.None);
         }
     }
 }
