@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MyBlog.Business.Abstract;
+using MyBlog.Business.Constants;
 using MyBlog.Core.Utilities.Results;
 using MyBlog.DataAccess.Abstract;
 using MyBlog.Entities.Concrete;
@@ -21,33 +22,33 @@ namespace MyBlog.Business.Concrete
         public IDataResult<LanguageDto> GetLanguageByCode(string languageCode)
         {
             var language = _languageRepository.Get(x => x.LanguageCode == languageCode);
-            return new SuccessDataResult<LanguageDto>(_mapper.Map<LanguageDto>(language));
+            return new SuccessDataResult<LanguageDto>(Messages.SuccessOperation, _mapper.Map<LanguageDto>(language));
         }
 
         public IDataResult<List<LanguageDto>> GetLanguages()
         {
             var languages = _languageRepository.GetAllList();
-            return new SuccessDataResult<List<LanguageDto>>(_mapper.Map<List<LanguageDto>>(languages));
+            return new SuccessDataResult<List<LanguageDto>>(Messages.SuccessOperation, _mapper.Map<List<LanguageDto>>(languages));
         }
 
         public IResult InsertLanguage(LanguageDto languageDto)
         {
             var languageToBeInserted = _mapper.Map<Language>(languageDto);
             _languageRepository.Insert(languageToBeInserted);
-            return new SuccessResult();
+            return new SuccessResult(string.Format(Messages.SuccessfulInsert, nameof(Language)));
         }
 
         public IResult UpdateLanguage(LanguageDto languageDto)
         {
             var languageToBeUpdated = _mapper.Map<Language>(languageDto);
             _languageRepository.Update(languageToBeUpdated);
-            return new SuccessResult();
+            return new SuccessResult(string.Format(Messages.SuccessfulUpdate, nameof(Language)));
         }
         public IResult DeleteLanguage(LanguageDto languageDto)
         {
             var languageToBeDeleted = _mapper.Map<Language>(languageDto);
             _languageRepository.Delete(languageToBeDeleted);
-            return new SuccessResult();
+            return new SuccessResult(string.Format(Messages.SuccessfulDelete, nameof(Language)));
         }
     }
 }
