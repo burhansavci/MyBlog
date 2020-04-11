@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyBlog.Business.Abstract;
 using MyBlog.Entities.Dtos;
 
@@ -28,6 +29,7 @@ namespace MyBlog.WebAPI.Controllers
         }
 
         [Route("api/[controller]")]
+        [Authorize]
         [HttpPost]
         public IActionResult AddCategory(CategoryDto categoryDto)
         {
@@ -35,6 +37,7 @@ namespace MyBlog.WebAPI.Controllers
         }
 
         [Route("api/[controller]")]
+        [Authorize]
         [HttpPut]
         public IActionResult UpdateCategory(CategoryDto categoryDto)
         {
@@ -42,6 +45,7 @@ namespace MyBlog.WebAPI.Controllers
         }
 
         [Route("api/[controller]")]
+        [Authorize]
         [HttpDelete]
         public IActionResult DeleteCategory(CategoryDto categoryDto)
         {

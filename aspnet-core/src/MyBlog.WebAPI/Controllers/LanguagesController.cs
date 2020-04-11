@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyBlog.Business.Abstract;
 using MyBlog.Entities.Dtos;
@@ -32,18 +28,21 @@ namespace MyBlog.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult AddLanguage(LanguageDto languageDto)
         {
             return Ok(_languageService.InsertLanguage(languageDto));
         }
 
         [HttpPut]
+        [Authorize]
         public IActionResult UpdateLanguage(LanguageDto languageDto)
         {
             return Ok(_languageService.UpdateLanguage(languageDto));
         }
 
         [HttpDelete]
+        [Authorize]
         public IActionResult DeleteCategory(LanguageDto languageDto)
         {
             return Ok(_languageService.DeleteLanguage(languageDto));
