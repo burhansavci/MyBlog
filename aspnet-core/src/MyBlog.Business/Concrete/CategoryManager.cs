@@ -27,7 +27,7 @@ namespace MyBlog.Business.Concrete
 
         public IDataResult<List<CategoryDto>> GetCategories(string languageCode)
         {
-            var categories = _categoryTranslationRepository.GetAllList(x => x.Language.LanguageCode == languageCode);
+            var categories = _categoryTranslationRepository.GetAllIncludingList(x => x.LanguageCode == languageCode, x => x.Category);
             return new SuccessDataResult<List<CategoryDto>>(Messages.SuccessOperation, _mapper.Map<List<CategoryDto>>(categories));
         }
 
