@@ -48,6 +48,10 @@ namespace MyBlog.Core.DataAccess.EntityFrameworkCore
             }
             return query;
         }
+        public List<TEntity> GetAllIncludingList(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] propertySelectors)
+        {
+            return GetAllIncluding(propertySelectors).Where(predicate).ToList();
+        }
         public virtual List<TEntity> GetAllList(Expression<Func<TEntity, bool>> predicate)
         {
             return GetAll().Where(predicate).ToList();
