@@ -16,10 +16,10 @@ namespace MyBlog.Core.Utilities.Security.Jwt
         {
             Configuration = configuration;
             _tokenAuthOptions = Configuration.GetSection("TokenAuthOption").Get<TokenAuthOption>();
-            _accessTokenExpiration = DateTime.Now.Add(_tokenAuthOptions.ExpirationTime);
         }
         public AccessToken CreateAccessToken(BaseUser user)
         {
+            _accessTokenExpiration = DateTime.Now.Add(_tokenAuthOptions.ExpirationTime);
             var securityKey = SecurityKeyHelper.CreateSecurityKey(_tokenAuthOptions.SecurityKey);
             var signingCredentials = SigningCredentialsHelper.CreateSigningCredentials(securityKey);
             var jwt = CreateJwtSecurityToken(_tokenAuthOptions, signingCredentials);
