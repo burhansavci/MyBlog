@@ -14,6 +14,7 @@ namespace MyBlog.Core.DataAccess
         List<TEntity> GetAllList(Expression<Func<TEntity, bool>> predicate);
         List<TEntity> GetAllList();
         TEntity Get(Expression<Func<TEntity, bool>> predicate);
+        TEntity GetIncluding(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] propertySelectors);
         TEntity Insert(TEntity entity);
         TEntity Update(TEntity entity);
         void Delete(TEntity entity);
