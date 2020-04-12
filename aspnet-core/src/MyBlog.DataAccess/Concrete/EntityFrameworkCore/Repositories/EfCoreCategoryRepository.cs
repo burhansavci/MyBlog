@@ -10,5 +10,12 @@ namespace MyBlog.DataAccess.Concrete.EntityFrameworkCore.Repositories
         public EfCoreCategoryRepository(DbContext dbContext) : base(dbContext)
         {
         }
+
+        public void SoftDelete(Category category)
+        {
+            category.IsActive = false;
+            _dbContext.Entry(category).Property(c => c.IsActive).IsModified = true;
+            _dbContext.SaveChanges();
+        }
     }
 }

@@ -5,5 +5,6 @@ namespace MyBlog.DataAccess.Abstract
 {
     public interface ICategoryRepository : IRepository<Category>
     {
+        void SoftDelete(Category category);
     }
 }
