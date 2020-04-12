@@ -19,7 +19,7 @@ namespace MyBlog.Core.Utilities.Security.Jwt
         }
         public AccessToken CreateAccessToken(BaseUser user)
         {
-            _accessTokenExpiration = DateTime.Now.Add(_tokenAuthOptions.ExpirationTime);
+            _accessTokenExpiration = DateTime.Now.AddMinutes(_tokenAuthOptions.ExpirationTime);
             var securityKey = SecurityKeyHelper.CreateSecurityKey(_tokenAuthOptions.SecurityKey);
             var signingCredentials = SigningCredentialsHelper.CreateSigningCredentials(securityKey);
             var jwt = CreateJwtSecurityToken(_tokenAuthOptions, signingCredentials);
