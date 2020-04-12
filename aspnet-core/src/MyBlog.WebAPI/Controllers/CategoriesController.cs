@@ -16,16 +16,16 @@ namespace MyBlog.WebAPI.Controllers
 
         [Route("api/{languageCode}/[controller]/")]
         [HttpGet]
-        public IActionResult GetCategories(string languageCode)
+        public IActionResult GetCategoriesByLanguage(string languageCode)
         {
-            return Ok(_categoryService.GetCategories(languageCode));
+            return Ok(_categoryService.GetCategoriesByLanguage(languageCode));
         }
 
         [Route("api/{languageCode}/categories/{id}")]
         [HttpGet]
-        public IActionResult GetCategoryById(int id, string languageCode)
+        public IActionResult GetCategoryByIdAndLanguage(int id, string languageCode)
         {
-            return Ok(_categoryService.GetCategoryById(id, languageCode));
+            return Ok(_categoryService.GetCategoryByIdAndLanguage(id, languageCode));
         }
 
         [Route("api/[controller]")]
