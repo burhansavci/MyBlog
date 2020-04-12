@@ -21,6 +21,10 @@ namespace MyBlog.DataAccess.Concrete.EntityFrameworkCore.Mappings
                    .HasColumnName("view_count")
                    .IsRequired();
 
+            builder.Property(e => e.IsActive)
+                   .HasColumnName("is_active")
+                   .IsRequired();
+
             builder.Property(e => e.UserId)
                    .HasColumnName("user_id")
                    .IsRequired();

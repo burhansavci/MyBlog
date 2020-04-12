@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200408194219_Added_Unique_Constraint_To_Language.cs" />
     <Compile Remove="Migrations\20200408194219_Added_Unique_Constraint_To_Language.Designer.cs" />
+    <Compile Remove="Migrations\20200412154856_Add_Is_Active_To_Article_Category_And_Language.cs" />
+    <Compile Remove="Migrations\20200412154856_Add_Is_Active_To_Article_Category_And_Language.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

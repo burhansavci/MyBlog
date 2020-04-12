@@ -16,6 +16,10 @@ namespace MyBlog.DataAccess.Concrete.EntityFrameworkCore.Mappings
             builder.Property(x => x.CreatedDate)
                    .HasColumnName("created_date")
                    .IsRequired();
+
+            builder.Property(e => e.IsActive)
+                   .HasColumnName("is_active")
+                   .IsRequired();
         }
     }
 }

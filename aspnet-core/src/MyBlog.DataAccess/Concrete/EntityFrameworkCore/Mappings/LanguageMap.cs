@@ -15,17 +15,21 @@ namespace MyBlog.DataAccess.Concrete.EntityFrameworkCore.Mappings
                    .HasColumnName("is_default");
 
             builder.Property(e => e.LanguageCode)
-                .HasColumnName("language_code")
-                .HasMaxLength(5)
-                .IsUnicode(false)
-                .IsFixedLength()
-                .IsRequired();
+                   .HasColumnName("language_code")
+                   .HasMaxLength(5)
+                   .IsUnicode(false)
+                   .IsFixedLength()
+                   .IsRequired();
 
             builder.Property(e => e.Name)
-                .HasColumnName("name")
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .IsRequired();
+                   .HasColumnName("name")
+                   .HasMaxLength(50)
+                   .IsUnicode(false)
+                   .IsRequired();
+
+            builder.Property(e => e.IsActive)
+                   .HasColumnName("is_active")
+                   .IsRequired();
 
         }
     }

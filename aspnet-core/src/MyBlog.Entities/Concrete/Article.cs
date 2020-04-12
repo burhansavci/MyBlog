@@ -9,6 +9,7 @@ namespace MyBlog.Entities.Concrete
         public int Id { get; set; }
         public DateTime PublishDate { get; set; }
         public int ViewCount { get; set; }
+        public bool IsActive { get; set; } = true;
 
         public int CategoryId { get; set; }
         public Category Category { get; set; }
