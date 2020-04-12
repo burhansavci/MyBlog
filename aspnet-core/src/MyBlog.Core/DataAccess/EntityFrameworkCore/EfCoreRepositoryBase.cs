@@ -11,8 +11,8 @@ namespace MyBlog.Core.DataAccess.EntityFrameworkCore
         where TEntity : class, IEntity, new()
         where TDbContext : DbContext, new()
     {
-        private readonly DbContext _dbContext;
-        public virtual DbSet<TEntity> Table => _dbContext.Set<TEntity>();
+        protected readonly DbContext _dbContext;
+        protected virtual DbSet<TEntity> Table => _dbContext.Set<TEntity>();
         public EfCoreRepositoryBase(DbContext dbContext)
         {
             _dbContext = dbContext;
@@ -56,6 +56,11 @@ namespace MyBlog.Core.DataAccess.EntityFrameworkCore
             return query;
         }
 
+        public List<TEntity> GetAllIncludingList(params Expression<Func<TEntity, object>>[] propertySelectors)
+        {
+            return GetAllIncluding(propertySelectors).ToList();
+        }
+
         public List<TEntity> GetAllIncludingList(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] propertySelectors)
         {
             return GetAllIncluding(propertySelectors).Where(predicate).ToList();
@@ -77,5 +82,6 @@ namespace MyBlog.Core.DataAccess.EntityFrameworkCore
             _dbContext.SaveChanges();
             return entity;
         }
+
     }
 }
