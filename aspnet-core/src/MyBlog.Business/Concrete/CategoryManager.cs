@@ -12,20 +12,23 @@ namespace MyBlog.Business.Concrete
     public class CategoryManager : ICategoryService
     {
         private ICategoryTranslationRepository _categoryTranslationRepository;
+        private ICategoryRepository _categoryRepository;
         private IMapper _mapper;
-        public CategoryManager(ICategoryTranslationRepository categoryTranslationRepository, IMapper mapper)
+
+        public CategoryManager(ICategoryTranslationRepository categoryTranslationRepository, ICategoryRepository categoryRepository, IMapper mapper)
         {
             _categoryTranslationRepository = categoryTranslationRepository;
+            _categoryRepository = categoryRepository;
             _mapper = mapper;
         }
 
-        public IDataResult<CategoryDto> GetCategoryById(int id, string languageCode)
+        public IDataResult<CategoryDto> GetCategoryByIdAndLanguage(int id, string languageCode)
         {
             var category = _categoryTranslationRepository.GetIncluding(x => x.Language.LanguageCode == languageCode && x.CategoryId == id, x => x.Category);
             return new SuccessDataResult<CategoryDto>(Messages.SuccessOperation, _mapper.Map<CategoryDto>(category));
         }
 
-        public IDataResult<List<CategoryDto>> GetCategories(string languageCode)
+        public IDataResult<List<CategoryDto>> GetCategoriesByLanguage(string languageCode)
         {
             var categories = _categoryTranslationRepository.GetAllIncludingList(x => x.LanguageCode == languageCode, x => x.Category);
             return new SuccessDataResult<List<CategoryDto>>(Messages.SuccessOperation, _mapper.Map<List<CategoryDto>>(categories));
@@ -46,7 +49,12 @@ namespace MyBlog.Business.Concrete
         }
 
         public IResult DeleteCategory(CategoryDto categoryDto)
-        {
+        {         
+            if (categoryDto.CategoryId != null)
+            {
+                var categoryToBeSoftDeleted = _mapper.Map<Category>(categoryDto);
+                _categoryRepository.SoftDelete(categoryToBeSoftDeleted);
+            }
             var categoryToBeDeleted = _mapper.Map<CategoryTranslation>(categoryDto);
             _categoryTranslationRepository.Delete(categoryToBeDeleted);
             return new SuccessResult(string.Format(Messages.SuccessfulDelete, nameof(Category)));
