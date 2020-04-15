@@ -13,8 +13,7 @@ namespace MyBlog.Business.Mapping.AutoMapper
 
             CreateMap<Article, ArticleDto>(MemberList.None);
 
-            CreateMap<ArticleDto, Article>()
-                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.ArticleId));
+            CreateMap<ArticleDto, Article>();
 
             CreateMap<ArticleDto, ArticleTranslation>()
                 .ForPath(d => d.Article.PublishDate, opt => opt.MapFrom(s => s.PublishDate))
