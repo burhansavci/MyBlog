@@ -14,10 +14,12 @@ namespace MyBlog.Business.Concrete
     public class ArticleManager : IArticleService
     {
         private IArticleTranslationRepository _articleTranslationRepository;
+        private IArticleRepository _articleRepository;
         private IMapper _mapper;
-        public ArticleManager(IArticleTranslationRepository articleTranslationRepository, IMapper mapper)
+        public ArticleManager(IArticleTranslationRepository articleTranslationRepository, IArticleRepository articleRepository, IMapper mapper)
         {
             _articleTranslationRepository = articleTranslationRepository;
+            _articleRepository = articleRepository;
             _mapper = mapper;
         }
 
@@ -53,13 +55,19 @@ namespace MyBlog.Business.Concrete
 
         public IResult UpdateArticle(ArticleDto articleDto)
         {
-            //var articleToBeUpdated = _mapper.Map<ArticleTranslation>(articleDto);
-            //_articleTranslationRepository.Update(articleToBeUpdated);
+            if (articleDto.ArticleId == null)
+            {
+                var articleToBeUpdated = _mapper.Map<Article>(articleDto);
+                _articleRepository.Update(articleToBeUpdated);
+                return new SuccessResult(string.Format(Messages.SuccessfulUpdate, nameof(Article)));
+            }
+            var articleWithTranslationToBeUpdated = _mapper.Map<ArticleTranslation>(articleDto);
+            _articleTranslationRepository.Update(articleWithTranslationToBeUpdated);
             return new SuccessResult(string.Format(Messages.SuccessfulUpdate, nameof(Article)));
         }
         public IResult DeleteArticle(ArticleDto articleDto)
         {
-            //var articleToBeDeleted = _mapper.Map<ArticleTranslation>(articleDto);
+           //var articleToBeDeleted = _mapper.Map<ArticleTranslation>(articleDto);
             //_articleTranslationRepository.Delete(articleToBeDeleted);
             return new SuccessResult(string.Format(Messages.SuccessfulDelete, nameof(Article)));
         }
