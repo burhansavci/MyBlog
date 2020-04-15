@@ -13,6 +13,7 @@ namespace MyBlog.Entities.Dtos
         public int CategoryId { get; set; }
         public int UserId { get; set; }
         public int? ArticleId { get; set; }
+        public int? Id { get; set; }
         public string LanguageCode { get; set; }
 
     }
