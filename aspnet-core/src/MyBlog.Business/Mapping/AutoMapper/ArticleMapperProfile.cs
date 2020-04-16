@@ -13,7 +13,8 @@ namespace MyBlog.Business.Mapping.AutoMapper
 
             CreateMap<Article, ArticleDto>(MemberList.None);
 
-            CreateMap<ArticleDto, Article>();
+            CreateMap<ArticleDto, Article>()
+                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.UserId != null ? s.Id : s.ArticleId));
 
             CreateMap<ArticleDto, ArticleTranslation>()
                 .ForPath(d => d.Article.PublishDate, opt => opt.MapFrom(s => s.PublishDate))
@@ -22,7 +23,7 @@ namespace MyBlog.Business.Mapping.AutoMapper
                 .ForPath(d => d.Article.CategoryId, opt => opt.MapFrom(s => s.CategoryId))
                 .AfterMap((s, d) =>
                 {
-                    if (s.ArticleId != null)
+                    if (s.ArticleId != null || s.UserId == null)
                         d.Article = null;
                 });
         }
