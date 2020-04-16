@@ -11,7 +11,7 @@ namespace MyBlog.Entities.Dtos
         public DateTime PublishDate { get; set; }
         public int ViewCount { get; set; }
         public int CategoryId { get; set; }
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         public int? ArticleId { get; set; }
         public int? Id { get; set; }
         public string LanguageCode { get; set; }
