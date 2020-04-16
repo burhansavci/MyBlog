@@ -67,8 +67,13 @@ namespace MyBlog.Business.Concrete
         }
         public IResult DeleteArticle(ArticleDto articleDto)
         {
-           //var articleToBeDeleted = _mapper.Map<ArticleTranslation>(articleDto);
-            //_articleTranslationRepository.Delete(articleToBeDeleted);
+            if (articleDto.ArticleId != null)
+            {
+                var articleToBeSoftDeleted = _mapper.Map<Article>(articleDto);
+                _articleRepository.SoftDelete(articleToBeSoftDeleted);
+            }
+            var articleToBeDeleted = _mapper.Map<ArticleTranslation>(articleDto);
+            _articleTranslationRepository.Delete(articleToBeDeleted);
             return new SuccessResult(string.Format(Messages.SuccessfulDelete, nameof(Article)));
         }
     }
