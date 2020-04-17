@@ -22,7 +22,7 @@ namespace MyBlog.Business.Mapping.AutoMapper
                 .ForPath(d => d.Category.Id, opt => opt.MapFrom(s => s.CategoryId))
                 .AfterMap((s, d) =>
                 {
-                    if (s.CategoryId != null)
+                    if (s.CategoryId != null || s.LanguageCode == null)
                         d.Category = null;
                 });
         }
