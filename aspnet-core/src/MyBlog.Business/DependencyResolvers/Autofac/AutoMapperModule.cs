@@ -15,6 +15,7 @@ namespace MyBlog.Business.DependencyResolvers.Autofac
                     x.AddProfile(new CategoryMapperProfile());
                     x.AddProfile(new LanguageMapperProfile());
                     x.AddProfile(new ArticleMapperProfile());
+                    x.AddProfile(new CommentMapperProfile());
                 });
 
                 return config;
