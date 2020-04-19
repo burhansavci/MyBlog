@@ -24,6 +24,8 @@ namespace MyBlog.Business.DependencyResolvers.Autofac
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
 
             builder.RegisterModule<AutoMapperModule>();
+
+            builder.RegisterModule<ConfigurationModule>();
         }
     }
 }
