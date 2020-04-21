@@ -88,11 +88,6 @@ namespace MyBlog.Business.Concrete
         {
             var pictureToBeDeleted = _mapper.Map<Picture>(pictureForDeleteDto);
 
-            if (string.IsNullOrEmpty(pictureToBeDeleted.PublicId))
-            {
-                _pictureRepository.Delete(pictureToBeDeleted);
-            }
-
             var deletionParams = new DeletionParams(pictureToBeDeleted.PublicId);
             var result = _cloudinary.Destroy(deletionParams);
             if (result.Result == "ok")
