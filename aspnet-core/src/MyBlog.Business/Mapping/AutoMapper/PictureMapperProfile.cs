@@ -11,8 +11,9 @@ namespace MyBlog.Business.Mapping.AutoMapper
     {
         public PictureMapperProfile()
         {
-            CreateMap<Picture, PictureForCreationDto>();
             CreateMap<PictureForCreationDto, Picture>();
+            CreateMap<PictureForDeleteDto, Picture>();
+            CreateMap<Picture, PictureForReturnDto>();
         }
     }
 }
