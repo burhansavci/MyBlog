@@ -5,7 +5,6 @@ namespace MyBlog.Entities.Dtos
 {
     public class PictureForCreationDto : IDto
     {
-        public int Id { get; set; }
         public int ArticleId { get; set; }
         public string Url { get; set; }
         public bool IsMain { get; set; }
