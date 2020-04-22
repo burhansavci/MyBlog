@@ -36,21 +36,21 @@ namespace MyBlog.Business.Concrete
         {
             var comment = _mapper.Map<Comment>(commentDto);
             _commentRepository.Insert(comment);
-            return new SuccessResult(Messages.SuccessfulInsert);
+            return new SuccessResult(string.Format(Messages.SuccessfulInsert, nameof(Picture)));
         }
 
         public IResult UpdateComment(CommentDto commentDto)
         {
             var comment = _mapper.Map<Comment>(commentDto);
             _commentRepository.Update(comment);
-            return new SuccessResult(Messages.SuccessfulUpdate);
+            return new SuccessResult(string.Format(Messages.SuccessfulUpdate, nameof(Picture)));
         }
 
         public IResult DeleteComment(CommentDto commentDto)
         {
             var comment = _mapper.Map<Comment>(commentDto);
             _commentRepository.Delete(comment);
-            return new SuccessResult(Messages.SuccessfulDelete);
+            return new SuccessResult(string.Format(Messages.SuccessfulDelete, nameof(Picture)));
         }
     }
 }
