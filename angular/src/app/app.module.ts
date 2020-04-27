@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { MainNavComponent } from './nav/main-nav/main-nav.component';
 import { FooterNavComponent } from './nav/footer-nav/footer-nav.component';
+import { AboutComponent } from './pages/about/about.component';
+import { ContactComponent } from './pages/contact/contact.component';
+import { HomeComponent } from './pages/home/home.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +16,9 @@ import { FooterNavComponent } from './nav/footer-nav/footer-nav.component';
     MainLayoutComponent,
     MainNavComponent,
     FooterNavComponent,
+    AboutComponent,
+    ContactComponent,
+    HomeComponent,
   ],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],
