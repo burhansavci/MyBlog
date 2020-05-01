@@ -11,7 +11,7 @@ namespace MyBlog.Business.DependencyResolvers.Autofac
             builder.Register(context =>
             {
                 var config = new MapperConfiguration(x =>
-                {
+                {      
                     x.AddProfile(new CategoryMapperProfile());
                     x.AddProfile(new LanguageMapperProfile());
                     x.AddProfile(new ArticleMapperProfile());
@@ -24,14 +24,11 @@ namespace MyBlog.Business.DependencyResolvers.Autofac
                 .AutoActivate() // Create it on ContainerBuilder.Build()
                 .AsSelf(); // Bind it to its own type
 
-            // HACK: IComponentContext needs to be resolved again as 'tempContext' is only temporary. See http://stackoverflow.com/a/5386634/718053 
-            builder.Register(tempContext =>
+            builder.Register(context =>
             {
-                var ctx = tempContext.Resolve<IComponentContext>();
-                var config = ctx.Resolve<MapperConfiguration>();
-
+                var config = context.Resolve<MapperConfiguration>();
                 // Create our mapper using our configuration above
-                return config.CreateMapper(t => ctx.Resolve(t));
+                return config.CreateMapper(t => context.Resolve(t));
             }).As<IMapper>(); // Bind it to the IMapper interface
 
             base.Load(builder);
