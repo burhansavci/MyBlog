@@ -22,16 +22,21 @@ namespace MyBlog.Business.Concrete
             _mapper = mapper;
         }
 
-        public IDataResult<CategoryDto> GetCategoryByIdAndLanguage(int id, string languageCode)
+        public IDataResult<CategoryForReturnDto> GetCategoryByIdAndLanguage(int id, string languageCode)
         {
-            var category = _categoryTranslationRepository.GetIncluding(x => x.Language.LanguageCode == languageCode && x.CategoryId == id, x => x.Category);
-            return new SuccessDataResult<CategoryDto>(Messages.SuccessOperation, _mapper.Map<CategoryDto>(category));
+            var category = _categoryTranslationRepository.GetIncluding(x => x.Language.LanguageCode == languageCode &&
+                                                                            x.CategoryId == id, 
+                                                                       x => x.Category);
+
+            return new SuccessDataResult<CategoryForReturnDto>(Messages.SuccessOperation, _mapper.Map<CategoryForReturnDto>(category));
         }
 
-        public IDataResult<List<CategoryDto>> GetCategoriesByLanguage(string languageCode)
+        public IDataResult<List<CategoryForReturnDto>> GetCategoriesByLanguage(string languageCode)
         {
-            var categories = _categoryTranslationRepository.GetAllIncludingList(x => x.LanguageCode == languageCode, x => x.Category);
-            return new SuccessDataResult<List<CategoryDto>>(Messages.SuccessOperation, _mapper.Map<List<CategoryDto>>(categories));
+            var categories = _categoryTranslationRepository.GetAllIncludingList(x => x.LanguageCode == languageCode, 
+                                                                                x => x.Category);
+
+            return new SuccessDataResult<List<CategoryForReturnDto>>(Messages.SuccessOperation, _mapper.Map<List<CategoryForReturnDto>>(categories));
         }
 
         public IResult InsertCategory(CategoryDto categoryDto)
