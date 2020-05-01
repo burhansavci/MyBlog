@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using MyBlog.Business.Abstract;
 using MyBlog.Business.Constants;
+using MyBlog.Core.Entities.Dtos;
 using MyBlog.Core.Utilities.Results;
 using MyBlog.DataAccess.Abstract;
 using MyBlog.Entities.Concrete;
 using MyBlog.Entities.Dtos;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace MyBlog.Business.Concrete
 {
@@ -23,27 +22,40 @@ namespace MyBlog.Business.Concrete
             _mapper = mapper;
         }
 
-        public IDataResult<List<ArticleDto>> GetArticles(string languageCode)
+        public IDataResult<List<ArticleForReturnDto>> GetArticles(string languageCode, int pageNumber, int pageSize)
         {
-            var articles = _articleTranslationRepository.GetAllIncludingList(x => x.Language.LanguageCode == languageCode &&
-                                                                                  x.Article.IsActive, x => x.Article);
-            return new SuccessDataResult<List<ArticleDto>>(Messages.SuccessOperation, _mapper.Map<List<ArticleDto>>(articles));
+            var articles = _articleTranslationRepository.GetAllIncluding(x => x.Language.LanguageCode == languageCode && x.Article.IsActive,                                                              x => x.Article.Category.CategoryTranslations,
+                                                                         x => x.Article.Pictures);
+
+            var pagedList = PagedList<ArticleTranslation>.Create(articles, pageNumber, pageSize);
+
+            return new SuccessDataResult<List<ArticleForReturnDto>>(Messages.SuccessOperation, 
+                                                                    _mapper.Map<List<ArticleForReturnDto>>(pagedList));
         }
 
-        public IDataResult<ArticleDto> GetArticlesByCategoryId(int categoryId, string languageCode)
+        public IDataResult<List<ArticleForReturnDto>> GetArticlesByCategoryId(string languageCode, int categoryId, int pageNumber, int pageSize)
         {
-            var article = _articleTranslationRepository.GetIncluding(x => x.Language.LanguageCode == languageCode &&
-                                                                          x.Article.CategoryId == categoryId &&
-                                                                          x.Article.IsActive, x => x.Article);
-            return new SuccessDataResult<ArticleDto>(Messages.SuccessOperation, _mapper.Map<ArticleDto>(article));
+            var articles = _articleTranslationRepository.GetAllIncluding(x => x.Language.LanguageCode == languageCode &&
+                                                                              x.Article.CategoryId == categoryId &&
+                                                                              x.Article.IsActive,
+                                                                         x => x.Article.Category.CategoryTranslations,
+                                                                         x => x.Article.Pictures);
+
+            var pagedList = PagedList<ArticleTranslation>.Create(articles, pageNumber, pageSize);
+
+            return new SuccessDataResult<List<ArticleForReturnDto>>(Messages.SuccessOperation,
+                                                                    _mapper.Map<List<ArticleForReturnDto>>(pagedList));
         }
 
-        public IDataResult<ArticleDto> GetArticleById(int id, string languageCode)
+        public IDataResult<ArticleForReturnDto> GetArticleById(string languageCode, int id)
         {
             var article = _articleTranslationRepository.GetIncluding(x => x.Language.LanguageCode == languageCode &&
                                                                           x.ArticleId == id &&
-                                                                          x.Article.IsActive, x => x.Article);
-            return new SuccessDataResult<ArticleDto>(Messages.SuccessOperation, _mapper.Map<ArticleDto>(article));
+                                                                          x.Article.IsActive,
+                                                                     x => x.Article.Category.CategoryTranslations,
+                                                                     x => x.Article.Pictures);
+
+            return new SuccessDataResult<ArticleForReturnDto>(Messages.SuccessOperation, _mapper.Map<ArticleForReturnDto>(article));
         }
 
         public IResult InsertArticle(ArticleDto articleDto)
