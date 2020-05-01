@@ -22,12 +22,16 @@ namespace MyBlog.Business.Concrete
         private CloudinarySettings _cloudinaryConfig;
         private Cloudinary _cloudinary;
 
-        public PictureManager(IPictureRepository pictureRepository, IArticleRepository articleRepository, IMapper mapper, IConfigurationRoot configurationRoot)
+        public PictureManager(IPictureRepository pictureRepository,
+                              IArticleRepository articleRepository,
+                              IMapper mapper,
+                              IConfiguration configuration)
         {
             _pictureRepository = pictureRepository;
             _articleRepository = articleRepository;
             _mapper = mapper;
-            _cloudinaryConfig = configurationRoot.GetSection(AppSettingsSection.Cloudinary).Get<CloudinarySettings>();
+            _cloudinaryConfig = configuration.GetSection(AppSettingsSection.Cloudinary).Get<CloudinarySettings>();
+
             Account account = new Account(
                 _cloudinaryConfig.CloudName,
                 _cloudinaryConfig.APIKey,
