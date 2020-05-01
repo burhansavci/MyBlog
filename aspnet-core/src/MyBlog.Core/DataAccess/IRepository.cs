@@ -10,6 +10,7 @@ namespace MyBlog.Core.DataAccess
     {
         IQueryable<TEntity> GetAll();
         IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] propertySelectors);
+        IQueryable<TEntity> GetAllIncluding(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] propertySelectors);
         List<TEntity> GetAllIncludingList(params Expression<Func<TEntity, object>>[] propertySelectors);
         List<TEntity> GetAllIncludingList(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] propertySelectors);
         List<TEntity> GetAllList(Expression<Func<TEntity, bool>> predicate);
