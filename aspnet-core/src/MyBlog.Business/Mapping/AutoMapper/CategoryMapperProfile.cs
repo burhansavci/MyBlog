@@ -8,10 +8,9 @@ namespace MyBlog.Business.Mapping.AutoMapper
     {
         public CategoryMapperProfile()
         {
-            CreateMap<CategoryTranslation, CategoryDto>()
-                .IncludeMembers(x => x.Category);
 
-            CreateMap<Category, CategoryDto>(MemberList.None);
+            CreateMap<CategoryTranslation, CategoryForReturnDto>()
+                .ForMember(d => d.CreatedDate, opt => opt.MapFrom(s => s.Category.CreatedDate));
 
 
             CreateMap<CategoryDto, Category>()

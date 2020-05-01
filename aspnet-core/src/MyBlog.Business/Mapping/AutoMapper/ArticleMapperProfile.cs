@@ -8,10 +8,12 @@ namespace MyBlog.Business.Mapping.AutoMapper
     {
         public ArticleMapperProfile()
         {
-            CreateMap<ArticleTranslation, ArticleDto>()
-                .IncludeMembers(s => s.Article);
+            CreateMap<ArticleTranslation, ArticleForReturnDto>()
+                .ForMember(d => d.Pictures, opt => opt.MapFrom(s => s.Article.Pictures))
+                .ForMember(d => d.Categories, opt => opt.MapFrom(s => s.Article.Category.CategoryTranslations))
+                .ForMember(d => d.ViewCount, opt => opt.MapFrom(s => s.Article.ViewCount))
+                .ForMember(d => d.PublishDate, opt => opt.MapFrom(s => s.Article.PublishDate));
 
-            CreateMap<Article, ArticleDto>(MemberList.None);
 
             CreateMap<ArticleDto, Article>()
                 .ForMember(d => d.Id, opt => opt.MapFrom(s => s.UserId != null ? s.Id : s.ArticleId));
