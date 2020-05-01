@@ -25,7 +25,6 @@ namespace MyBlog.Business.DependencyResolvers.Autofac
 
             builder.RegisterModule<AutoMapperModule>();
 
-            builder.RegisterModule<ConfigurationModule>();
         }
     }
 }
