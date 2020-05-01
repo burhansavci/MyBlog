@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyBlog.Business.Abstract;
 using MyBlog.Entities.Dtos;
@@ -19,25 +14,25 @@ namespace MyBlog.WebAPI.Controllers
             _articleService = articleService;
         }
 
-        [Route("api/{languageCode}/[controller]")]
+        [Route("api/{languageCode}/[controller]/{pageNumber}/{pageSize}")]
         [HttpGet]
-        public IActionResult GetArticles(string languageCode)
+        public IActionResult GetArticles(string languageCode, int pageNumber, int pageSize)
         {
-            return Ok(_articleService.GetArticles(languageCode));
+            return Ok(_articleService.GetArticles(languageCode, pageNumber, pageSize));
         }
 
         [Route("api/{languageCode}/[controller]/[action]/{id}")]
         [HttpGet]
         public IActionResult GetArticleById(int id, string languageCode)
         {
-            return Ok(_articleService.GetArticleById(id, languageCode));
+            return Ok(_articleService.GetArticleById(languageCode, id));
         }
 
-        [Route("api/{languageCode}/[controller]/[action]/{categoryId}")]
+        [Route("api/{languageCode}/[controller]/[action]/{categoryId}/{pageNumber}/{pageSize}")]
         [HttpGet]
-        public IActionResult GetArticlesByCategoryId(int categoryId, string languageCode)
+        public IActionResult GetArticlesByCategoryId(int categoryId, string languageCode, int pageNumber, int pageSize)
         {
-            return Ok(_articleService.GetArticlesByCategoryId(categoryId, languageCode));
+            return Ok(_articleService.GetArticlesByCategoryId(languageCode, categoryId, pageNumber, pageSize));
         }
 
         [Route("api/[controller]")]
