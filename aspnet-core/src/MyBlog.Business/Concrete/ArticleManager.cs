@@ -7,6 +7,7 @@ using MyBlog.DataAccess.Abstract;
 using MyBlog.Entities.Concrete;
 using MyBlog.Entities.Dtos;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MyBlog.Business.Concrete
 {
@@ -15,25 +16,33 @@ namespace MyBlog.Business.Concrete
         private IArticleTranslationRepository _articleTranslationRepository;
         private IArticleRepository _articleRepository;
         private IMapper _mapper;
-        public ArticleManager(IArticleTranslationRepository articleTranslationRepository, IArticleRepository articleRepository, IMapper mapper)
+        public ArticleManager(IArticleTranslationRepository articleTranslationRepository,
+                              IArticleRepository articleRepository,
+                              IMapper mapper)
         {
             _articleTranslationRepository = articleTranslationRepository;
             _articleRepository = articleRepository;
             _mapper = mapper;
         }
 
-        public IDataResult<List<ArticleForReturnDto>> GetArticles(string languageCode, int pageNumber, int pageSize)
+        public IDataResult<Page<ArticleForReturnDto>> GetArticles(string languageCode, int pageNumber, int pageSize)
         {
-            var articles = _articleTranslationRepository.GetAllIncluding(x => x.Language.LanguageCode == languageCode && x.Article.IsActive,                                                              x => x.Article.Category.CategoryTranslations,
+            var articles = _articleTranslationRepository.GetAllIncluding(x => x.Language.LanguageCode == languageCode &&
+                                                                              x.Article.IsActive,
+                                                                         x => x.Article.Category.CategoryTranslations,
                                                                          x => x.Article.Pictures);
 
-            var pagedList = PagedList<ArticleTranslation>.Create(articles, pageNumber, pageSize);
+            var articleTranslationPage = Page<ArticleTranslation>.CreatePaginatedResult(articles, pageNumber, pageSize);
+            var articleForReturnDtos = _mapper.Map<List<ArticleForReturnDto>>(articleTranslationPage.Items);
+            var articleForReturnDtoPage = new Page<ArticleForReturnDto>(articleForReturnDtos,
+                                                                        articleTranslationPage.TotalCount,
+                                                                        articleTranslationPage.CurrentPage,
+                                                                        articleTranslationPage.PageSize);
 
-            return new SuccessDataResult<List<ArticleForReturnDto>>(Messages.SuccessOperation, 
-                                                                    _mapper.Map<List<ArticleForReturnDto>>(pagedList));
+            return new SuccessDataResult<Page<ArticleForReturnDto>>(Messages.SuccessOperation, articleForReturnDtoPage);
         }
 
-        public IDataResult<List<ArticleForReturnDto>> GetArticlesByCategoryId(string languageCode, int categoryId, int pageNumber, int pageSize)
+        public IDataResult<Page<ArticleForReturnDto>> GetArticlesByCategoryId(string languageCode, int categoryId, int pageNumber, int pageSize)
         {
             var articles = _articleTranslationRepository.GetAllIncluding(x => x.Language.LanguageCode == languageCode &&
                                                                               x.Article.CategoryId == categoryId &&
@@ -41,10 +50,14 @@ namespace MyBlog.Business.Concrete
                                                                          x => x.Article.Category.CategoryTranslations,
                                                                          x => x.Article.Pictures);
 
-            var pagedList = PagedList<ArticleTranslation>.Create(articles, pageNumber, pageSize);
+            var articleTranslationPage = Page<ArticleTranslation>.CreatePaginatedResult(articles, pageNumber, pageSize);
+            var articleForReturnDtos = _mapper.Map<List<ArticleForReturnDto>>(articleTranslationPage.Items);
+            var articleForReturnDtoPage = new Page<ArticleForReturnDto>(articleForReturnDtos,
+                                                                        articleTranslationPage.TotalCount,
+                                                                        articleTranslationPage.CurrentPage,
+                                                                        articleTranslationPage.PageSize);
 
-            return new SuccessDataResult<List<ArticleForReturnDto>>(Messages.SuccessOperation,
-                                                                    _mapper.Map<List<ArticleForReturnDto>>(pagedList));
+            return new SuccessDataResult<Page<ArticleForReturnDto>>(Messages.SuccessOperation, articleForReturnDtoPage);
         }
 
         public IDataResult<ArticleForReturnDto> GetArticleById(string languageCode, int id)
