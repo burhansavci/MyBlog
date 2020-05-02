@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MyBlog.Entities.Concrete;
 using MyBlog.Entities.Dtos;
+using System.Linq;
 
 namespace MyBlog.Business.Mapping.AutoMapper
 {
@@ -9,8 +10,9 @@ namespace MyBlog.Business.Mapping.AutoMapper
         public ArticleMapperProfile()
         {
             CreateMap<ArticleTranslation, ArticleForReturnDto>()
-                .ForMember(d => d.Pictures, opt => opt.MapFrom(s => s.Article.Pictures))
-                .ForMember(d => d.Categories, opt => opt.MapFrom(s => s.Article.Category.CategoryTranslations))
+                .ForMember(d => d.Picture, opt => opt.MapFrom(s => s.Article.Pictures.FirstOrDefault(p => p.IsMain)))
+                .ForMember(d => d.Category, opt => opt.MapFrom(s => s.Article.Category.CategoryTranslations
+                                                                     .FirstOrDefault(ct => ct.LanguageCode == s.LanguageCode)))
                 .ForMember(d => d.ViewCount, opt => opt.MapFrom(s => s.Article.ViewCount))
                 .ForMember(d => d.PublishDate, opt => opt.MapFrom(s => s.Article.PublishDate));
 

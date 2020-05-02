@@ -13,7 +13,7 @@ namespace MyBlog.Entities.Dtos
         public DateTime PublishDate { get; set; }
         public int ViewCount { get; set; }
         public string LanguageCode { get; set; }
-        public ICollection<CategoryForReturnDto> Categories { get; set; }
-        public ICollection<PictureForReturnDto> Pictures { get; set; }
+        public CategoryForReturnDto Category { get; set; }
+        public PictureForReturnDto Picture { get; set; }
     }
 }
