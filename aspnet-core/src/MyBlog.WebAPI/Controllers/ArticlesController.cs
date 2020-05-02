@@ -21,14 +21,14 @@ namespace MyBlog.WebAPI.Controllers
             return Ok(_articleService.GetArticles(languageCode, pageNumber, pageSize));
         }
 
-        [Route("api/{languageCode}/[controller]/[action]/{id}")]
+        [Route("api/{languageCode}/[controller]/{id}")]
         [HttpGet]
         public IActionResult GetArticleById(int id, string languageCode)
         {
             return Ok(_articleService.GetArticleById(languageCode, id));
         }
 
-        [Route("api/{languageCode}/[controller]/[action]/{categoryId}/{pageNumber}/{pageSize}")]
+        [Route("api/{languageCode}/[controller]/{categoryId}/{pageNumber}/{pageSize}")]
         [HttpGet]
         public IActionResult GetArticlesByCategoryId(int categoryId, string languageCode, int pageNumber, int pageSize)
         {
