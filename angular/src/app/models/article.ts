@@ -8,6 +8,7 @@ export interface Article {
   contentMain: string;
   publishDate: Date;
   viewCount: number;
+  languageCode: string;
   category: Category;
   picture: Picture;
 }
