@@ -25,7 +25,7 @@ namespace MyBlog.WebAPI
             services.AddControllers();
             services.AddCors(options => options.AddPolicy("AllowOrigin", builder =>
             {
-                builder.WithOrigins("http://localhost:4200");
+                builder.WithOrigins("http://localhost:4200", "https://burhansavci.netlify.app");
             }));
             var tokenAuthOption = Configuration.GetSection("TokenAuthOption").Get<TokenAuthOption>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -52,7 +52,7 @@ namespace MyBlog.WebAPI
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200", "https://burhansavci.netlify.app").AllowAnyHeader());
             
             app.UseHttpsRedirection();
 
