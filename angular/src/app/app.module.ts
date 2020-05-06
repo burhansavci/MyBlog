@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { FormsModule } from '@angular/forms';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,7 +17,9 @@ import { HomeComponent } from './pages/home/home.component';
 import { ArticleService } from './services/article.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ArticleComponent } from './pages/article/article.component';
-import { UrlformatPipe } from './pipes/urlformat.pipe';
+import { UrlFormatPipe } from './pipes/url-format.pipe';
+import { RecentPostsComponent } from './components/recent-posts/recent-posts.component';
+import { AlertifyService } from './services/alertify.service';
 
 @NgModule({
   declarations: [
@@ -28,20 +31,20 @@ import { UrlformatPipe } from './pipes/urlformat.pipe';
     ContactComponent,
     HomeComponent,
     ArticleComponent,
-    UrlformatPipe,
+    UrlFormatPipe,
+    RecentPostsComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
+    ButtonsModule.forRoot(),
     PaginationModule.forRoot(),
     CollapseModule.forRoot(),
     FormsModule,
   ],
-  providers: [
-    ArticleService
-  ],
+  providers: [ArticleService, AlertifyService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
