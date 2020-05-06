@@ -1,0 +1,14 @@
+<h2>Recent Posts</h2>
+<div *ngIf="dataResult" class="list-group mb-3">
+  <a *ngFor="let article of dataResult.data.items" [routerLink]="['/article', article.title|urlFormat, article.id]"
+    class="list-group-item list-group-item-action">
+    <h5>{{article.title}}</h5>
+    <p class="text-muted">Posted On: (<time data-toggle="article.publishDate">{{article.publishDate|date}}</time>)</p>
+    <div class="badge badge-primary">{{article.category.name}}</div>
+    <div>
+      <span class="badge badge-primary">{{article.viewCount}} views</span>
+      <span class="badge badge-primary"> 3 comments</span>
+    </div>
+    <p>{{article.contentSummary|slice:0:80}}...</p>
+  </a>
+</div>
