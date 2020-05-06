@@ -4,7 +4,9 @@
     <div class="col-12 col-lg-8">
       <router-outlet></router-outlet>
     </div>
-    <div *ngIf="isAsideActive" class="col-12 col-lg-4"> ASIDE </div>
+    <div *ngIf="isAsideActive" class="col-12 col-lg-4">
+      <app-recent-posts></app-recent-posts>
+    </div>
   </div>
 </div>
 <app-footer-nav></app-footer-nav>
