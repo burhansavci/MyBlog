@@ -30,7 +30,8 @@ namespace MyBlog.Business.Concrete
             var articles = _articleTranslationRepository.GetAllIncluding(x => x.Language.LanguageCode == languageCode &&
                                                                               x.Article.IsActive,
                                                                          x => x.Article.Category.CategoryTranslations,
-                                                                         x => x.Article.Pictures);
+                                                                         x => x.Article.Pictures)
+                                                        .OrderByDescending(x => x.Article.PublishDate);
 
             var articleTranslationPage = Page<ArticleTranslation>.CreatePaginatedResult(articles, pageNumber, pageSize);
             var articleForReturnDtos = _mapper.Map<List<ArticleForReturnDto>>(articleTranslationPage.Items);
