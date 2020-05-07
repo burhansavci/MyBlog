@@ -28,6 +28,13 @@ namespace MyBlog.WebAPI.Controllers
             return Ok(_articleService.GetArticleById(languageCode, id));
         }
 
+        [Route("api/{languageCode}/[controller]/archive")]
+        [HttpGet]
+        public IActionResult GetArticlesArchive(string languageCode)
+        {
+            return Ok(_articleService.GetArticlesArchive(languageCode));
+        }
+
         [Route("api/{languageCode}/[controller]/{categoryId}/{pageNumber}/{pageSize}")]
         [HttpGet]
         public IActionResult GetArticlesByCategoryId(int categoryId, string languageCode, int pageNumber, int pageSize)
