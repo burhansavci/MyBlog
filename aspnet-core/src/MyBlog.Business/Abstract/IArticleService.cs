@@ -10,6 +10,7 @@ namespace MyBlog.Business.Abstract
         IDataResult<ArticleForReturnDto> GetArticleById(string languageCode, int id);
         IDataResult<Page<ArticleForReturnDto>> GetArticlesByCategoryId(string languageCode, int categoryId, int pageNumber, int pageSize);
         IDataResult<Page<ArticleForReturnDto>> GetArticles(string languageCode, int pageNumber, int pageSize);
+        IDataResult<List<ArticleForArchiveReturnDto>> GetArticlesArchive(string languageCode);
         IResult InsertArticle(ArticleDto articleDto);
         IResult UpdateArticle(ArticleDto articleDto);
         IResult DeleteArticle(ArticleDto articleDto);

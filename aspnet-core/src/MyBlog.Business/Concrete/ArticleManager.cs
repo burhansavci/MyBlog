@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MyBlog.Business.Abstract;
 using MyBlog.Business.Constants;
 using MyBlog.Core.Entities.Dtos;
@@ -70,6 +71,22 @@ namespace MyBlog.Business.Concrete
                                                                      x => x.Article.Pictures);
 
             return new SuccessDataResult<ArticleForReturnDto>(Messages.SuccessOperation, _mapper.Map<ArticleForReturnDto>(article));
+        }
+
+        public IDataResult<List<ArticleForArchiveReturnDto>> GetArticlesArchive(string languageCode)
+        {
+            var articles = _articleTranslationRepository.GetAllIncludingList(x => x.LanguageCode == languageCode, x => x.Article)
+                                                        .OrderByDescending(x => x.Article.PublishDate)
+                                                        .GroupBy(x => new ArticleForArchiveReturnDto
+                                                        {
+                                                            PublishYear = x.Article.PublishDate.Year,
+                                                            PublishMonth = x.Article.PublishDate.Month
+                                                        })
+                                                        .AsQueryable()
+                                                        .ProjectTo<ArticleForArchiveReturnDto>(_mapper.ConfigurationProvider)
+                                                        .ToList();
+
+            return new SuccessDataResult<List<ArticleForArchiveReturnDto>>(Messages.SuccessOperation, articles);
         }
 
         public IResult InsertArticle(ArticleDto articleDto)
