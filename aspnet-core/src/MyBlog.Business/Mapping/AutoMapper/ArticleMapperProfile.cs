@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MyBlog.Entities.Concrete;
 using MyBlog.Entities.Dtos;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MyBlog.Business.Mapping.AutoMapper
@@ -30,6 +31,15 @@ namespace MyBlog.Business.Mapping.AutoMapper
                     if (s.ArticleId != null || s.UserId == null)
                         d.Article = null;
                 });
+
+            CreateMap<IGrouping<ArticleForArchiveReturnDto, ArticleTranslation>, ArticleForArchiveReturnDto>()
+                .ForMember(d => d.CountByMonth, opt => opt.MapFrom(s => s.Count()))
+                .ForMember(d => d.MonthName, opt => opt.MapFrom(s => s.FirstOrDefault().Article.PublishDate.ToString("MMMM")))
+                .ForMember(d => d.PublishYear, opt => opt.MapFrom(s => s.Key.PublishYear))
+                .ForMember(d => d.PublishMonth, opt => opt.MapFrom(s => s.Key.PublishMonth))
+                .ForMember(d => d.Title, opt => opt.MapFrom(s => s.FirstOrDefault().Title))
+                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.FirstOrDefault().ArticleId));
+
         }
     }
 }
