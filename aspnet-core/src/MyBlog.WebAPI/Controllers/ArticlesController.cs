@@ -35,6 +35,20 @@ namespace MyBlog.WebAPI.Controllers
             return Ok(_articleService.GetArticlesArchive(languageCode));
         }
 
+        [Route("api/{languageCode}/[controller]/archive/{year}/{pageNumber}/{pageSize}")]
+        [HttpGet]
+        public IActionResult GetArticlesByYear(string languageCode, int year, int pageNumber, int pageSize)
+        {
+            return Ok(_articleService.GetArticlesByYear(languageCode, year, pageNumber, pageSize));
+        }
+
+        [Route("api/{languageCode}/[controller]/archive/{year}/{month}/{pageNumber}/{pageSize}")]
+        [HttpGet]
+        public IActionResult GetArticlesByYearAndMonth(string languageCode, int year, int month, int pageNumber, int pageSize)
+        {
+            return Ok(_articleService.GetArticlesByYearAndMonth(languageCode, year, month, pageNumber, pageSize));
+        }
+
         [Route("api/{languageCode}/[controller]/{categoryId}/{pageNumber}/{pageSize}")]
         [HttpGet]
         public IActionResult GetArticlesByCategoryId(int categoryId, string languageCode, int pageNumber, int pageSize)

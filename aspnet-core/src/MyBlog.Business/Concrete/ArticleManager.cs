@@ -44,7 +44,10 @@ namespace MyBlog.Business.Concrete
             return new SuccessDataResult<Page<ArticleForReturnDto>>(Messages.SuccessOperation, articleForReturnDtoPage);
         }
 
-        public IDataResult<Page<ArticleForReturnDto>> GetArticlesByCategoryId(string languageCode, int categoryId, int pageNumber, int pageSize)
+        public IDataResult<Page<ArticleForReturnDto>> GetArticlesByCategoryId(string languageCode, 
+                                                                              int categoryId, 
+                                                                              int pageNumber, 
+                                                                              int pageSize)
         {
             var articles = _articleTranslationRepository.GetAllIncluding(x => x.Language.LanguageCode == languageCode &&
                                                                               x.Article.CategoryId == categoryId &&
@@ -87,6 +90,52 @@ namespace MyBlog.Business.Concrete
 
 
             return new SuccessDataResult<List<ArticleForArchiveReturnDto>>(Messages.SuccessOperation, articles);
+        }
+
+        public IDataResult<Page<ArticleForReturnDto>> GetArticlesByYear(string languageCode, 
+                                                                        int year, 
+                                                                        int pageNumber, 
+                                                                        int pageSize)
+        {
+            var articles = _articleTranslationRepository.GetAllIncluding(x => x.Language.LanguageCode == languageCode &&
+                                                                              x.Article.IsActive &&
+                                                                              x.Article.PublishDate.Year == year,
+                                                                         x => x.Article.Category.CategoryTranslations,
+                                                                         x => x.Article.Pictures)
+                                                        .OrderByDescending(x => x.Article.PublishDate);
+
+            var articleTranslationPage = Page<ArticleTranslation>.CreatePaginatedResult(articles, pageNumber, pageSize);
+            var articleForReturnDtos = _mapper.Map<List<ArticleForReturnDto>>(articleTranslationPage.Items);
+            var articleForReturnDtoPage = new Page<ArticleForReturnDto>(articleForReturnDtos,
+                                                                        articleTranslationPage.TotalCount,
+                                                                        articleTranslationPage.CurrentPage,
+                                                                        articleTranslationPage.PageSize);
+
+            return new SuccessDataResult<Page<ArticleForReturnDto>>(Messages.SuccessOperation, articleForReturnDtoPage);
+        }
+
+        public IDataResult<Page<ArticleForReturnDto>> GetArticlesByYearAndMonth(string languageCode,
+                                                                                int year,
+                                                                                int month,
+                                                                                int pageNumber,
+                                                                                int pageSize)
+        {
+            var articles = _articleTranslationRepository.GetAllIncluding(x => x.Language.LanguageCode == languageCode &&
+                                                                  x.Article.IsActive &&
+                                                                  x.Article.PublishDate.Year == year &&
+                                                                  x.Article.PublishDate.Month == month,
+                                                             x => x.Article.Category.CategoryTranslations,
+                                                             x => x.Article.Pictures)
+                                            .OrderByDescending(x => x.Article.PublishDate);
+
+            var articleTranslationPage = Page<ArticleTranslation>.CreatePaginatedResult(articles, pageNumber, pageSize);
+            var articleForReturnDtos = _mapper.Map<List<ArticleForReturnDto>>(articleTranslationPage.Items);
+            var articleForReturnDtoPage = new Page<ArticleForReturnDto>(articleForReturnDtos,
+                                                                        articleTranslationPage.TotalCount,
+                                                                        articleTranslationPage.CurrentPage,
+                                                                        articleTranslationPage.PageSize);
+
+            return new SuccessDataResult<Page<ArticleForReturnDto>>(Messages.SuccessOperation, articleForReturnDtoPage);
         }
 
         public IResult InsertArticle(ArticleDto articleDto)
