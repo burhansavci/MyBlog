@@ -5,6 +5,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { FormsModule } from '@angular/forms';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,6 +21,7 @@ import { ArticleComponent } from './pages/article/article.component';
 import { UrlFormatPipe } from './pipes/url-format.pipe';
 import { RecentPostsComponent } from './components/recent-posts/recent-posts.component';
 import { AlertifyService } from './services/alertify.service';
+import { ArchivePostsComponent } from './components/archive-posts/archive-posts.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import { AlertifyService } from './services/alertify.service';
     ArticleComponent,
     UrlFormatPipe,
     RecentPostsComponent,
+    ArchivePostsComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,6 +45,7 @@ import { AlertifyService } from './services/alertify.service';
     ButtonsModule.forRoot(),
     PaginationModule.forRoot(),
     CollapseModule.forRoot(),
+    AccordionModule.forRoot(),
     FormsModule,
   ],
   providers: [ArticleService, AlertifyService],
