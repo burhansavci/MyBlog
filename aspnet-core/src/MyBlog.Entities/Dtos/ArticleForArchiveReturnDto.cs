@@ -5,11 +5,9 @@ namespace MyBlog.Entities.Dtos
 {
     public class ArticleForArchiveReturnDto : IDto
     {
-        public List<ArticleForArchiveDto> ArticleForArchiveDtos { get; set; }
+        public List<ArticleForArchiveMonthDto> Months { get; set; }
         public int PublishYear { get; set; }
-        public int PublishMonth { get; set; }
-        public string MonthName { get; set; }
-        public int CountByMonth { get; set; }
+        public int CountByYear { get; set; }
         public override bool Equals(object other)
         {
             if (other is null) return false;
@@ -20,12 +18,12 @@ namespace MyBlog.Entities.Dtos
 
         public override int GetHashCode()
         {
-            return PublishMonth.GetHashCode() + PublishYear.GetHashCode();
+            return PublishYear.GetHashCode();
         }
 
         public bool Equals(ArticleForArchiveReturnDto other)
         {
-            var result = other.PublishYear == PublishYear && other.PublishMonth == PublishMonth;
+            var result = other.PublishYear == PublishYear;
             return result;
         }
     }
