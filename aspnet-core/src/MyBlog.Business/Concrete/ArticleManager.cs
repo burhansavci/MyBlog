@@ -79,12 +79,12 @@ namespace MyBlog.Business.Concrete
                                                         .OrderByDescending(x => x.Article.PublishDate)
                                                         .GroupBy(x => new ArticleForArchiveReturnDto
                                                         {
-                                                            PublishYear = x.Article.PublishDate.Year,
-                                                            PublishMonth = x.Article.PublishDate.Month
+                                                            PublishYear = x.Article.PublishDate.Year
                                                         })
                                                         .AsQueryable()
                                                         .ProjectTo<ArticleForArchiveReturnDto>(_mapper.ConfigurationProvider)
                                                         .ToList();
+
 
             return new SuccessDataResult<List<ArticleForArchiveReturnDto>>(Messages.SuccessOperation, articles);
         }
