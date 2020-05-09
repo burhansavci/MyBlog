@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MyBlog.Entities.Concrete;
 using MyBlog.Entities.Dtos;
 using System.Linq;
@@ -31,17 +32,25 @@ namespace MyBlog.Business.Mapping.AutoMapper
                         d.Article = null;
                 });
 
-            CreateMap<IGrouping<ArticleForArchiveReturnDto, ArticleTranslation>, ArticleForArchiveReturnDto>()
-                .ForMember(d => d.CountByMonth, opt => opt.MapFrom(s => s.Count()))
+            CreateMap<IGrouping<ArticleForArchiveMonthDto, ArticleTranslation>, ArticleForArchiveMonthDto>()
                 .ForMember(d => d.MonthName, opt => opt.MapFrom(s => s.FirstOrDefault().Article.PublishDate.ToString("MMMM")))
-                .ForMember(d => d.PublishYear, opt => opt.MapFrom(s => s.Key.PublishYear))
                 .ForMember(d => d.PublishMonth, opt => opt.MapFrom(s => s.Key.PublishMonth))
-                .ForMember(d => d.ArticleForArchiveDtos, opt => opt.MapFrom(s => s.Select(x =>
-                                                         new ArticleForArchiveDto
-                                                         {
-                                                             Id = x.ArticleId,
-                                                             Title = x.Title
-                                                         })));
+                .ForMember(d => d.CountByMonth, opt => opt.MapFrom(s => s.Count()))
+                .ForMember(d => d.ArticleArchives, opt => opt.MapFrom(s => s.Select(x =>
+                                                          new ArticleForArchiveDto
+                                                          {
+                                                              Id = x.ArticleId,
+                                                              Title = x.Title
+                                                          })));
+            CreateMap<IGrouping<ArticleForArchiveReturnDto, ArticleTranslation>, ArticleForArchiveReturnDto>()
+                .ForMember(d => d.CountByYear, opt => opt.MapFrom(s => s.Count()))
+                .ForMember(d => d.PublishYear, opt => opt.MapFrom(s => s.Key.PublishYear))
+                .ForMember(d => d.Months, opt => opt.MapFrom(s => s.GroupBy(x =>
+                                                                  new ArticleForArchiveMonthDto
+                                                                  {
+                                                                      PublishMonth = x.Article.PublishDate.Month
+                                                                  })));
+
         }
     }
 }
