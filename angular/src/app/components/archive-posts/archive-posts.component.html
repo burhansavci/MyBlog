@@ -1,0 +1,34 @@
+<h2>Archive</h2>
+<div *ngIf="archives" class="list-group mb-3">
+  <div class="list-group-item">
+    <accordion *ngFor="let archive of archives" [isAnimated]="true" class="accordion-toggle">
+      <accordion-group #yearGroup>
+        <button class="btn btn-link btn-block clearfix" accordion-heading type="button">
+          <div class="pull-left float-left">
+            <a href="#"> {{archive.publishYear}} <span class="badge badge-primary badge-pill ml-2">{{archive.countByYear}}</span>
+            </a>
+          </div>
+          <span class="badge badge-secondary float-right pull-right mt-1">
+            <i class="fas " [ngClass]="{'fa-caret-down': yearGroup?.isOpen, 'fa-caret-up': !yearGroup?.isOpen}"></i>
+          </span>
+        </button>
+        <accordion-group *ngFor="let month of archive.months" #monthGroup>
+          <button class="btn btn-link btn-block clearfix" accordion-heading type="button">
+            <div class="pull-left float-left">
+              <a href="#"> {{month.monthName}}<span class="badge badge-primary badge-pill ml-2">{{month.countByMonth}}</span>
+              </a>
+            </div>
+            <span class="badge badge-secondary float-right pull-right mt-1">
+              <i class="fas" [ngClass]="{'fa-caret-down': monthGroup?.isOpen, 'fa-caret-up': !monthGroup?.isOpen}"></i>
+            </span>
+          </button>
+          <ul class="list-group list-group-flush" *ngFor="let articleArchive of month.articleArchives">
+            <li class="list-group-item">
+              <a [routerLink]="['/article', articleArchive.title|urlFormat, articleArchive.id]">{{articleArchive.title}}</a>
+            </li>
+          </ul>
+        </accordion-group>
+      </accordion-group>
+    </accordion>
+  </div>
+</div>
