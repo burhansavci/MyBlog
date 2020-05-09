@@ -5,6 +5,7 @@ import { Article } from '../models/article';
 import { Observable } from 'rxjs';
 import { PaginatedResult } from '../models/paginated-result';
 import { DataResult } from '../models/data-result';
+import { Archive } from '../models/archive';
 
 @Injectable({
   providedIn: 'root',
@@ -34,4 +35,10 @@ export class ArticleService {
     const url = `${this.baseUrl}${categoryId}/${pageNumber}/${pageSize}`;
     return this.http.get<PaginatedResult<Article[]>>(url);
   }
+
+  getArticlesArchive(): Observable<DataResult<Archive[]>> {
+    const url = `${this.baseUrl}archive`;
+    return this.http.get<DataResult<Archive[]>>(url);
+  }
+
 }
