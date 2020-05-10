@@ -6,6 +6,7 @@ import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { ArticleResolver } from './resolvers/article.resolver';
 import { ArticleComponent } from './pages/article/article.component';
+import { ArticleArchiveResolver } from './resolvers/article-archive.resolver';
 
 const routes: Routes = [
   {
@@ -21,6 +22,26 @@ const routes: Routes = [
         path: 'page/:page',
         component: HomeComponent,
         resolve: { dataResult: ArticleResolver },
+      },
+      {
+        path:'archive/:year',
+        component:HomeComponent,
+        resolve:{dataResult:ArticleArchiveResolver}
+      },
+      {
+        path:'archive/:year/page/:page',
+        component:HomeComponent,
+        resolve:{dataResult:ArticleArchiveResolver}
+      },
+      {
+        path:'archive/:year/:month',
+        component:HomeComponent,
+        resolve:{dataResult:ArticleArchiveResolver}
+      },
+      {
+        path:'archive/:year/:month/page/:page',
+        component:HomeComponent,
+        resolve:{dataResult:ArticleArchiveResolver}
       },
       {
         path: 'article/:title/:id',
