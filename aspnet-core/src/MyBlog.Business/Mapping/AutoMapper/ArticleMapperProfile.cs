@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using MyBlog.Entities.Concrete;
 using MyBlog.Entities.Dtos;
 using System.Linq;
@@ -15,7 +14,8 @@ namespace MyBlog.Business.Mapping.AutoMapper
                 .ForMember(d => d.Category, opt => opt.MapFrom(s => s.Article.Category.CategoryTranslations
                                                                      .FirstOrDefault(ct => ct.LanguageCode == s.LanguageCode)))
                 .ForMember(d => d.ViewCount, opt => opt.MapFrom(s => s.Article.ViewCount))
-                .ForMember(d => d.PublishDate, opt => opt.MapFrom(s => s.Article.PublishDate));
+                .ForMember(d => d.PublishDate, opt => opt.MapFrom(s => s.Article.PublishDate))
+                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.ArticleId));
 
 
             CreateMap<ArticleDto, Article>()
