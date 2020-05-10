@@ -9,29 +9,38 @@ import {
 import { Observable, of } from 'rxjs';
 import { ArticleService } from '../services/article.service';
 import { AlertifyService } from '../services/alertify.service';
-import { catchError } from 'rxjs/operators';
+import { catchError, delay, tap } from 'rxjs/operators';
+import { ProgressBarService } from '../services/progress-bar.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ArticleResolver implements Resolve<Article[]> {
+  pageNumber = 1;
+  pageSize = 5;
+  
   constructor(
     private articleService: ArticleService,
     private router: Router,
-    private alertify: AlertifyService
+    private alertify: AlertifyService,
+    private progressBar: ProgressBarService
   ) {}
-  pageNumber = 1;
-  pageSize = 5;
+
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<Article[]> {
+    this.progressBar.startLoading();
     this.pageNumber = route.paramMap.get('page')
       ? Number(route.paramMap.get('page'))
       : 1;
     if (route.paramMap.has('title')) {
       const id = Number(route.paramMap.get('id'));
       return this.articleService.getArticleById(id).pipe(
+        delay(1000),
+        tap((x) => {
+          this.progressBar.completeLoading();
+        }),
         catchError((error) => {
           this.alertify.error('Problem retrieving article data');
           this.router.navigate(['/']);
@@ -41,6 +50,10 @@ export class ArticleResolver implements Resolve<Article[]> {
     }
 
     return this.articleService.getArticles(this.pageNumber, this.pageSize).pipe(
+      delay(1000),
+      tap((x) => {
+        this.progressBar.completeLoading();
+      }),
       catchError((error) => {
         this.alertify.error('Problem retrieving articles data');
         this.router.navigate(['/']);
