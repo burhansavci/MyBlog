@@ -1,1 +1,16 @@
-<p>article works!</p>
+<article>
+  <header>
+    <a href="#0" class="badge badge-primary"> {{article.category.name}}</a>
+    <h1 class="h2">{{article.title}}</h1>
+    <div class="text-muted">Posted on: <time data-toggle="article.publishDate">{{article.publishDate|date}}</time></div>
+    <div>
+      <span class="badge badge-primary mr-1"><i class="fa fa-comment"></i> 3 Comments</span>
+      <span class="badge badge-primary"><i class="fa fa-eye"></i> {{article.viewCount}} Views</span>
+    </div>
+  </header>
+  <section id="main">
+    <figure class="figure">
+      <img src="{{article.picture.url}}" alt="Figure Image" class="figure-img img-fluid" />
+    </figure> {{article.contentMain}}
+  </section>
+</article>
