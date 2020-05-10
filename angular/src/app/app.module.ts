@@ -22,6 +22,9 @@ import { UrlFormatPipe } from './pipes/url-format.pipe';
 import { RecentPostsComponent } from './components/recent-posts/recent-posts.component';
 import { AlertifyService } from './services/alertify.service';
 import { ArchivePostsComponent } from './components/archive-posts/archive-posts.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
+import { NgProgressModule, NgProgressRef } from 'ngx-progressbar';
+import { ProgressBarService } from './services/progress-bar.service';
 
 @NgModule({
   declarations: [
@@ -36,6 +39,7 @@ import { ArchivePostsComponent } from './components/archive-posts/archive-posts.
     UrlFormatPipe,
     RecentPostsComponent,
     ArchivePostsComponent,
+    SpinnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,8 +51,9 @@ import { ArchivePostsComponent } from './components/archive-posts/archive-posts.
     CollapseModule.forRoot(),
     AccordionModule.forRoot(),
     FormsModule,
+    NgProgressModule,
   ],
-  providers: [ArticleService, AlertifyService],
+  providers: [ArticleService, AlertifyService, ProgressBarService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
