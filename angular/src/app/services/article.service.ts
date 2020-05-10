@@ -16,7 +16,7 @@ export class ArticleService {
   constructor(private http: HttpClient) {}
 
   getArticleById(id: number) {
-    return this.http.get<Article>(this.baseUrl + id);
+    return this.http.get<DataResult<Article>>(this.baseUrl + id);
   }
 
   getArticles(
@@ -45,9 +45,9 @@ export class ArticleService {
     year: number,
     pageNumber?: number,
     pageSize?: number
-  ): Observable<DataResult<Archive[]>> {
+  ): Observable<DataResult<Article[]>> {
     const url = `${this.baseUrl}archive/${year}/${pageNumber}/${pageSize}`;
-    return this.http.get<DataResult<Archive[]>>(url);
+    return this.http.get<DataResult<Article[]>>(url);
   }
 
   getArticlesByYearAndMonth(
@@ -55,8 +55,8 @@ export class ArticleService {
     month:number,
     pageNumber?: number,
     pageSize?: number
-  ): Observable<DataResult<Archive[]>> {
+  ): Observable<DataResult<Article[]>> {
     const url = `${this.baseUrl}archive/${year}/${month}/${pageNumber}/${pageSize}`;
-    return this.http.get<DataResult<Archive[]>>(url);
+    return this.http.get<DataResult<Article[]>>(url);
   }
 }
