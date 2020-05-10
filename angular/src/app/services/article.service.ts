@@ -41,4 +41,22 @@ export class ArticleService {
     return this.http.get<DataResult<Archive[]>>(url);
   }
 
+  getArticlesByYear(
+    year: number,
+    pageNumber?: number,
+    pageSize?: number
+  ): Observable<DataResult<Archive[]>> {
+    const url = `${this.baseUrl}archive/${year}/${pageNumber}/${pageSize}`;
+    return this.http.get<DataResult<Archive[]>>(url);
+  }
+
+  getArticlesByYearAndMonth(
+    year: number,
+    month:number,
+    pageNumber?: number,
+    pageSize?: number
+  ): Observable<DataResult<Archive[]>> {
+    const url = `${this.baseUrl}archive/${year}/${month}/${pageNumber}/${pageSize}`;
+    return this.http.get<DataResult<Archive[]>>(url);
+  }
 }
