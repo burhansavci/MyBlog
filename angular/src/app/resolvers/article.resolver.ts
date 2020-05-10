@@ -29,6 +29,16 @@ export class ArticleResolver implements Resolve<Article[]> {
     this.pageNumber = route.paramMap.get('page')
       ? Number(route.paramMap.get('page'))
       : 1;
+    if (route.paramMap.has('title')) {
+      const id = Number(route.paramMap.get('id'));
+      return this.articleService.getArticleById(id).pipe(
+        catchError((error) => {
+          this.alertify.error('Problem retrieving article data');
+          this.router.navigate(['/']);
+          return of(null);
+        })
+      );
+    }
 
     return this.articleService.getArticles(this.pageNumber, this.pageSize).pipe(
       catchError((error) => {
