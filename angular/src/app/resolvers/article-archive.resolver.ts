@@ -22,15 +22,13 @@ export class ArticleArchiveResolver implements Resolve<Article[]> {
   constructor(
     private articleService: ArticleService,
     private router: Router,
-    private alertify: AlertifyService,
-    private progressBar: ProgressBarService
+    private alertify: AlertifyService
   ) {}
 
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<Article[]> {
-    this.progressBar.startLoading();
     this.pageNumber = route.paramMap.get('page')
       ? Number(route.paramMap.get('page'))
       : 1;
@@ -42,9 +40,6 @@ export class ArticleArchiveResolver implements Resolve<Article[]> {
         .getArticlesByYearAndMonth(year, month, this.pageNumber, this.pageSize)
         .pipe(
           delay(1000),
-          tap((x) => {
-            this.progressBar.completeLoading();
-          }),
           catchError((error) => {
             this.alertify.error('Problem retrieving articles data');
             this.router.navigate(['/']);
@@ -57,9 +52,6 @@ export class ArticleArchiveResolver implements Resolve<Article[]> {
       .getArticlesByYear(year, this.pageNumber, this.pageSize)
       .pipe(
         delay(1000),
-        tap((x) => {
-          this.progressBar.completeLoading();
-        }),
         catchError((error) => {
           this.alertify.error('Problem retrieving articles data');
           this.router.navigate(['/']);
