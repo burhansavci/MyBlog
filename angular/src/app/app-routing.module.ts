@@ -24,28 +24,39 @@ const routes: Routes = [
         resolve: { dataResult: ArticleResolver },
       },
       {
-        path:'archive/:year',
-        component:HomeComponent,
-        resolve:{dataResult:ArticleArchiveResolver}
+        path: 'category/:categoryName/:categoryId',
+        component: HomeComponent,
+        resolve: { dataResult: ArticleResolver },
       },
       {
-        path:'archive/:year/page/:page',
-        component:HomeComponent,
-        resolve:{dataResult:ArticleArchiveResolver}
+        path: 'category/:categoryName/:categoryId/page/:page',
+        component: HomeComponent,
+        resolve: { dataResult: ArticleResolver },
       },
       {
-        path:'archive/:year/:month',
-        component:HomeComponent,
-        resolve:{dataResult:ArticleArchiveResolver}
+        path: 'archive/:year',
+        component: HomeComponent,
+        resolve: { dataResult: ArticleArchiveResolver },
       },
       {
-        path:'archive/:year/:month/page/:page',
-        component:HomeComponent,
-        resolve:{dataResult:ArticleArchiveResolver}
+        path: 'archive/:year/page/:page',
+        component: HomeComponent,
+        resolve: { dataResult: ArticleArchiveResolver },
+      },
+      {
+        path: 'archive/:year/:month',
+        component: HomeComponent,
+        resolve: { dataResult: ArticleArchiveResolver },
+      },
+      {
+        path: 'archive/:year/:month/page/:page',
+        component: HomeComponent,
+        resolve: { dataResult: ArticleArchiveResolver },
       },
       {
         path: 'article/:title/:id',
         component: ArticleComponent,
+        resolve: { dataResult: ArticleResolver },
       },
       {
         path: 'about',

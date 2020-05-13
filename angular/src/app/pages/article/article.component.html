@@ -1,6 +1,6 @@
 <article>
   <header>
-    <a href="#0" class="badge badge-primary"> {{article.category.name}}</a>
+    <a [routerLink]="['/category',article.category.name|urlFormat,article.category.id]" class="badge badge-primary"> {{article.category.name}}</a>
     <h1 class="h2">{{article.title}}</h1>
     <div class="text-muted">Posted on: <time data-toggle="article.publishDate">{{article.publishDate|date}}</time></div>
     <div>

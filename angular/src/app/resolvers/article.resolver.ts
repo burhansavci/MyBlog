@@ -44,6 +44,20 @@ export class ArticleResolver implements Resolve<Article[]> {
       );
     }
 
+    if (route.paramMap.has('categoryName')) {
+      const categoryId = Number(route.paramMap.get('categoryId'));
+      return this.articleService
+        .getArticlesByCategoryId(categoryId, this.pageNumber, this.pageSize)
+        .pipe(
+          delay(1000),
+          catchError((error) => {
+            this.alertify.error('Problem retrieving article data');
+            this.router.navigate(['/']);
+            return of(null);
+          })
+        );
+    }
+
     return this.articleService.getArticles(this.pageNumber, this.pageSize).pipe(
       delay(1000),
       catchError((error) => {

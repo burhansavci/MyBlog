@@ -20,7 +20,13 @@ export class HomeComponent implements OnInit {
   }
 
   pageChanged(event: any): void {
-    if (this.route.snapshot.paramMap.has('month')) {
+    if (this.route.snapshot.paramMap.has('categoryName')) {
+      let categoryName = this.route.snapshot.paramMap.get('categoryName');
+      let categoryId = this.route.snapshot.paramMap.get('categoryId');
+      this.router.navigate([
+        `/category/${categoryName}/${categoryId}/page/${event.page}`,
+      ]);
+    } else if (this.route.snapshot.paramMap.has('month')) {
       let year = this.route.snapshot.paramMap.get('year');
       let month = this.route.snapshot.paramMap.get('month');
       this.router.navigate([`/archive/${year}/${month}/page/${event.page}`]);
