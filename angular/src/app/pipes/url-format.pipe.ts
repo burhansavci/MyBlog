@@ -1,10 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'urlFormat'
+  name: 'urlFormat',
 })
 export class UrlFormatPipe implements PipeTransform {
-
   transform(value: any, ...args: any[]): any {
     value = value.toLowerCase();
     value = value.replace(/[",.*+?^${}()|[\]\\]/g, '-');
@@ -15,8 +14,7 @@ export class UrlFormatPipe implements PipeTransform {
     value = value.replace(/[ö]/g, 'o');
     value = value.replace(/[ş]/g, 's');
     value = value.replace(/[ü]/g, 'u');
-    value = value.replace(/.$/g, '');
+    value = value.replace(/[-]$/g, '');
     return value;
   }
-
 }
