@@ -13,6 +13,7 @@ namespace MyBlog.Business.Mapping.AutoMapper
                 .ForMember(d => d.Picture, opt => opt.MapFrom(s => s.Article.Pictures.FirstOrDefault(p => p.IsMain)))
                 .ForMember(d => d.Category, opt => opt.MapFrom(s => s.Article.Category.CategoryTranslations
                                                                      .FirstOrDefault(ct => ct.LanguageCode == s.LanguageCode)))
+                .ForPath(d => d.Category.Id, opt => opt.MapFrom(s => s.Article.CategoryId))
                 .ForMember(d => d.ViewCount, opt => opt.MapFrom(s => s.Article.ViewCount))
                 .ForMember(d => d.PublishDate, opt => opt.MapFrom(s => s.Article.PublishDate))
                 .ForMember(d => d.Id, opt => opt.MapFrom(s => s.ArticleId));
