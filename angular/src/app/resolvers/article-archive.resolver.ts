@@ -9,8 +9,7 @@ import {
 import { Observable, of } from 'rxjs';
 import { ArticleService } from '../services/article.service';
 import { AlertifyService } from '../services/alertify.service';
-import { catchError, delay, tap } from 'rxjs/operators';
-import { ProgressBarService } from '../services/progress-bar.service';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -39,7 +38,6 @@ export class ArticleArchiveResolver implements Resolve<Article[]> {
       return this.articleService
         .getArticlesByYearAndMonth(year, month, this.pageNumber, this.pageSize)
         .pipe(
-          delay(1000),
           catchError((error) => {
             this.alertify.error('Problem retrieving articles data');
             this.router.navigate(['/']);
@@ -51,7 +49,6 @@ export class ArticleArchiveResolver implements Resolve<Article[]> {
     return this.articleService
       .getArticlesByYear(year, this.pageNumber, this.pageSize)
       .pipe(
-        delay(1000),
         catchError((error) => {
           this.alertify.error('Problem retrieving articles data');
           this.router.navigate(['/']);
