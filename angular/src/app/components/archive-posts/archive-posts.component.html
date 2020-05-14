@@ -1,4 +1,7 @@
 <h2>Archive</h2>
+<div *ngIf="!archives">
+  <app-spinner></app-spinner>
+</div>
 <div *ngIf="archives" class="list-group mb-3">
   <div class="list-group-item">
     <accordion *ngFor="let archive of archives" [isAnimated]="true" class="accordion-toggle">

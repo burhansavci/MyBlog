@@ -1,4 +1,7 @@
 <h2>Recent Posts</h2>
+<div *ngIf="!dataResult">
+  <app-spinner></app-spinner>
+</div>
 <div *ngIf="dataResult" class="list-group mb-3">
   <a *ngFor="let article of dataResult.data.items" [routerLink]="['/article', article.title|urlFormat, article.id]"
     class="list-group-item list-group-item-action">

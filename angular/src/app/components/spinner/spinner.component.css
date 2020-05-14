@@ -1,9 +1,10 @@
+/* From https://tobiasahlin.com/spinkit/ */
 .spinner {
   width: 40px;
   height: 40px;
   background-color: #007BFF;
 
-  margin: 100px auto;
+  margin: 50px auto;
   -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
   animation: sk-rotateplane 1.2s infinite ease-in-out;
 }
