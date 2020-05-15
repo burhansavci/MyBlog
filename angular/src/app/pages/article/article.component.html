@@ -11,6 +11,8 @@
   <section id="main">
     <figure class="figure">
       <img src="{{article.picture.url}}" alt="Figure Image" class="figure-img img-fluid" />
-    </figure> {{article.contentMain}}
+    </figure>
+    <div [innerHTML]="article.contentMain"></div>
   </section>
+  <app-comment></app-comment>
 </article>

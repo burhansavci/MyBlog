@@ -26,6 +26,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { NgProgressModule } from 'ngx-progressbar';
 import { ProgressBarService } from './services/progress-bar.service';
 import { ProgressBarInterceptor } from './interceptors/progress-bar.interceptor';
+import { CommentComponent } from './components/comment/comment.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { ProgressBarInterceptor } from './interceptors/progress-bar.interceptor'
     RecentPostsComponent,
     ArchivePostsComponent,
     SpinnerComponent,
+    CommentComponent,
   ],
   imports: [
     BrowserModule,
