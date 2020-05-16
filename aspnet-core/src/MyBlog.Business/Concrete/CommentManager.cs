@@ -6,6 +6,7 @@ using MyBlog.DataAccess.Abstract;
 using MyBlog.Entities.Concrete;
 using MyBlog.Entities.Dtos;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MyBlog.Business.Concrete
 {
@@ -20,16 +21,21 @@ namespace MyBlog.Business.Concrete
             _mapper = mapper;
         }
 
-        public IDataResult<List<CommentDto>> GetCommentsByArticleId(int articleId)
+        public IDataResult<List<CommentForReturnDto>> GetCommentsByArticleId(int articleId)
         {
-            var comment = _commentRepository.GetAllIncludingList(x => x.ArticleId == articleId, x => x.Parent);
-            return new SuccessDataResult<List<CommentDto>>(Messages.SuccessOperation, _mapper.Map<List<CommentDto>>(comment));
+            var comments = _commentRepository.GetAllIncludingList(x => x.ArticleId == articleId, x => x.Parent);
+            return new SuccessDataResult<List<CommentForReturnDto>>(Messages.SuccessOperation, 
+                                                                   _mapper.Map<List<CommentForReturnDto>>(comments)
+                                                                          .Where(x => x.ParentId == null).ToList());
         }
 
-        public IDataResult<List<CommentDto>> GetComments()
+        public IDataResult<List<CommentForReturnDto>> GetComments()
         {
-            var comment = _commentRepository.GetAllIncludingList(x => x.Parent);
-            return new SuccessDataResult<List<CommentDto>>(Messages.SuccessOperation, _mapper.Map<List<CommentDto>>(comment));
+            var comments = _commentRepository.GetAllIncludingList(x => x.Parent);
+
+            return new SuccessDataResult<List<CommentForReturnDto>>(Messages.SuccessOperation,
+                                                                   _mapper.Map<List<CommentForReturnDto>>(comments)
+                                                                          .Where(x => x.ParentId == null).ToList());
         }
 
         public IResult InsertComment(CommentDto commentDto)
