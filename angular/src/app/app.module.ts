@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,6 +28,9 @@ import { NgProgressModule } from 'ngx-progressbar';
 import { ProgressBarService } from './services/progress-bar.service';
 import { ProgressBarInterceptor } from './interceptors/progress-bar.interceptor';
 import { CommentComponent } from './components/comment/comment.component';
+import { CommentListComponent } from './components/comment-list/comment-list.component';
+import { CommentService } from './services/comment.service';
+import { CommentAddComponent } from './components/comment-add/comment-add.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +47,8 @@ import { CommentComponent } from './components/comment/comment.component';
     ArchivePostsComponent,
     SpinnerComponent,
     CommentComponent,
+    CommentListComponent,
+    CommentAddComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,6 +60,7 @@ import { CommentComponent } from './components/comment/comment.component';
     CollapseModule.forRoot(),
     AccordionModule.forRoot(),
     FormsModule,
+    ReactiveFormsModule,
     NgProgressModule,
   ],
   providers: [
@@ -65,6 +72,7 @@ import { CommentComponent } from './components/comment/comment.component';
       useClass: ProgressBarInterceptor,
       multi: true,
     },
+    CommentService,
   ],
   bootstrap: [AppComponent],
 })
