@@ -1,0 +1,18 @@
+<div [ngClass]="[comment.parentId ? 'media mb-3' : 'media']" *ngFor="let comment of comments">
+  <i [ngClass]="[comment.parentId ? 'fas fa-user-alt fa-3x mr-3' : 'fas fa-user-alt fa-4x mr-3']" style="color:#DDDDDD;"></i>
+  <div class="media-body">
+    <h6 class="mb-0">{{comment.name}}</h6>
+    <p class="mb-0 text-left"> {{comment.contentMain}} </p>
+    <hr class="mb-0" style="margin-top: 0.5rem;" />
+    <div *ngIf="!comment.parentId" class="d-flex justify-content-end">
+      <div class="mb-1">
+        <small class="mr-1"><time datetime="comment.publishDate|date">{{comment.publishDate|date}}</time></small>
+        <a type="button" [id]="'button'+comment.id" (click)="handleReply(comment.id)" style="border-left: 1px solid rgba(0, 0, 0, 0.1);">
+          <small class="ml-1"> <span class="btn-label"><i class="fas fa-reply fa-fw text-primary"></i></span>Reply </small>
+        </a>
+      </div>
+    </div>
+    <app-comment-add [class]="'mb-3'" [hidden]="true" [id]="comment.id" (onAddComment)="refreshComments($event)"></app-comment-add>
+    <app-comment-list [subComments]="comment.subComments" *ngIf="comment.subComments"></app-comment-list>
+  </div>
+</div>
