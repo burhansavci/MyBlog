@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using MyBlog.Entities.Concrete;
 using MyBlog.Entities.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MyBlog.Business.Mapping.AutoMapper
 {
@@ -11,8 +8,11 @@ namespace MyBlog.Business.Mapping.AutoMapper
     {
         public CommentMapperProfile()
         {
-            CreateMap<Comment, CommentDto>();
             CreateMap<CommentDto, Comment>();
+
+            CreateMap<Comment, CommentForReturnDto>()
+                .ForMember(s => s.SubComments, opt => opt.MapFrom(d => d.Comments));
+
         }
     }
 }
