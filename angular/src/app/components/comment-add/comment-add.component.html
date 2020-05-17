@@ -16,7 +16,11 @@
     <div *ngIf="commentForm.controls.contentMain.errors.required"> Comment is required. </div>
     <div *ngIf="commentForm.controls.contentMain.errors.maxlength"> Comment can be max 250 characters long. </div>
   </div>
-  <button type="submit" (click)="onSubmit()" [disabled]="commentForm.pristine || commentForm.invalid || commentService.loading"
+  <div class="mb-2">
+    <re-captcha (resolved)="resolved($event)" formControlName="captcha" siteKey="6Lc2nvgUAAAAABSBHFGpGN0zb5jQgAoBpGjHDDie">
+    </re-captcha>
+  </div>
+  <button type="submit" (click)="onSubmit()" [disabled]="commentForm.pristine || commentForm.invalid || commentService.loading|| !captchaSuccess"
     class="btn btn-primary">Submit <i *ngIf="commentService.loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></i>
   </button>
   <button type="reset" class="btn btn-danger ml-1">Reset</button>

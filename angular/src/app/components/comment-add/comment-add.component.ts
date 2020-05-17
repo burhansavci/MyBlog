@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommentService } from 'src/app/services/comment.service';
 import { ActivatedRoute } from '@angular/router';
 import { AlertifyService } from 'src/app/services/alertify.service';
+import { CaptchaService } from 'src/app/services/captcha.service';
 
 @Component({
   selector: 'app-comment-add',
@@ -15,10 +16,12 @@ export class CommentAddComponent implements OnInit {
   @Input() hidden: any = false;
   @Output() onAddComment = new EventEmitter<boolean>();
   commentForm: FormGroup;
+  captchaSuccess: Boolean = false;
   constructor(
     public commentService: CommentService,
     private route: ActivatedRoute,
-    private alertify: AlertifyService
+    private alertify: AlertifyService,
+    private captchaService: CaptchaService
   ) {}
 
   ngOnInit(): void {
@@ -30,6 +33,7 @@ export class CommentAddComponent implements OnInit {
       ),
       publishDate: new FormControl(new Date()),
       parentId: new FormControl(this.id),
+      captcha: new FormControl('', Validators.required),
     });
   }
 
@@ -45,5 +49,16 @@ export class CommentAddComponent implements OnInit {
         }
       );
     }
+  }
+
+  resolved(captchaResponse: string) {
+    this.captchaService.sendToken(captchaResponse).subscribe(
+      (data) => {
+        this.captchaSuccess = data;
+      },
+      (error) => {
+        this.alertify.error(error);
+      }
+    );
   }
 }
