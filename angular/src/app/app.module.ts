@@ -7,6 +7,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -62,6 +63,8 @@ import { CommentAddComponent } from './components/comment-add/comment-add.compon
     FormsModule,
     ReactiveFormsModule,
     NgProgressModule,
+    RecaptchaModule,
+    RecaptchaFormsModule,
   ],
   providers: [
     ArticleService,
