@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-main-layout',
   templateUrl: './main-layout.component.html',
@@ -7,9 +7,17 @@ import { Router } from '@angular/router';
 })
 export class MainLayoutComponent implements OnInit {
   isAsideActive: boolean = true;
-  constructor(private router: Router) {}
+  constructor(private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    if (
+      this.router.url.includes('about') ||
+      this.router.url.includes('contact')
+    ) {
+      this.isAsideActive = false;
+    } else {
+      this.isAsideActive = true;
+    }
     this.router.events.subscribe(() => {
       if (
         this.router.url.includes('about') ||
