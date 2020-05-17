@@ -36,7 +36,7 @@ export class CommentListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.articleId || changes.refresh) {
+    if (this.articleId && changes.refresh && !this.subComments) {
       this.loadComments(this.articleId);
     } else {
       this.comments = this.subComments;
@@ -44,7 +44,7 @@ export class CommentListComponent implements OnInit, OnChanges {
   }
 
   refreshComments(changed: boolean) {
-    if (this.articleId || changed) {
+    if (this.articleId && changed && !this.subComments) {
       this.loadComments(this.articleId);
     } else {
       this.comments = this.subComments;
@@ -61,6 +61,7 @@ export class CommentListComponent implements OnInit, OnChanges {
       }
     );
   }
+
   handleReply(commentId: number) {
     const commentForm = document.getElementById(commentId.toString());
     const replyButton = document.getElementById(`button${commentId}`);
