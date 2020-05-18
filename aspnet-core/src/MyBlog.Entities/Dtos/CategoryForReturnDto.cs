@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MyBlog.Core.Entities;
+using System;
 
 namespace MyBlog.Entities.Dtos
 {
-    public class CategoryForReturnDto
+    public class CategoryForReturnDto : IDto
     {
         public int Id { get; set; }
         public string LanguageCode { get; set; }
