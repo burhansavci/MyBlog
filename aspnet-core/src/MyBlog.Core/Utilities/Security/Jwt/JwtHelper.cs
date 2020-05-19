@@ -3,7 +3,9 @@ using Microsoft.IdentityModel.Tokens;
 using MyBlog.Core.Entities.Concrete;
 using MyBlog.Core.Utilities.Security.Encryption;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace MyBlog.Core.Utilities.Security.Jwt
 {
@@ -22,7 +24,7 @@ namespace MyBlog.Core.Utilities.Security.Jwt
             _accessTokenExpiration = DateTime.Now.AddMinutes(_tokenAuthOptions.ExpirationTime);
             var securityKey = SecurityKeyHelper.CreateSecurityKey(_tokenAuthOptions.SecurityKey);
             var signingCredentials = SigningCredentialsHelper.CreateSigningCredentials(securityKey);
-            var jwt = CreateJwtSecurityToken(_tokenAuthOptions, signingCredentials);
+            var jwt = CreateJwtSecurityToken(_tokenAuthOptions, signingCredentials, user);
             var token = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             return new AccessToken
@@ -32,14 +34,23 @@ namespace MyBlog.Core.Utilities.Security.Jwt
             };
         }
 
-        public JwtSecurityToken CreateJwtSecurityToken(TokenAuthOption tokenAuthOptions, SigningCredentials signingCredentials)
+        public JwtSecurityToken CreateJwtSecurityToken(TokenAuthOption tokenAuthOptions,
+                                                       SigningCredentials signingCredentials,
+                                                       BaseUser user)
         {
+
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            };
+
             return new JwtSecurityToken(
                 issuer: tokenAuthOptions.Issuer,
                 audience: tokenAuthOptions.Audience,
                 notBefore: DateTime.Now,
                 expires: _accessTokenExpiration,
-                signingCredentials: signingCredentials
+                signingCredentials: signingCredentials,
+                claims: claims
                 );
         }
 
