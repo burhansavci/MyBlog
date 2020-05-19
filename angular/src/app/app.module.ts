@@ -33,6 +33,8 @@ import { CommentListComponent } from './components/comment-list/comment-list.com
 import { CommentService } from './services/comment.service';
 import { CommentAddComponent } from './components/comment-add/comment-add.component';
 import { CategoriesComponent } from './components/categories/categories.component';
+import { TextInputComponent } from './components/text-input/text-input.component';
+import { TextareaInputComponent } from './components/textarea-input/textarea-input.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +54,8 @@ import { CategoriesComponent } from './components/categories/categories.componen
     CommentListComponent,
     CommentAddComponent,
     CategoriesComponent,
+    TextInputComponent,
+    TextareaInputComponent,
   ],
   imports: [
     BrowserModule,
