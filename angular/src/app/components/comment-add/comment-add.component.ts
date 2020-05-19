@@ -26,8 +26,14 @@ export class CommentAddComponent implements OnInit {
 
   ngOnInit(): void {
     this.commentForm = new FormGroup({
-      name: new FormControl('', Validators.required),
-      contentMain: new FormControl('', Validators.maxLength(250)),
+      name: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(5),
+      ]),
+      contentMain: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(500),
+      ]),
       articleId: new FormControl(
         Number(this.route.snapshot.paramMap.get('id'))
       ),

@@ -1,21 +1,7 @@
 <form [id]='id' [ngClass]="class" [hidden]="hidden" [formGroup]="commentForm">
-  <div class="form-group">
-    <label for="name">Name:</label>
-    <input type="text" class="form-control" placeholder="Name" formControlName="name" required />
-  </div>
-  <div *ngIf="commentForm.controls.name.invalid && (commentForm.controls.name.dirty || commentForm.controls.name.touched)" class="alert alert-danger">
-    <div *ngIf="commentForm.controls.name.errors.required"> Name is required. </div>
-  </div>
-  <div class="form-group">
-    <label for="comment">Your comment:</label>
-    <textarea class="form-control" formControlName="contentMain" placeholder="Write your comment here. Maximum 250 characters." rows="5"
-      required></textarea>
-  </div>
-  <div *ngIf="commentForm.controls.contentMain.invalid && (commentForm.controls.contentMain.dirty || commentForm.controls.contentMain.touched)"
-    class="alert alert-danger">
-    <div *ngIf="commentForm.controls.contentMain.errors.required"> Comment is required. </div>
-    <div *ngIf="commentForm.controls.contentMain.errors.maxlength"> Comment can be max 250 characters long. </div>
-  </div>
+  <app-text-input formControlName="name" [type]="'text'" [label]="'Name'" [placeholder]="'Your Name'"></app-text-input>
+  <app-textarea-input formControlName="contentMain" [label]="'Comment'" [placeholder]="'Write your comment here. Maximum 500 characters long.'">
+  </app-textarea-input>
   <div class="mb-2">
     <re-captcha (resolved)="resolved($event)" formControlName="captcha" siteKey="6Lc2nvgUAAAAABSBHFGpGN0zb5jQgAoBpGjHDDie">
     </re-captcha>
