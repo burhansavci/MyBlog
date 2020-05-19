@@ -32,6 +32,7 @@ import { CommentComponent } from './components/comment/comment.component';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
 import { CommentService } from './services/comment.service';
 import { CommentAddComponent } from './components/comment-add/comment-add.component';
+import { CategoriesComponent } from './components/categories/categories.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { CommentAddComponent } from './components/comment-add/comment-add.compon
     CommentComponent,
     CommentListComponent,
     CommentAddComponent,
+    CategoriesComponent,
   ],
   imports: [
     BrowserModule,
