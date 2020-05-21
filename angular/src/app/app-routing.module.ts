@@ -7,6 +7,8 @@ import { ContactComponent } from './pages/contact/contact.component';
 import { ArticleResolver } from './resolvers/article.resolver';
 import { ArticleComponent } from './pages/article/article.component';
 import { ArticleArchiveResolver } from './resolvers/article-archive.resolver';
+import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -65,6 +67,21 @@ const routes: Routes = [
       {
         path: 'contact',
         component: ContactComponent,
+      },
+    ],
+  },
+  {
+    path: 'admin',
+    component: AdminHomeComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        component: AdminHomeComponent,
+      },
+      {
+        path: 'home',
+        component: AdminHomeComponent,
       },
     ],
   },
