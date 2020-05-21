@@ -35,6 +35,8 @@ import { CommentAddComponent } from './components/comment-add/comment-add.compon
 import { CategoriesComponent } from './components/categories/categories.component';
 import { TextInputComponent } from './components/text-input/text-input.component';
 import { TextareaInputComponent } from './components/textarea-input/textarea-input.component';
+import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
+import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
@@ -56,6 +58,7 @@ import { TextareaInputComponent } from './components/textarea-input/textarea-inp
     CategoriesComponent,
     TextInputComponent,
     TextareaInputComponent,
+    AdminHomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -82,6 +85,8 @@ import { TextareaInputComponent } from './components/textarea-input/textarea-inp
       multi: true,
     },
     CommentService,
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    JwtHelperService,
   ],
   bootstrap: [AppComponent],
 })
