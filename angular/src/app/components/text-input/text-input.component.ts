@@ -45,7 +45,6 @@ export class TextInputComponent implements OnInit, ControlValueAccessor {
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
-    console.log(JSON.stringify(fn))
   }
 
   registerOnTouched(fn: any): void {

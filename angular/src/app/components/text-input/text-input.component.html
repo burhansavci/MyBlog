@@ -7,6 +7,7 @@
   <!-- Touched Control -->
   <div class="invalid-feedback" *ngIf="(controlDir && controlDir.control && !controlDir.control.valid && controlDir.control.touched)">
     <span *ngIf="controlDir.control.errors?.required">{{label}} is required</span>
+    <span *ngIf="controlDir.control.errors?.pattern">Invalid {{label}}</span>
   </div>
   <!-- Dirty Control -->
   <div class="invalid-feedback" *ngIf="(controlDir && controlDir.control && !controlDir.control.valid && controlDir.control.dirty)">
