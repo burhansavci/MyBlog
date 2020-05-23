@@ -9,6 +9,7 @@ import { ArticleComponent } from './pages/article/article.component';
 import { ArticleArchiveResolver } from './resolvers/article-archive.resolver';
 import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { AuthGuard } from './guards/auth.guard';
+import { LoginComponent } from './admin/login/login.component';
 
 const routes: Routes = [
   {
@@ -69,6 +70,10 @@ const routes: Routes = [
         component: ContactComponent,
       },
     ],
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
   },
   {
     path: 'admin',

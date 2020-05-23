@@ -37,6 +37,7 @@ import { TextInputComponent } from './components/text-input/text-input.component
 import { TextareaInputComponent } from './components/textarea-input/textarea-input.component';
 import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { LoginComponent } from './admin/login/login.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
     TextInputComponent,
     TextareaInputComponent,
     AdminHomeComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
