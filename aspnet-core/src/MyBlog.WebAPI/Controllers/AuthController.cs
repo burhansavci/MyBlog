@@ -33,7 +33,13 @@ namespace MyBlog.WebAPI.Controllers
             if (!result.Success)
                 return BadRequest(result.Message);
 
-            return Ok(result);
+            return Ok(new UserLoggedInDto
+            {
+                Token = result.Data.Token,
+                Expiration = result.Data.Expiration,
+                Username = user.Data.UserName,
+                Email = user.Data.Email,
+            });
         }
 
         [HttpPost("login")]
@@ -47,7 +53,13 @@ namespace MyBlog.WebAPI.Controllers
             if (!result.Success)
                 return BadRequest(result.Message);
 
-            return Ok(result);
+            return Ok(new UserLoggedInDto
+            {
+                Token = result.Data.Token,
+                Expiration = result.Data.Expiration,
+                Username = userToLogin.Data.UserName,
+                Email = userToLogin.Data.Email,
+            });
         }
 
         [HttpPost("register")]
