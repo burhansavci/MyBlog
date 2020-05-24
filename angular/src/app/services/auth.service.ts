@@ -2,12 +2,10 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { Admin } from '../models/admin';
-import { DataResult } from '../models/data-result';
-import { Auth } from '../models/auth';
 import { map } from 'rxjs/operators';
-import { JwtHelperService ,JWT_OPTIONS} from '@auth0/angular-jwt';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root',
@@ -26,29 +24,25 @@ export class AuthService {
     return !this.jwtHelper.isTokenExpired(token);
   }
 
-  loadCurrentUser(token: string) {
+  loadCurrentUser(token: string): Observable<Admin> {
     if (token === null) {
       return of(null);
     }
 
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', `Bearer ${token}`);
-
     return this.http.get(this.baseUrl, { headers }).pipe(
-      map((dataResult: DataResult<Auth>) => {
-        if (dataResult.success) {
-          localStorage.setItem('token', dataResult.data.token);
-        }
+      map((admin: Admin) => {
+        localStorage.setItem('token', admin.token);
+        return admin;
       })
     );
   }
 
   login(admin: Admin) {
     return this.http.post(`${this.baseUrl}login`, admin).pipe(
-      map((dataResult: DataResult<Auth>) => {
-        if (dataResult.success) {
-          localStorage.setItem('token', dataResult.data.token);
-        }
+      map((admin: Admin) => {
+        localStorage.setItem('token', admin.token);
       })
     );
   }
@@ -57,6 +51,4 @@ export class AuthService {
     localStorage.removeItem('token');
     this.router.navigateByUrl('/');
   }
-
-
 }
