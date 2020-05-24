@@ -1,0 +1,52 @@
+<div class="table-responsive">
+  <table cdk-table [dataSource]="dataOnPage$" class="table table-hover table-striped">
+    <ng-container cdkColumnDef="Id">
+      <th cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('id')">
+        <i class="fas fa-long-arrow-alt-up" [ngClass]="(sortDirection$.value==='asc'&&sortKey$.value === 'id')?'text-info':'text-muted'"></i>
+        <i class="fas fa-long-arrow-alt-down" [ngClass]="(sortDirection$.value==='desc' &&sortKey$.value === 'id')?'text-info':'text-muted'"></i> Id
+      </th>
+      <td cdk-cell *cdkCellDef="let row"> {{row.id}} </td>
+    </ng-container>
+    <ng-container cdkColumnDef="Picture">
+      <th cdk-header-cell *cdkHeaderCellDef> Picture</th>
+      <td cdk-cell *cdkCellDef="let row"><img [src]="row.picture.url" class="img-fluid" style="width: 120px; height: 60px;"> </td>
+    </ng-container>
+    <ng-container cdkColumnDef="Title">
+      <th cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('title')">
+        <i class="fas fa-long-arrow-alt-up" [ngClass]="(sortDirection$.value==='asc'&&sortKey$.value === 'title')?'text-info':'text-muted'"></i>
+        <i class="fas fa-long-arrow-alt-down" [ngClass]="(sortDirection$.value==='desc' &&sortKey$.value === 'title')?'text-info':'text-muted'"></i>
+        Title </th>
+      <td cdk-cell *cdkCellDef="let row"> {{row.title}} </td>
+    </ng-container>
+    <ng-container cdkColumnDef="Category">
+      <th cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('category.name')">
+        <i class="fas fa-long-arrow-alt-up"
+          [ngClass]="(sortDirection$.value==='asc'&&sortKey$.value === 'category.name')?'text-info':'text-muted'"></i>
+        <i class="fas fa-long-arrow-alt-down"
+          [ngClass]="(sortDirection$.value==='desc' &&sortKey$.value === 'category.name')?'text-info':'text-muted'"></i> Category </th>
+      <td cdk-cell *cdkCellDef="let row"> {{row.category.name}} </td>
+    </ng-container>
+    <ng-container cdkColumnDef="Language">
+      <th cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('languageCode')">
+        <i class="fas fa-long-arrow-alt-up"
+          [ngClass]="(sortDirection$.value==='asc'&&sortKey$.value === 'languageCode')?'text-info':'text-muted'"></i>
+        <i class="fas fa-long-arrow-alt-down"
+          [ngClass]="(sortDirection$.value==='desc' &&sortKey$.value === 'languageCode')?'text-info':'text-muted'"></i> Language </th>
+      <td cdk-cell *cdkCellDef="let row"> {{row.languageCode}} </td>
+    </ng-container>
+    <ng-container cdkColumnDef="Publish Date">
+      <th cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('publishDate')">
+        <i class="fas fa-long-arrow-alt-up" [ngClass]="(sortDirection$.value==='asc'&&sortKey$.value === 'publishDate')?'text-info':'text-muted'"></i>
+        <i class="fas fa-long-arrow-alt-down"
+          [ngClass]="(sortDirection$.value==='desc' &&sortKey$.value === 'publishDate')?'text-info':'text-muted'"></i> Publish Date </th>
+      <td cdk-cell *cdkCellDef="let row"> {{row.publishDate |date}} </td>
+    </ng-container>
+    <tr cdk-header-row *cdkHeaderRowDef="displayedColumns$.value"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: displayedColumns$.value" style="cursor:pointer;" [routerLink]="['/']"></tr>
+  </table>
+</div>
+<div class="d-flex justify-content-center bg-light">
+  <pagination [boundaryLinks]="true" [totalItems]="dataResult.data.totalCount" [itemsPerPage]="5" [(ngModel)]="dataResult.data.currentPage"
+    (pageChanged)="pageChanged$.next($event)" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+  </pagination>
+</div>
