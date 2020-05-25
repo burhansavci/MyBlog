@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { Admin } from 'src/app/models/admin';
 import { AlertifyService } from 'src/app/services/alertify.service';
-import { DataResult } from 'src/app/models/data-result';
 import { ProgressBarService } from 'src/app/services/progress-bar.service';
 
 @Component({
