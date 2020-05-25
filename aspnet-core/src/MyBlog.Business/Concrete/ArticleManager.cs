@@ -26,7 +26,17 @@ namespace MyBlog.Business.Concrete
             _mapper = mapper;
         }
 
-        public IDataResult<Page<ArticleForReturnDto>> GetArticles(string languageCode, int pageNumber, int pageSize)
+        public IDataResult<List<ArticleForReturnDto>> GetArticles()
+        {
+            var articles = _articleTranslationRepository.GetAllIncluding(x => x.Article.IsActive,
+                                                                         x => x.Article.Category.CategoryTranslations,
+                                                                         x => x.Article.Pictures)
+                                                        .OrderByDescending(x => x.Article.PublishDate);
+
+            return new SuccessDataResult<List<ArticleForReturnDto>>(Messages.SuccessOperation, _mapper.Map<List<ArticleForReturnDto>>(articles));
+        }
+
+        public IDataResult<Page<ArticleForReturnDto>> GetArticlesByLanguageCode(string languageCode, int pageNumber, int pageSize)
         {
             var articles = _articleTranslationRepository.GetAllIncluding(x => x.Language.LanguageCode == languageCode &&
                                                                               x.Article.IsActive,
@@ -44,9 +54,9 @@ namespace MyBlog.Business.Concrete
             return new SuccessDataResult<Page<ArticleForReturnDto>>(Messages.SuccessOperation, articleForReturnDtoPage);
         }
 
-        public IDataResult<Page<ArticleForReturnDto>> GetArticlesByCategoryId(string languageCode, 
-                                                                              int categoryId, 
-                                                                              int pageNumber, 
+        public IDataResult<Page<ArticleForReturnDto>> GetArticlesByCategoryId(string languageCode,
+                                                                              int categoryId,
+                                                                              int pageNumber,
                                                                               int pageSize)
         {
             var articles = _articleTranslationRepository.GetAllIncluding(x => x.Language.LanguageCode == languageCode &&
@@ -92,9 +102,9 @@ namespace MyBlog.Business.Concrete
             return new SuccessDataResult<List<ArticleForArchiveReturnDto>>(Messages.SuccessOperation, articles);
         }
 
-        public IDataResult<Page<ArticleForReturnDto>> GetArticlesByYear(string languageCode, 
-                                                                        int year, 
-                                                                        int pageNumber, 
+        public IDataResult<Page<ArticleForReturnDto>> GetArticlesByYear(string languageCode,
+                                                                        int year,
+                                                                        int pageNumber,
                                                                         int pageSize)
         {
             var articles = _articleTranslationRepository.GetAllIncluding(x => x.Language.LanguageCode == languageCode &&
@@ -168,5 +178,6 @@ namespace MyBlog.Business.Concrete
             _articleTranslationRepository.Delete(articleToBeDeleted);
             return new SuccessResult(string.Format(Messages.SuccessfulDelete, nameof(Article)));
         }
+
     }
 }
