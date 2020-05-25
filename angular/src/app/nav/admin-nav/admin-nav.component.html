@@ -1,6 +1,6 @@
-<ng-progress id="progressBar" [spinner]="false" [color]="progressBar.currentColor"></ng-progress>
+<ng-progress id="adminProgressBar" [spinner]="false" [color]="progressBar.currentColor"></ng-progress>
 <nav class="navbar navbar-dark bg-dark flex-md-nowrap p-0 shadow">
-  <a routerLink="/" class="navbar-brand col-sm-3 col-md-2 mr-0">{{admin.username}}</a>
+  <a *ngIf="admin" routerLink="/" class="navbar-brand col-sm-3 col-md-2 mr-0">{{admin.username}}</a>
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
       <a class="btn nav-link" (click)="this.authService.logout()">Sign out</a>
