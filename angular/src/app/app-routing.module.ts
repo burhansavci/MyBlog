@@ -10,6 +10,8 @@ import { ArticleArchiveResolver } from './resolvers/article-archive.resolver';
 import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginComponent } from './admin/login/login.component';
+import { ArticleListComponent } from './admin/article/article-list/article-list.component';
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 
 const routes: Routes = [
   {
@@ -77,7 +79,7 @@ const routes: Routes = [
   },
   {
     path: 'admin',
-    component: AdminHomeComponent,
+    component: AdminLayoutComponent,
     canActivate: [AuthGuard],
     children: [
       {
@@ -85,8 +87,14 @@ const routes: Routes = [
         component: AdminHomeComponent,
       },
       {
-        path: 'home',
-        component: AdminHomeComponent,
+        path: 'article',
+        children: [
+          {
+            path: 'list',
+            component: ArticleListComponent,
+            resolve: { dataResult: ArticleResolver },
+          },
+        ],
       },
     ],
   },
