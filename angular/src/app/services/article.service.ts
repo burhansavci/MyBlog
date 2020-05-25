@@ -1,25 +1,37 @@
-import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Article } from '../models/article';
-import { Observable } from 'rxjs';
-import { PaginatedResult } from '../models/paginated-result';
-import { DataResult } from '../models/data-result';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { Archive } from '../models/archive';
+import { Article } from '../models/article';
+import { DataResult } from '../models/data-result';
+import { PaginatedResult } from '../models/paginated-result';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ArticleService {
   baseUrl = `${environment.baseUrl}tr/articles/`;
-
+  private dateResultSource = new BehaviorSubject<DataResult<Article[]>>(null);
+  dataResult$ = this.dateResultSource.asObservable();
   constructor(private http: HttpClient) {}
 
   getArticleById(id: number) {
     return this.http.get<DataResult<Article>>(this.baseUrl + id);
   }
 
-  getArticles(
+  getArticles() {
+    const url = `${environment.baseUrl}articles`;
+    return this.http.get<DataResult<Article[]>>(url).pipe(
+      map((dataResult: DataResult<Article[]>) => {
+        this.dateResultSource.next(dataResult);
+        return dataResult;
+      })
+    );
+  }
+
+  getArticlesByLanguageCode(
     pageNumber?: number,
     pageSize?: number
   ): Observable<DataResult<PaginatedResult<Article[]>>> {
@@ -52,7 +64,7 @@ export class ArticleService {
 
   getArticlesByYearAndMonth(
     year: number,
-    month:number,
+    month: number,
     pageNumber?: number,
     pageSize?: number
   ): Observable<DataResult<Article[]>> {

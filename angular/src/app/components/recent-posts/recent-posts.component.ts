@@ -21,7 +21,7 @@ export class RecentPostsComponent implements OnInit {
     this.loadRecentPosts();
   }
   loadRecentPosts() {
-    this.articleService.getArticles(1, 5).subscribe(
+    this.articleService.getArticlesByLanguageCode(1, 5).subscribe(
       (dataResult: DataResult<PaginatedResult<Article[]>>) => {
         this.dataResult = dataResult;
       },
