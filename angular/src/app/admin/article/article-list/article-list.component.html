@@ -46,7 +46,7 @@
   </table>
 </div>
 <div class="d-flex justify-content-center bg-light">
-  <pagination [boundaryLinks]="true" [totalItems]="dataResult.data.totalCount" [itemsPerPage]="5" [(ngModel)]="dataResult.data.currentPage"
+  <pagination [boundaryLinks]="true" [totalItems]="dataResult.data.length" [itemsPerPage]="5" [(ngModel)]="currentPage"
     (pageChanged)="pageChanged$.next($event)" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
   </pagination>
 </div>

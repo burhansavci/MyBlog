@@ -6,7 +6,6 @@ import { ArticleService } from 'src/app/services/article.service';
 import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
-import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-article-list',
@@ -14,7 +13,7 @@ import { take } from 'rxjs/operators';
   styleUrls: ['./article-list.component.css'],
 })
 export class ArticleListComponent implements OnInit {
-  dataResult: DataResult<PaginatedResult<Article[]>>;
+  dataResult: DataResult<Article[]>;
   displayedColumns$ = new BehaviorSubject<string[]>([
     'Id',
     'Picture',
@@ -23,6 +22,7 @@ export class ArticleListComponent implements OnInit {
     'Language',
     'Publish Date',
   ]);
+  currentPage: number = 1;
   pageChanged$ = new BehaviorSubject<any>({ page: 1, itemsPerPage: 5 });
   pageSize$ = new BehaviorSubject<number>(5);
   dataOnPage$ = new BehaviorSubject<Article[]>([]);
@@ -31,20 +31,26 @@ export class ArticleListComponent implements OnInit {
 
   sortKey$ = new BehaviorSubject<string>('publishDate');
   sortDirection$ = new BehaviorSubject<string>('desc');
+
   constructor(
     private articleService: ArticleService,
-    private route: ActivatedRoute,
-    private router: Router
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    // this.articleService.getArticles(1, 10).subscribe((dataResult) => {
-    //   this.dataResult = dataResult;
-    // });
+    //Load data
     this.route.data.subscribe((data) => {
       this.dataResult = data.dataResult;
-      this.data$ = new BehaviorSubject<Article[]>(this.dataResult.data.items);
+      if (this.dataResult) {
+        this.data$ = new BehaviorSubject<Article[]>(this.dataResult.data);
+      }
     });
+    if (!this.dataResult) {
+      this.articleService.dataResult$.subscribe((dataResult) => {
+        this.dataResult = dataResult;
+        this.data$ = new BehaviorSubject<Article[]>(this.dataResult.data);
+      });
+    }
 
     //Handle sorting
     combineLatest(this.data$, this.sortKey$, this.sortDirection$).subscribe(
@@ -65,7 +71,7 @@ export class ArticleListComponent implements OnInit {
       this.pageSize$
     ).subscribe(([allSources, currentPage, pageSize]) => {
       const startingIndex = (currentPage.page - 1) * pageSize;
-      this.dataResult.data.currentPage = currentPage.page;
+      this.currentPage = currentPage.page;
       const onPage = allSources.slice(startingIndex, startingIndex + pageSize);
       this.dataOnPage$.next(onPage);
     });
@@ -105,142 +111,4 @@ export class ArticleListComponent implements OnInit {
     this.sortKey$.next(key);
     this.sortDirection$.next('asc');
   }
-  // pageChanged(event: any): void {
-  //   const startingIndex = (event.page - 1) * 5;
-  //   const onPage = this.dataResult.data.items.slice(
-  //     startingIndex,
-  //     startingIndex + 5
-  //   );
-  //   this.dataOnPage$.next(onPage);
-  // }
-
-  //
-  // heroes$ = new BehaviorSubject<{[name: string]: any}>({})
-
-  // superlatives$ = new BehaviorSubject<{[superlativeName: string]: string}>({});
-  // tableDataSource$ = new BehaviorSubject<any[]>([]);
-  // displayedColumns$ = new BehaviorSubject<string[]>([
-  //   'name',
-  //   'types',
-  //   'attack',
-  //   'defense',
-  //   'speed',
-  //   'healing',
-  //   'recovery',
-  //   'health',
-  //   'levelUp'
-  // ]);
-  // currentPage$ = new BehaviorSubject<number>(1);
-  // pageSize$ = new BehaviorSubject<number>(5);
-  // dataOnPage$ = new BehaviorSubject<any[]>([]);
-  // searchFormControl = new FormControl();
-  // sortKey$ = new BehaviorSubject<string>('name');
-  // sortDirection$ = new BehaviorSubject<string>('asc');
-
-  // constructor() { }
-
-  // ngOnInit() {
-  //   this.heroes$.subscribe(changedHeroData => {
-  //     const superlatives = {
-  //       'highest-attack': null,
-  //       'lowest-attack': null,
-  //       'highest-defense': null,
-  //       'lowest-defense': null,
-  //       'highest-speed': null,
-  //       'lowest-speed': null,
-  //       'highest-healing': null,
-  //       'lowest-healing': null,
-  //       'highest-recovery': null,
-  //       'lowest-recovery': null,
-  //       'highest-health': null,
-  //       'lowest-health': null
-  //     };
-
-  //     Object.values(changedHeroData).forEach(hero => {
-  //       Object.keys(hero).forEach(key => {
-  //         if (key === 'name' || key === 'types') { return; }
-
-  //         const highest = `highest-${key}`;
-  //         if (!superlatives[highest] || hero[key] > changedHeroData[superlatives[highest]][key]) {
-  //           superlatives[highest] = hero.name;
-  //         }
-
-  //         const lowest = `lowest-${key}`;
-  //         if (!superlatives[lowest] || hero[key] < changedHeroData[superlatives[lowest]][key]) {
-  //           superlatives[lowest] = hero.name;
-  //         }
-  //       });
-  //     });
-
-  //     this.superlatives$.next(superlatives);
-  //   });
-
-  //   combineLatest(this.tableDataSource$, this.currentPage$, this.pageSize$)
-  //   .subscribe(([allSources, currentPage, pageSize]) => {
-  //     const startingIndex = (currentPage - 1) * pageSize;
-  //     const onPage = allSources.slice(startingIndex, startingIndex + pageSize);
-  //     this.dataOnPage$.next(onPage);
-  //   });
-
-  //   this.heroes$.pipe(take(1)).subscribe(heroData => {
-  //     this.tableDataSource$.next(Object.values(heroData));
-  //   });
-
-  //   combineLatest(this.heroes$, this.searchFormControl.valueChanges, this.sortKey$, this.sortDirection$)
-  //   .subscribe(([changedHeroData, searchTerm, sortKey, sortDirection]) => {
-  //     const heroesArray = Object.values(changedHeroData);
-  //     let filteredHeroes: any[];
-
-  //     if (!searchTerm) {
-  //       filteredHeroes = heroesArray;
-  //     } else {
-  //       const filteredResults = heroesArray.filter(hero => {
-  //         return Object.values(hero)
-  //           .reduce((prev, curr) => {
-  //             return prev || curr.toString().toLowerCase().includes(searchTerm.toLowerCase());
-  //           }, false);
-  //       });
-  //       filteredHeroes = filteredResults;
-  //     }
-
-  //     const sortedHeroes = filteredHeroes.sort((a, b) => {
-  //       if(a[sortKey] > b[sortKey]) return sortDirection === 'asc' ? 1 : -1;
-  //       if(a[sortKey] < b[sortKey]) return sortDirection === 'asc' ? -1 : 1;
-  //       return 0;
-  //     });
-
-  //     this.tableDataSource$.next(sortedHeroes);
-  //   });
-
-  //   this.searchFormControl.setValue('');
-  // }
-
-  // adjustSort(key: string) {
-  //   if (this.sortKey$.value === key) {
-  //     if (this.sortDirection$.value === 'asc') {
-  //       this.sortDirection$.next('desc');
-  //     } else {
-  //       this.sortDirection$.next('asc');
-  //     }
-  //     return;
-  //   }
-
-  //   this.sortKey$.next(key);
-  //   this.sortDirection$.next('asc');
-  // }
-
-  // levelUp(heroName: string) {
-  //   const updatedHero = { ... this.heroes$.value[heroName] };
-  //   updatedHero.attack = Math.round(updatedHero.attack * (1 + (Math.random() / 8)));
-  //   updatedHero.defense = Math.round(updatedHero.defense * (1 + (Math.random() / 8)));
-  //   updatedHero.speed = Math.round(updatedHero.speed * (1 + (Math.random() / 8)));
-  //   updatedHero.recovery = Math.round(updatedHero.recovery * (1 + (Math.random() / 8)));
-  //   updatedHero.healing = Math.round(updatedHero.healing * (1 + (Math.random() / 8)));
-  //   updatedHero.health = Math.round(updatedHero.health * (1 + (Math.random() / 8)));
-
-  //   const newHeroData = { ... this.heroes$.value };
-  //   newHeroData[heroName] = updatedHero;
-
-  //   this.heroes$.next(newHeroData);
-  // }
 }
