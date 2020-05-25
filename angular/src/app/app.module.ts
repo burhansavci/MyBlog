@@ -8,6 +8,7 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
+import { CdkTableModule } from '@angular/cdk/table';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -38,6 +39,9 @@ import { TextareaInputComponent } from './components/textarea-input/textarea-inp
 import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { LoginComponent } from './admin/login/login.component';
+import { ArticleListComponent } from './admin/article/article-list/article-list.component';
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { AdminNavComponent } from './nav/admin-nav/admin-nav.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +65,9 @@ import { LoginComponent } from './admin/login/login.component';
     TextareaInputComponent,
     AdminHomeComponent,
     LoginComponent,
+    ArticleListComponent,
+    AdminLayoutComponent,
+    AdminNavComponent,
   ],
   imports: [
     BrowserModule,
@@ -76,6 +83,7 @@ import { LoginComponent } from './admin/login/login.component';
     NgProgressModule,
     RecaptchaModule,
     RecaptchaFormsModule,
+    CdkTableModule
   ],
   providers: [
     ArticleService,
