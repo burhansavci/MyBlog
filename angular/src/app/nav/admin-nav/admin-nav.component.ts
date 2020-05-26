@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { Admin } from 'src/app/models/admin';
-import { AlertifyService } from 'src/app/services/alertify.service';
 import { ProgressBarService } from 'src/app/services/progress-bar.service';
 
 @Component({
@@ -11,21 +10,18 @@ import { ProgressBarService } from 'src/app/services/progress-bar.service';
 })
 export class AdminNavComponent implements OnInit {
   admin: Admin;
-
+  isCollapsed: boolean = true;
+  isOpen: boolean = true;
+  @Output() isOpenEvent = new EventEmitter<boolean>(this.isOpen);
   constructor(
     public authService: AuthService,
-    private alertifyService: AlertifyService,
     public progressBar: ProgressBarService
   ) {}
 
-  ngOnInit(): void {
-    this.authService.loadCurrentUser(localStorage.getItem('token')).subscribe(
-      (admin: Admin) => {
-        this.admin = admin;
-      },
-      (error) => {
-        this.alertifyService.error(error);
-      }
-    );
+  ngOnInit(): void {}
+  toggle(event: MouseEvent) {
+    event.preventDefault();
+    this.isOpen = !this.isOpen;
+    this.isOpenEvent.emit(this.isOpen);
   }
 }
