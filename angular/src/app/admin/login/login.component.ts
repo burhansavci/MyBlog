@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertifyService } from 'src/app/services/alertify.service';
+import { ProgressBarService } from 'src/app/services/progress-bar.service';
 
 @Component({
   selector: 'app-login',
@@ -17,12 +18,13 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private alertifyService: AlertifyService
+    private alertifyService: AlertifyService,
+    public progressBar: ProgressBarService
   ) {}
 
   ngOnInit(): void {
     this.returnUrl =
-      this.activatedRoute.snapshot.queryParams.returnUrl || '/shop';
+      this.activatedRoute.snapshot.queryParams.returnUrl || '/admin';
     this.createLoginForm();
   }
 
@@ -39,9 +41,10 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.authService.login(this.loginForm.value).subscribe(
       () => {
-        this.router.navigateByUrl('/admin');
+        this.router.navigateByUrl(this.returnUrl);
       },
       (error) => {
+        this.progressBar.setError();
         this.alertifyService.error('Email or password is incorrect');
       }
     );
