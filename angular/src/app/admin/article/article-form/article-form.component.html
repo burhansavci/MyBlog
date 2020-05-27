@@ -1,0 +1,21 @@
+<form [formGroup]="articleForm">
+  <app-text-input formControlName="title" [type]="'text'" [label]="'Title'" [placeholder]="'Article Title'"></app-text-input>
+  <app-textarea-input formControlName="contentSummary" [label]="'Content Summary'" [placeholder]="'Article Content Summary'">
+  </app-textarea-input>
+  <div class="form-row">
+    <div class="col">
+      <div class="form-group" *ngIf="categories">
+        <label for="Category">Category</label>
+        <select formControlName="categoryId" class="form-control">
+          <option value selected disabled>Select Category</option>
+          <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col">
+      <app-text-input formControlName="languageCode" [type]="'text'" [label]="'Language'" [placeholder]="'Language'"></app-text-input>
+    </div>
+  </div>
+  <button type="submit" (click)="onSubmit()" [disabled]="articleForm.pristine || articleForm.invalid" class="btn btn-primary">Submit </button>
+  <button type="reset" class="btn btn-danger ml-1">Reset</button>
+</form>

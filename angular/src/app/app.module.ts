@@ -42,6 +42,7 @@ import { LoginComponent } from './admin/login/login.component';
 import { ArticleListComponent } from './admin/article/article-list/article-list.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { AdminNavComponent } from './nav/admin-nav/admin-nav.component';
+import { ArticleFormComponent } from './admin/article/article-form/article-form.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { AdminNavComponent } from './nav/admin-nav/admin-nav.component';
     ArticleListComponent,
     AdminLayoutComponent,
     AdminNavComponent,
+    ArticleFormComponent,
   ],
   imports: [
     BrowserModule,

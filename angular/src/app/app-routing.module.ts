@@ -12,6 +12,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { LoginComponent } from './admin/login/login.component';
 import { ArticleListComponent } from './admin/article/article-list/article-list.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { ArticleFormComponent } from './admin/article/article-form/article-form.component';
 
 const routes: Routes = [
   {
@@ -93,6 +94,10 @@ const routes: Routes = [
             path: 'list',
             component: ArticleListComponent,
             resolve: { dataResult: ArticleResolver },
+          },
+          {
+            path: 'add',
+            component: ArticleFormComponent,
           },
         ],
       },
