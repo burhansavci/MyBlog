@@ -1,6 +1,6 @@
 <form [formGroup]="articleForm">
   <app-text-input formControlName="title" [type]="'text'" [label]="'Title'" [placeholder]="'Article Title'"></app-text-input>
-  <app-textarea-input formControlName="contentSummary" [label]="'Content Summary'" [placeholder]="'Article Content Summary'">
+  <app-textarea-input formControlName="contentSummary" [rows]='3' [label]="'Content Summary'" [placeholder]="'Article Content Summary'">
   </app-textarea-input>
   <div class="form-row">
     <div class="col">
@@ -13,7 +13,13 @@
       </div>
     </div>
     <div class="col">
-      <app-text-input formControlName="languageCode" [type]="'text'" [label]="'Language'" [placeholder]="'Language'"></app-text-input>
+      <div class="form-group" *ngIf="languages">
+        <label for="Language">Language</label>
+        <select formControlName="languageCode" class="form-control">
+          <option value selected disabled>Select Language</option>
+          <option *ngFor="let language of languages" [value]="language.languageCode">{{language.name}}</option>
+        </select>
+      </div>
     </div>
   </div>
   <button type="submit" (click)="onSubmit()" [disabled]="articleForm.pristine || articleForm.invalid" class="btn btn-primary">Submit </button>
