@@ -20,7 +20,7 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
   admin: Admin;
   activeClass = 'active';
   pageTitle: string = 'Home';
-  isOpen: boolean = true;
+  isSidebarOpen: boolean = window.innerWidth < 768 ? false : true;
   activeEl: ElementRef<any>;
   @ViewChildren(RouterLinkActive, { read: ElementRef })
   linkRefs: QueryList<ElementRef>;
@@ -50,8 +50,8 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
     this.adjustPageTitle();
   }
 
-  toggle(isOpen: boolean) {
-    this.isOpen = isOpen;
+  toggle(isSidebarOpen: boolean) {
+    this.isSidebarOpen = isSidebarOpen;
   }
 
   adjustPageTitle(): void {

@@ -3,7 +3,10 @@ body {
 }
 
 #sidebar-wrapper {
-  min-height: 100vh;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0.1rem;
+  height: calc(100vh - 0.1rem);
   margin-left: -15rem;
   -webkit-transition: margin 0.25s ease-out;
   -moz-transition: margin 0.25s ease-out;
@@ -18,7 +21,6 @@ body {
   font-weight: 500;
   color: #333;
   text-decoration: none;
-  /* background-color: red; */
   background-color: #f8f9fa;
   border-bottom: 1px solid #dee2e6 !important;
 }

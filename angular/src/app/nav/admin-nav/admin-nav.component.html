@@ -1,6 +1,6 @@
 <ng-progress id="progressBar" [spinner]="false" [color]="progressBar.currentColor"></ng-progress>
 <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-  <button class="btn btn-primary" (click)="toggle($event)"><i class="fas" [ngClass]="isOpen? 'fa-times':'fa-bars'"></i></button>
+  <button class="btn btn-primary" (click)="toggle($event)"><i class="fas" [ngClass]="isSidebarOpen? 'fa-times':'fa-bars'"></i></button>
   <button type="button" class="navbar-toggler" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
     aria-controls="navbarCollapse">
     <span class="navbar-toggler-icon"></span>

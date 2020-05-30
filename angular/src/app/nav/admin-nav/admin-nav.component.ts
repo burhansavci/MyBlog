@@ -11,8 +11,8 @@ import { ProgressBarService } from 'src/app/services/progress-bar.service';
 export class AdminNavComponent implements OnInit {
   admin: Admin;
   isCollapsed: boolean = true;
-  isOpen: boolean = true;
-  @Output() isOpenEvent = new EventEmitter<boolean>(this.isOpen);
+  isSidebarOpen: boolean = window.innerWidth < 768 ? false : true;
+  @Output() isOpenEvent = new EventEmitter<boolean>(this.isSidebarOpen);
   constructor(
     public authService: AuthService,
     public progressBar: ProgressBarService
@@ -21,7 +21,7 @@ export class AdminNavComponent implements OnInit {
   ngOnInit(): void {}
   toggle(event: MouseEvent) {
     event.preventDefault();
-    this.isOpen = !this.isOpen;
-    this.isOpenEvent.emit(this.isOpen);
+    this.isSidebarOpen = !this.isSidebarOpen;
+    this.isOpenEvent.emit(this.isSidebarOpen);
   }
 }
