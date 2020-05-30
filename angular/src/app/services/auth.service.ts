@@ -34,6 +34,7 @@ export class AuthService {
     return this.http.get(this.baseUrl, { headers }).pipe(
       map((admin: Admin) => {
         localStorage.setItem('token', admin.token);
+        localStorage.setItem('userId', admin.id.toString());
         return admin;
       })
     );
@@ -43,6 +44,7 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}login`, admin).pipe(
       map((admin: Admin) => {
         localStorage.setItem('token', admin.token);
+        localStorage.setItem('userId', admin.id.toString());
       })
     );
   }
