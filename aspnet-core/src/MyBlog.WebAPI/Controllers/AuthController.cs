@@ -39,6 +39,7 @@ namespace MyBlog.WebAPI.Controllers
                 Expiration = result.Data.Expiration,
                 Username = user.Data.UserName,
                 Email = user.Data.Email,
+                Id = user.Data.Id
             });
         }
 
@@ -59,6 +60,7 @@ namespace MyBlog.WebAPI.Controllers
                 Expiration = result.Data.Expiration,
                 Username = userToLogin.Data.UserName,
                 Email = userToLogin.Data.Email,
+                Id = userToLogin.Data.Id
             });
         }
 
