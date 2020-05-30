@@ -18,6 +18,8 @@ export class TextareaInputComponent implements OnInit, ControlValueAccessor {
   @Input() rows: number = 5;
   @Input() label: string;
   @Input() placeholder: string;
+  @Input() class: string;
+  @Input() labelClass: string;
 
   constructor(@Self() public controlDir: NgControl) {
     this.controlDir.valueAccessor = this;
@@ -45,7 +47,6 @@ export class TextareaInputComponent implements OnInit, ControlValueAccessor {
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
-    console.log(JSON.stringify(fn));
   }
 
   registerOnTouched(fn: any): void {
