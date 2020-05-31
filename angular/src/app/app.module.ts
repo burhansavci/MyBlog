@@ -9,6 +9,8 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
 import { CdkTableModule } from '@angular/cdk/table';
+import { QuillModule } from 'ngx-quill';
+import { CommonModule } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -74,18 +76,20 @@ import { ArticleFormComponent } from './admin/article/article-form/article-form.
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    CommonModule,
     AppRoutingModule,
     HttpClientModule,
     ButtonsModule.forRoot(),
     PaginationModule.forRoot(),
     CollapseModule.forRoot(),
     AccordionModule.forRoot(),
+    QuillModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
     NgProgressModule,
     RecaptchaModule,
     RecaptchaFormsModule,
-    CdkTableModule
+    CdkTableModule,
   ],
   providers: [
     ArticleService,
