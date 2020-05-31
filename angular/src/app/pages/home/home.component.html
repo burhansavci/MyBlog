@@ -13,7 +13,7 @@
   <a [routerLink]="['/article', article.title|urlFormat, article.id]" class="text-decoration-none">
     <section id="main" class="text-muted">
       <figure class="figure">
-        <img src="{{article.picture.url}}" alt="Figure Image" class="figure-img img-fluid" />
+        <img [src]="article.picture !=null ? article.picture.url : 'https:/placehold.it/1200x600'" alt="Figure Image" class="figure-img img-fluid" />
       </figure> {{article.contentSummary}} <a [routerLink]="['/article', article.title|urlFormat, article.id]" class="font-italic"> read more...</a>
     </section>
   </a>

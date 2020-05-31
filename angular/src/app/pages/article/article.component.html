@@ -10,9 +10,9 @@
   </header>
   <section id="main">
     <figure class="figure">
-      <img src="{{article.picture.url}}" alt="Figure Image" class="figure-img img-fluid" />
+      <img [src]="article.picture !=null ? article.picture.url : 'https:/placehold.it/1200x600'"  alt="Figure Image" class="figure-img img-fluid" />
     </figure>
-    <div [innerHTML]="article.contentMain"></div>
+    <quill-view-html [content]="article.contentMain" theme="snow"></quill-view-html>
   </section>
   <app-comment [articleId]="article.id"></app-comment>
 </article>
