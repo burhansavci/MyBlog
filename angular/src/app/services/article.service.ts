@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -70,5 +70,16 @@ export class ArticleService {
   ): Observable<DataResult<Article[]>> {
     const url = `${this.baseUrl}archive/${year}/${month}/${pageNumber}/${pageSize}`;
     return this.http.get<DataResult<Article[]>>(url);
+  }
+
+  addArticle(article: any) {
+    const url = `${environment.baseUrl}articles`;
+    let headers = new HttpHeaders();
+    console.log(article); 
+    headers = headers.set(
+      'Authorization',
+      `Bearer ${localStorage.getItem('token')}`
+    );
+    return this.http.post(url, article, { headers });
   }
 }
