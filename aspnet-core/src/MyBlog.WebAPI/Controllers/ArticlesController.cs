@@ -67,9 +67,9 @@ namespace MyBlog.WebAPI.Controllers
         [Route("api/[controller]")]
         [Authorize]
         [HttpPost]
-        public IActionResult AddArticle(ArticleDto articleDto)
+        public IActionResult AddArticle([FromForm]ArticleForCreationDto articleForCreationDto)
         {
-            return Ok(_articleService.InsertArticle(articleDto));
+            return Ok(_articleService.InsertArticle(articleForCreationDto));
         }
 
         [Route("api/[controller]")]

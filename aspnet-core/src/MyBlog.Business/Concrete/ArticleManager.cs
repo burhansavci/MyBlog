@@ -14,15 +14,19 @@ namespace MyBlog.Business.Concrete
 {
     public class ArticleManager : IArticleService
     {
-        private IArticleTranslationRepository _articleTranslationRepository;
-        private IArticleRepository _articleRepository;
-        private IMapper _mapper;
+        private readonly IArticleTranslationRepository _articleTranslationRepository;
+        private readonly IArticleRepository _articleRepository;
+        private readonly IPictureService _pictureService;
+        private readonly IMapper _mapper;
+
         public ArticleManager(IArticleTranslationRepository articleTranslationRepository,
                               IArticleRepository articleRepository,
+                              IPictureService pictureService,
                               IMapper mapper)
         {
             _articleTranslationRepository = articleTranslationRepository;
             _articleRepository = articleRepository;
+            _pictureService = pictureService;
             _mapper = mapper;
         }
 
@@ -148,11 +152,22 @@ namespace MyBlog.Business.Concrete
             return new SuccessDataResult<Page<ArticleForReturnDto>>(Messages.SuccessOperation, articleForReturnDtoPage);
         }
 
-        public IResult InsertArticle(ArticleDto articleDto)
+        public IResult InsertArticle(ArticleForCreationDto articleForCreationDto)
         {
-            var articleToBeInserted = _mapper.Map<ArticleTranslation>(articleDto);
-            _articleTranslationRepository.Insert(articleToBeInserted);
-            return new SuccessResult(string.Format(Messages.SuccessfulInsert, nameof(Article)));
+            //TO DO: Implement transaction
+
+            var articleToBeInserted = _mapper.Map<ArticleTranslation>(articleForCreationDto);
+            var insertedArticle = _articleTranslationRepository.Insert(articleToBeInserted);
+
+            articleForCreationDto.Pictures.ForEach(p => p.ArticleId = insertedArticle.ArticleId);
+
+            var result = _pictureService.InsertPicturesForArticle(articleForCreationDto.Pictures);
+
+            if (result.Success)
+                return new SuccessResult(string.Format(Messages.SuccessfulInsert, nameof(Article)));
+            else
+                return new ErrorResult($"Picture couldn't be inserted Error Message {result.Message}");
+
         }
 
         public IResult UpdateArticle(ArticleDto articleDto)
