@@ -33,6 +33,12 @@ namespace MyBlog.Business.Mapping.AutoMapper
                         d.Article = null;
                 });
 
+            CreateMap<ArticleForCreationDto, ArticleTranslation>()
+                .ForPath(d => d.Article.PublishDate, opt => opt.MapFrom(s => s.PublishDate))
+                .ForPath(d => d.Article.UserId, opt => opt.MapFrom(s => s.UserId))
+                .ForPath(d => d.Article.CategoryId, opt => opt.MapFrom(s => s.CategoryId));
+
+
             CreateMap<IGrouping<ArticleForArchiveMonthDto, ArticleTranslation>, ArticleForArchiveMonthDto>()
                 .ForMember(d => d.MonthName, opt => opt.MapFrom(s => s.FirstOrDefault().Article.PublishDate.ToString("MMMM")))
                 .ForMember(d => d.PublishMonth, opt => opt.MapFrom(s => s.Key.PublishMonth))
