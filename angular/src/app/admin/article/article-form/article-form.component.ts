@@ -5,7 +5,6 @@ import { ArticleService } from 'src/app/services/article.service';
 import { Category } from 'src/app/models/category';
 import { LanguageService } from 'src/app/services/language.service';
 import { Language } from 'src/app/models/language';
-import { EditorChangeContent, EditorChangeSelection } from 'ngx-quill';
 import * as QuillNamespace from 'quill';
 let Quill: any = QuillNamespace;
 import ImageResize from 'quill-image-resize-module';
@@ -78,7 +77,6 @@ export class ArticleFormComponent implements OnInit {
     );
     this.articleForm.controls.publishDate.setValue(new Date());
 
-    console.log(this.articleForm.value);
     const formData = new FormData();
     formData.append('title', this.articleForm.controls.title.value);
     formData.append(
@@ -109,13 +107,14 @@ export class ArticleFormComponent implements OnInit {
       'languageCode',
       this.articleForm.controls.languageCode.value
     );
-
     this.articleService.addArticle(formData).subscribe(
       (result) => {
         this.alertifyService.success('Article was added successfully');
+        this.articleForm.reset();
       },
       (error) => {
         this.alertifyService.error(`An error occurred: ${error}`);
+        this.articleForm.reset();
       }
     );
   }
