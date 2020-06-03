@@ -55,7 +55,7 @@ namespace MyBlog.Business.Concrete
             return new SuccessDataResult<List<PictureForReturnDto>>(Messages.SuccessOperation, _mapper.Map<List<PictureForReturnDto>>(picture));
         }
 
-        public IResult InsertPicturesForArticle(List<PictureForCreationDto> pictureForCreationDtos)
+        public IDataResult<List<PictureForReturnDto>> InsertPicturesForArticle(List<PictureForCreationDto> pictureForCreationDtos)
         {
             var mainPicture = pictureForCreationDtos.Find(x => x.IsMain);
 
@@ -71,7 +71,8 @@ namespace MyBlog.Business.Concrete
 
             _articleRepository.Update(article);
 
-            return new SuccessResult(string.Format(Messages.SuccessfulInsert, nameof(Picture)));
+            return new SuccessDataResult<List<PictureForReturnDto>>(string.Format(Messages.SuccessfulInsert, nameof(Picture)),
+                                                                  _mapper.Map<List<PictureForReturnDto>>(article.Pictures));
         }
         public IResult InsertPictureForArticle(PictureForCreationDto pictureForCreationDto)
         {
