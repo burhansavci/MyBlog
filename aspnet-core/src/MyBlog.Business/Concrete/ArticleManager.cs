@@ -9,6 +9,7 @@ using MyBlog.Entities.Concrete;
 using MyBlog.Entities.Dtos;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace MyBlog.Business.Concrete
 {
@@ -164,7 +165,18 @@ namespace MyBlog.Business.Concrete
             var result = _pictureService.InsertPicturesForArticle(articleForCreationDto.Pictures);
 
             if (result.Success)
+            {
+                var imgRegex = new Regex("<img src=\"(?<url>(data:(?<type>.+?);base64),(?<data>[^\"]+))\"");
+                foreach (var picture in result.Data.Where(x => !x.IsMain))
+                {
+                    insertedArticle.ContentMain = imgRegex.Replace(insertedArticle.ContentMain,
+                                                                    m => $"<img src=\"{picture.Url}\"", 1);
+                }
+
+                _articleTranslationRepository.Update(insertedArticle);
+
                 return new SuccessResult(string.Format(Messages.SuccessfulInsert, nameof(Article)));
+            }
             else
                 return new ErrorResult($"Picture couldn't be inserted Error Message {result.Message}");
 
