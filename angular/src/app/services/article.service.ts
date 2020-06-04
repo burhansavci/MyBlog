@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { map, tap, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Archive } from '../models/archive';
 import { Article } from '../models/article';
@@ -13,6 +13,7 @@ import { PaginatedResult } from '../models/paginated-result';
 })
 export class ArticleService {
   baseUrl = `${environment.baseUrl}tr/articles/`;
+  loading: boolean = false;
   private dateResultSource = new BehaviorSubject<DataResult<Article[]>>(null);
   dataResult$ = this.dateResultSource.asObservable();
   constructor(private http: HttpClient) {}
@@ -73,13 +74,21 @@ export class ArticleService {
   }
 
   addArticle(article: any) {
+    this.loading = true;
     const url = `${environment.baseUrl}articles`;
     let headers = new HttpHeaders();
-    console.log(article); 
     headers = headers.set(
       'Authorization',
       `Bearer ${localStorage.getItem('token')}`
     );
-    return this.http.post(url, article, { headers });
+    return this.http.post(url, article, { headers }).pipe(
+      tap((x) => {
+        this.loading = false;
+      }),
+      catchError((error) => {
+        this.loading = false;
+        return of(null);
+      })
+    );
   }
 }

@@ -26,20 +26,21 @@ export class ArticleFormComponent implements OnInit {
     base64String: string;
     type: string;
   }[] = [];
-
+  isOpen: boolean = true;
+  buttonMessage: string = 'Pull Up';
   //Quill Config
   editorConfig = {
     imageResize: true,
     syntax: true,
   };
   editorStyle = {
-    height: '300px',
+    height: '500px',
   };
 
   constructor(
     private categoryService: CategoryService,
     private languageService: LanguageService,
-    private articleService: ArticleService,
+    public articleService: ArticleService,
     private alertifyService: AlertifyService
   ) {}
 
@@ -92,6 +93,7 @@ export class ArticleFormComponent implements OnInit {
       this.articleForm.controls.contentMain.value
     );
     images.forEach((image, i) => {
+      debugger;
       formData.append(`pictures[${i + 1}].isMain`, 'false');
       formData.append(`pictures[${i + 1}].file`, image);
     });
@@ -107,14 +109,17 @@ export class ArticleFormComponent implements OnInit {
       'languageCode',
       this.articleForm.controls.languageCode.value
     );
+
     this.articleService.addArticle(formData).subscribe(
       (result) => {
         this.alertifyService.success('Article was added successfully');
         this.articleForm.reset();
+        this.mainPictureUrl = '';
       },
       (error) => {
         this.alertifyService.error(`An error occurred: ${error}`);
         this.articleForm.reset();
+        this.mainPictureUrl = '';
       }
     );
   }
@@ -124,7 +129,9 @@ export class ArticleFormComponent implements OnInit {
 
     const matches: RegExpMatchArray = contentMain.match(imgRegex);
 
-    matches.forEach((match) => {
+    this.base64Objects = [];
+
+    matches?.forEach((match) => {
       imgRegex.lastIndex = 0;
       const regexExpArr = imgRegex.exec(match);
       this.base64Objects.push({
@@ -184,5 +191,11 @@ export class ArticleFormComponent implements OnInit {
     const imageBlob = new Blob([int8Array], { type: type });
 
     return new File([imageBlob], imageName, { type: type });
+  }
+
+  toggle(event: MouseEvent) {
+    event.preventDefault();
+    this.isOpen = !this.isOpen;
+    this.buttonMessage = this.isOpen ? 'Pull Up' : 'Pull Down';
   }
 }

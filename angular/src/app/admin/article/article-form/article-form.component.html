@@ -1,47 +1,53 @@
 <form [formGroup]="articleForm" class="mb-3">
-  <app-text-input formControlName="title" [type]="'text'" [label]="'Title'" [placeholder]="'Article Title'" [class]="'form-control-sm'"
-    [labelClass]="'col-form-label col-form-label-sm'"></app-text-input>
-  <div class="form-row">
-    <div class="col-8">
-      <app-textarea-input formControlName="contentSummary" [rows]='3' [label]="'Content Summary'" [placeholder]="'Article Content Summary'"
-        [class]="'form-control-sm'" [labelClass]="'col-form-label col-form-label-sm'">
-      </app-textarea-input>
-    </div>
-    <div class="col-2">
-      <img [src]="mainPictureUrl || 'https:/placehold.it/240x120'" alt="Main Image" class=" img-fluid img-thumbnail" />
-    </div>
-    <div class="col-2">
-      <div class="form-group">
-        <label for="Picture" class="col-form-label col-form-label-sm">Article Main Picture</label>
-        <input type="file" formControlName="picture" class="form-control-file form-control-sm" (change)="upload($event)">
+  <ng-container *ngIf="isOpen">
+    <app-text-input formControlName="title" [type]="'text'" [label]="'Title'" [placeholder]="'Article Title'" [class]="'form-control-sm'"
+      [labelClass]="'col-form-label col-form-label-sm'"></app-text-input>
+    <div class="form-row">
+      <div class="col-8">
+        <app-textarea-input formControlName="contentSummary" [rows]='3' [label]="'Content Summary'" [placeholder]="'Article Content Summary'"
+          [class]="'form-control-sm'" [labelClass]="'col-form-label col-form-label-sm'">
+        </app-textarea-input>
+      </div>
+      <div class="col-2">
+        <img [src]="mainPictureUrl || 'https:/placehold.it/240x120'" alt="Main Image" class=" img-fluid img-thumbnail" />
+      </div>
+      <div class="col-2">
+        <div class="form-group">
+          <label for="Picture" class="col-form-label col-form-label-sm">Article Main Picture</label>
+          <input type="file" formControlName="picture" class="form-control-file form-control-sm" (change)="upload($event)">
+        </div>
       </div>
     </div>
-  </div>
-  <div class="form-row">
-    <div class="col">
-      <div class="form-group" *ngIf="categories">
-        <label for="Category" class="col-form-label col-form-label-sm">Category</label>
-        <select formControlName="categoryId" class="form-control form-control-sm">
-          <option value selected disabled>Select Category</option>
-          <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
-        </select>
+    <div class="form-row">
+      <div class="col">
+        <div class="form-group" *ngIf="categories">
+          <label for="Category" class="col-form-label col-form-label-sm">Category</label>
+          <select formControlName="categoryId" class="form-control form-control-sm">
+            <option value selected disabled>Select Category</option>
+            <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group" *ngIf="languages">
+          <label for="Language" class="col-form-label col-form-label-sm">Language</label>
+          <select formControlName="languageCode" class="form-control form-control-sm">
+            <option value selected disabled>Select Language</option>
+            <option *ngFor="let language of languages" [value]="language.languageCode">{{language.name}}</option>
+          </select>
+        </div>
       </div>
     </div>
-    <div class="col">
-      <div class="form-group" *ngIf="languages">
-        <label for="Language" class="col-form-label col-form-label-sm">Language</label>
-        <select formControlName="languageCode" class="form-control form-control-sm">
-          <option value selected disabled>Select Language</option>
-          <option *ngFor="let language of languages" [value]="language.languageCode">{{language.name}}</option>
-        </select>
-      </div>
-    </div>
-  </div>
+  </ng-container>
   <div class="form-group">
     <label for="Content Main" class="col-form-label col-form-label-sm">Content Main</label>
+    <button class="btn btn-info pb-0 pt-0 float-right" (click)="toggle($event)"><i class="fas" [ngClass]="isOpen? 'fa-arrow-up':'fa-arrow-down'"></i>
+      {{buttonMessage}} </button>
     <quill-editor formControlName="contentMain" [modules]="editorConfig" [styles]="editorStyle">
     </quill-editor>
   </div>
-  <button type="submit" (click)="onSubmit()" [disabled]="articleForm.pristine || articleForm.invalid" class="btn btn-primary">Submit </button>
+  <button type="submit" (click)="onSubmit()" [disabled]="articleForm.pristine || articleForm.invalid || articleService.loading"
+    class="btn btn-primary">Submit <i *ngIf="articleService.loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></i>
+  </button>
   <button type="reset" class="btn btn-danger ml-1">Reset</button>
 </form>
