@@ -99,6 +99,11 @@ const routes: Routes = [
             path: 'add',
             component: ArticleFormComponent,
           },
+          {
+            path: 'update/:id',
+            component: ArticleFormComponent,
+            resolve: { dataResult: ArticleResolver },
+          },
         ],
       },
     ],
