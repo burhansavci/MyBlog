@@ -16,7 +16,9 @@ namespace MyBlog.Business.Mapping.AutoMapper
                 .ForPath(d => d.Category.Id, opt => opt.MapFrom(s => s.Article.CategoryId))
                 .ForMember(d => d.ViewCount, opt => opt.MapFrom(s => s.Article.ViewCount))
                 .ForMember(d => d.PublishDate, opt => opt.MapFrom(s => s.Article.PublishDate))
-                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.ArticleId));
+                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.ArticleId))
+                .ForMember(d => d.ArticleTranslationId, opt => opt.MapFrom(s => s.Id))
+                .ForMember(d => d.UserId, opt => opt.MapFrom(s => s.Article.UserId));
 
 
             CreateMap<ArticleDto, Article>()

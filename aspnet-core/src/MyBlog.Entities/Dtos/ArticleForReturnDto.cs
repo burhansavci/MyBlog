@@ -7,6 +7,8 @@ namespace MyBlog.Entities.Dtos
     public class ArticleForReturnDto : IDto
     {
         public int Id { get; set; }
+        public int ArticleTranslationId { get; set; }
+        public int UserId { get; set; }
         public string Title { get; set; }
         public string ContentSummary { get; set; }
         public string ContentMain { get; set; }
