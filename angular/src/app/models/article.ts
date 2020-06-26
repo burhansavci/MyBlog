@@ -3,6 +3,8 @@ import { Picture } from './picture';
 
 export interface Article {
   id: number;
+  articleTranslationId: number;
+  userId: number;
   title: string;
   contentSummary: string;
   contentMain: string;
