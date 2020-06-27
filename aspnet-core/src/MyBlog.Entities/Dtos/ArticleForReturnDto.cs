@@ -16,6 +16,7 @@ namespace MyBlog.Entities.Dtos
         public int ViewCount { get; set; }
         public string LanguageCode { get; set; }
         public CategoryForReturnDto Category { get; set; }
-        public PictureForReturnDto Picture { get; set; }
+        public List<PictureForReturnDto> Pictures { get; set; }
+        public PictureForReturnDto MainPicture { get; set; }
     }
 }
