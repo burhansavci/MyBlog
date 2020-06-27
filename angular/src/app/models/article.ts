@@ -12,5 +12,6 @@ export interface Article {
   viewCount: number;
   languageCode: string;
   category: Category;
-  picture: Picture;
+  pictures: Picture[];
+  mainPicture: Picture;
 }
