@@ -10,6 +10,9 @@ let Quill: any = QuillNamespace;
 import ImageResize from 'quill-image-resize-module';
 import { Observable } from 'rxjs';
 import { AlertifyService } from 'src/app/services/alertify.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Article } from 'src/app/models/article';
+import { Picture } from 'src/app/models/picture';
 Quill.register('modules/imageResize', ImageResize);
 @Component({
   selector: 'app-article-form',
@@ -18,6 +21,7 @@ Quill.register('modules/imageResize', ImageResize);
 })
 export class ArticleFormComponent implements OnInit {
   articleForm: FormGroup;
+  article: Article;
   categories: Category[];
   languages: Language[];
   mainPictureUrl: string;
@@ -41,10 +45,16 @@ export class ArticleFormComponent implements OnInit {
     private categoryService: CategoryService,
     private languageService: LanguageService,
     public articleService: ArticleService,
-    private alertifyService: AlertifyService
+    private alertifyService: AlertifyService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.route.data.subscribe((data) => {
+      this.article = data?.dataResult?.data;
+      this.mainPictureUrl = this.article?.mainPicture.url;
+    });
     this.categoryService.getCategories().subscribe((dateResult) => {
       this.categories = dateResult.data;
     });
@@ -52,21 +62,36 @@ export class ArticleFormComponent implements OnInit {
       this.languages = dateResult.data;
     });
     this.articleForm = new FormGroup({
-      title: new FormControl('', [
+      title: new FormControl(this.article?.title, [
         Validators.required,
         Validators.maxLength(50),
       ]),
-      contentSummary: new FormControl('', [
+      contentSummary: new FormControl(this.article?.contentSummary, [
         Validators.required,
         Validators.maxLength(500),
       ]),
-      contentMain: new FormControl('', Validators.required),
-      categoryId: new FormControl('', Validators.required),
-      languageCode: new FormControl('', Validators.required),
+      contentMain: new FormControl(
+        this.article?.contentMain,
+        Validators.required
+      ),
+      categoryId: new FormControl(
+        this.article?.category.id,
+        Validators.required
+      ),
+      languageCode: new FormControl(
+        this.article?.languageCode,
+        Validators.required
+      ),
       userId: new FormControl(''),
-      picture: new FormControl('', Validators.required),
+      picture:
+        this.mainPictureUrl != null
+          ? new FormControl('')
+          : new FormControl('', Validators.required),
       publishDate: new FormControl(''),
+      id: new FormControl(this.article?.id),
+      articleTranslationId: new FormControl(this.article?.articleTranslationId),
     });
+    console.log(this.articleForm);
   }
 
   onSubmit() {
@@ -76,7 +101,11 @@ export class ArticleFormComponent implements OnInit {
     this.articleForm.controls.userId.setValue(
       Number(localStorage.getItem('userId'))
     );
-    this.articleForm.controls.publishDate.setValue(new Date());
+    if (this.article) {
+      this.articleForm.controls.publishDate.setValue(this.article.publishDate);
+    } else {
+      this.articleForm.controls.publishDate.setValue(new Date());
+    }
 
     const formData = new FormData();
     formData.append('title', this.articleForm.controls.title.value);
@@ -84,24 +113,14 @@ export class ArticleFormComponent implements OnInit {
       'contentSummary',
       this.articleForm.controls.contentSummary.value
     );
-    //append main image
-    formData.append('pictures[0].isMain', 'true');
-    formData.append('pictures[0].file', this.file);
 
-    //append images from contentMain
-    const images = this.extractImagesFromContentMain(
-      this.articleForm.controls.contentMain.value
-    );
-    images.forEach((image, i) => {
-      debugger;
-      formData.append(`pictures[${i + 1}].isMain`, 'false');
-      formData.append(`pictures[${i + 1}].file`, image);
-    });
-
+    this.appendPicturesToFormData(formData);
     formData.append('contentMain', this.articleForm.controls.contentMain.value);
     formData.append(
       'publishDate',
-      this.articleForm.controls.publishDate.value.toUTCString()
+      this.article
+        ? this.article.publishDate
+        : this.articleForm.controls.publishDate.value.toUTCString()
     );
     formData.append('categoryId', this.articleForm.controls.categoryId.value);
     formData.append('userId', this.articleForm.controls.userId.value);
@@ -109,24 +128,57 @@ export class ArticleFormComponent implements OnInit {
       'languageCode',
       this.articleForm.controls.languageCode.value
     );
-
-    this.articleService.addArticle(formData).subscribe(
-      (result) => {
-        this.alertifyService.success('Article was added successfully');
-        this.articleForm.reset();
-        this.mainPictureUrl = '';
-      },
-      (error) => {
-        this.alertifyService.error(`An error occurred: ${error}`);
-        this.articleForm.reset();
-        this.mainPictureUrl = '';
-      }
+    formData.append('id', this.articleForm.controls.id.value);
+    formData.append(
+      'articleTranslationId',
+      this.articleForm.controls.articleTranslationId.value
     );
+
+    if (this.article) {
+      this.articleService.updateArticle(formData).subscribe(
+        (result) => {
+          this.alertifyService.success('Article was updated successfully');
+          this.router.navigateByUrl('/admin/article/list');
+        },
+        (error) => {
+          this.alertifyService.error(`An error occurred: ${error}`);
+        }
+      );
+    } else {
+      this.articleService.addArticle(formData).subscribe(
+        (result) => {
+          this.alertifyService.success('Article was added successfully');
+          this.articleForm.reset();
+          this.mainPictureUrl = '';
+        },
+        (error) => {
+          this.alertifyService.error(`An error occurred: ${error}`);
+          this.articleForm.reset();
+          this.mainPictureUrl = '';
+        }
+      );
+    }
+  }
+  extractCloudinaryImagesFromContentMain(contentMain: string): Picture[] {
+    const cloudinaryImgRegex: RegExp = /<img src="(http(s?):)\/\/res\.cloudinary\.com\/(?:[^\/]+\/)(?:(image)\/)?(?:(upload)\/)?\/?(?:v(\d+|\w{1,2})\/)?(?<publicId>[^\.^\s]+)/g;
+    const matches: RegExpMatchArray = contentMain.match(cloudinaryImgRegex);
+
+    const pictures: Picture[] = [];
+
+    matches?.forEach((match) => {
+      cloudinaryImgRegex.lastIndex = 0;
+      const regexExpArr = cloudinaryImgRegex.exec(match);
+      const picture: Picture = new Picture();
+      picture.publicId = regexExpArr.groups.publicId;
+      picture.isMain = false;
+      pictures.push(picture);
+    });
+
+    return pictures;
   }
 
   extractImagesFromContentMain(contentMain: string): File[] {
-    const imgRegex: RegExp = /<img src="(?<url>(data:(?<type>.+?);base64),(?<data>[^"]+))" width="(?<width>[0-9]+)"/g;
-
+    const imgRegex: RegExp = /<img src="(?<url>(data:(?<type>.+?);base64),(?<data>[^"]+))"/g;
     const matches: RegExpMatchArray = contentMain.match(imgRegex);
 
     this.base64Objects = [];
@@ -191,6 +243,43 @@ export class ArticleFormComponent implements OnInit {
     const imageBlob = new Blob([int8Array], { type: type });
 
     return new File([imageBlob], imageName, { type: type });
+  }
+
+  appendPicturesToFormData(formData: FormData) {
+    let index: number = 0;
+    //append main image
+    formData.append('pictures[0].isMain', 'true');
+    formData.append('pictures[0].file', this.file);
+    if (this.article) {
+      formData.append('pictures[0].id', this.article.mainPicture.id.toString());
+      formData.append('pictures[0].articleId', this.article.id.toString());
+      if (!this.file) {
+        formData.append(
+          'pictures[0].publicId',
+          this.article.mainPicture.publicId
+        );
+        formData.append('pictures[0].url', this.article.mainPicture.url);
+      }
+    }
+
+    //append images from contentMain
+    const images = this.extractImagesFromContentMain(
+      this.articleForm.controls.contentMain.value
+    );
+    images.forEach((image, i) => {
+      index++;
+      formData.append(`pictures[${i + 1}].isMain`, 'false');
+      formData.append(`pictures[${i + 1}].file`, image);
+    });
+
+    const existImages = this.extractCloudinaryImagesFromContentMain(
+      this.articleForm.controls.contentMain.value
+    );
+    existImages.forEach((image) => {
+      index++;
+      formData.append(`pictures[${index}].isMain`, 'false');
+      formData.append(`pictures[${index}].publicId`, image.publicId);
+    });
   }
 
   toggle(event: MouseEvent) {
