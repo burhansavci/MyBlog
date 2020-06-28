@@ -55,24 +55,30 @@ namespace MyBlog.Business.Concrete
             return new SuccessDataResult<List<PictureForReturnDto>>(Messages.SuccessOperation, _mapper.Map<List<PictureForReturnDto>>(picture));
         }
 
-        public IDataResult<List<PictureForReturnDto>> InsertPicturesForArticle(List<PictureForCreationDto> pictureForCreationDtos)
+        public IDataResult<List<PictureForReturnDto>> InsertPicturesForArticle(List<PictureForCreationDto> pictureForCreationDtos, bool skipMainPicture = false)
         {
-            var mainPicture = pictureForCreationDtos.Find(x => x.IsMain);
+            if (!skipMainPicture)
+            {
+                var mainPicture = pictureForCreationDtos.Find(x => x.IsMain);
+                if (mainPicture == null)
+                {
+                    pictureForCreationDtos[0].IsMain = true;
+                }
+            }
 
-            mainPicture ??= pictureForCreationDtos[0];
-
-            var article = _articleRepository.GetIncluding(x => x.Id == mainPicture.ArticleId, x => x.Pictures);
-
+            var article = _articleRepository.GetIncluding(x => x.Id == pictureForCreationDtos[0].ArticleId, x => x.Pictures);
+            var toBeInsertedPictures = new List<Picture>();
             foreach (var pictureForCreationDto in pictureForCreationDtos)
             {
                 var picture = UploadPictureToCloudinary(pictureForCreationDto);
                 article.Pictures.Add(picture);
+                toBeInsertedPictures.Add(picture);
             }
 
             _articleRepository.Update(article);
 
             return new SuccessDataResult<List<PictureForReturnDto>>(string.Format(Messages.SuccessfulInsert, nameof(Picture)),
-                                                                  _mapper.Map<List<PictureForReturnDto>>(article.Pictures));
+                                                                  _mapper.Map<List<PictureForReturnDto>>(toBeInsertedPictures));
         }
         public IResult InsertPictureForArticle(PictureForCreationDto pictureForCreationDto)
         {

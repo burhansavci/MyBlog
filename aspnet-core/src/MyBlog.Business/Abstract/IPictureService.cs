@@ -10,7 +10,7 @@ namespace MyBlog.Business.Abstract
         IDataResult<PictureForReturnDto> GetPictureById(int id);
         IDataResult<List<PictureForReturnDto>> GetPicturesByArticleId(int articleId);
         IResult InsertPictureForArticle(PictureForCreationDto pictureDto);
-        IDataResult<List<PictureForReturnDto>> InsertPicturesForArticle(List<PictureForCreationDto> pictureForCreationDtos);
+        IDataResult<List<PictureForReturnDto>> InsertPicturesForArticle(List<PictureForCreationDto> pictureForCreationDtos, bool skipMainPicture = false);
         IResult DeletePicture(PictureForDeleteDto pictureForDeleteDto);
     }
 }
