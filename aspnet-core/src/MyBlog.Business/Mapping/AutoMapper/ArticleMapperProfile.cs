@@ -10,7 +10,8 @@ namespace MyBlog.Business.Mapping.AutoMapper
         public ArticleMapperProfile()
         {
             CreateMap<ArticleTranslation, ArticleForReturnDto>()
-                .ForMember(d => d.Picture, opt => opt.MapFrom(s => s.Article.Pictures.FirstOrDefault(p => p.IsMain)))
+                .ForMember(d => d.Pictures, opt => opt.MapFrom(s => s.Article.Pictures.Where(p => !p.IsMain)))
+                .ForMember(d => d.MainPicture, opt => opt.MapFrom(s => s.Article.Pictures.FirstOrDefault(p => p.IsMain)))
                 .ForMember(d => d.Category, opt => opt.MapFrom(s => s.Article.Category.CategoryTranslations
                                                                      .FirstOrDefault(ct => ct.LanguageCode == s.LanguageCode)))
                 .ForPath(d => d.Category.Id, opt => opt.MapFrom(s => s.Article.CategoryId))
@@ -35,11 +36,17 @@ namespace MyBlog.Business.Mapping.AutoMapper
                         d.Article = null;
                 });
 
+            CreateMap<ArticleForUpdateDto, ArticleTranslation>()
+                 .ForPath(d => d.Article.PublishDate, opt => opt.MapFrom(s => s.PublishDate))
+                 .ForPath(d => d.Article.Id, opt => opt.MapFrom(s => s.Id))
+                 .ForPath(d => d.Article.UserId, opt => opt.MapFrom(s => s.UserId))
+                 .ForPath(d => d.Article.CategoryId, opt => opt.MapFrom(s => s.CategoryId))
+                 .ForMember(d => d.Id, opt => opt.MapFrom(s => s.ArticleTranslationId));
+
             CreateMap<ArticleForCreationDto, ArticleTranslation>()
                 .ForPath(d => d.Article.PublishDate, opt => opt.MapFrom(s => s.PublishDate))
                 .ForPath(d => d.Article.UserId, opt => opt.MapFrom(s => s.UserId))
                 .ForPath(d => d.Article.CategoryId, opt => opt.MapFrom(s => s.CategoryId));
-
 
             CreateMap<IGrouping<ArticleForArchiveMonthDto, ArticleTranslation>, ArticleForArchiveMonthDto>()
                 .ForMember(d => d.MonthName, opt => opt.MapFrom(s => s.FirstOrDefault().Article.PublishDate.ToString("MMMM")))
