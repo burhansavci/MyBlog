@@ -75,9 +75,9 @@ namespace MyBlog.WebAPI.Controllers
         [Route("api/[controller]")]
         [Authorize]
         [HttpPut]
-        public IActionResult UpdateArticle(ArticleDto articleDto)
+        public IActionResult UpdateArticle([FromForm]ArticleForUpdateDto articleForUpdateDto)
         {
-            return Ok(_articleService.UpdateArticle(articleDto));
+            return Ok(_articleService.UpdateArticle(articleForUpdateDto));
         }
 
         [Route("api/[controller]")]
