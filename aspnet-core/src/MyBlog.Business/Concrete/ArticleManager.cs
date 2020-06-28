@@ -182,15 +182,51 @@ namespace MyBlog.Business.Concrete
 
         }
 
-        public IResult UpdateArticle(ArticleDto articleDto)
+        public IResult UpdateArticle(ArticleForUpdateDto articleForUpdateDto)
         {
-            if (articleDto.ArticleId == null)
+            //TO DO: Implement transaction
+
+            Article article = _articleRepository.GetIncluding(x => x.Id == articleForUpdateDto.Id,
+                                              x => x.Pictures);
+            var picturesDict = article.Pictures.ToDictionary(x => x.PublicId);
+
+            var toBeDeletedPictures = _mapper.Map<List<PictureForDeleteDto>>(picturesDict.Where(x => !articleForUpdateDto.Pictures
+                                                                                                                         .Select(y => y.PublicId)
+                                                                                                                         .Contains(x.Key))
+                                                                                         .Select(x => x.Value));
+            foreach (var toBeDeletedPicture in toBeDeletedPictures)
             {
-                var articleToBeUpdated = _mapper.Map<Article>(articleDto);
-                _articleRepository.Update(articleToBeUpdated);
-                return new SuccessResult(string.Format(Messages.SuccessfulUpdate, nameof(Article)));
+                _pictureService.DeletePicture(toBeDeletedPicture);
             }
-            var articleWithTranslationToBeUpdated = _mapper.Map<ArticleTranslation>(articleDto);
+
+            var picturesToBeCreated = articleForUpdateDto.Pictures.Where(x => x.PublicId == null).Select(x => new PictureForCreationDto
+            {
+                ArticleId = article.Id,
+                IsMain = x.IsMain,
+                File = x.File
+            }).ToList();
+
+            var articleWithTranslationToBeUpdated = _mapper.Map<ArticleTranslation>(articleForUpdateDto);
+            if (picturesToBeCreated.Count > 0)
+            {
+                bool skipMainPicture = picturesToBeCreated.Any(x => x.IsMain) ? false : true;
+                var result = _pictureService.InsertPicturesForArticle(picturesToBeCreated, skipMainPicture);
+
+                if (result.Success)
+                {
+                    var imgRegex = new Regex("<img src=\"(?<url>(data:(?<type>.+?);base64),(?<data>[^\"]+))\"");
+                    foreach (var picture in result.Data.Where(x => !x.IsMain))
+                    {
+                        articleWithTranslationToBeUpdated.ContentMain = imgRegex.Replace(articleWithTranslationToBeUpdated.ContentMain,
+                                                                        m => $"<img src=\"{picture.Url}\"", 1);
+                    }
+
+                    _articleTranslationRepository.Update(articleWithTranslationToBeUpdated);
+                    return new SuccessResult(string.Format(Messages.SuccessfulUpdate, nameof(Article)));
+                }
+                else
+                    return new ErrorResult($"Picture couldn't be inserted Error Message {result.Message}");
+            }
             _articleTranslationRepository.Update(articleWithTranslationToBeUpdated);
             return new SuccessResult(string.Format(Messages.SuccessfulUpdate, nameof(Article)));
         }
@@ -205,6 +241,5 @@ namespace MyBlog.Business.Concrete
             _articleTranslationRepository.Delete(articleToBeDeleted);
             return new SuccessResult(string.Format(Messages.SuccessfulDelete, nameof(Article)));
         }
-
     }
 }
