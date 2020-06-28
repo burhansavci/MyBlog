@@ -13,6 +13,7 @@ namespace MyBlog.Business.Mapping.AutoMapper
         {
             CreateMap<PictureForCreationDto, Picture>();
             CreateMap<PictureForDeleteDto, Picture>();
+            CreateMap<Picture, PictureForDeleteDto>();
             CreateMap<Picture, PictureForReturnDto>();
         }
     }
