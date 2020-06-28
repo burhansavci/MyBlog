@@ -19,7 +19,7 @@ namespace MyBlog.Business.DependencyResolvers.Autofac
                    .Where(t => t.Name.EndsWith("Manager"))
                    .AsImplementedInterfaces();
 
-            builder.RegisterType(typeof(MyBlogDbContext)).As(typeof(DbContext)).InstancePerLifetimeScope();
+            builder.RegisterType(typeof(MyBlogDbContext)).As(typeof(DbContext)).InstancePerDependency();
 
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
 
