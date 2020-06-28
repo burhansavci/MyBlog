@@ -10,7 +10,7 @@
     </ng-container>
     <ng-container cdkColumnDef="Picture">
       <th cdk-header-cell *cdkHeaderCellDef> Picture</th>
-      <td cdk-cell *cdkCellDef="let row"><img [src]="row.picture!=null?row.picture.url:'https:/placehold.it/120x60'" class="img-fluid"
+      <td cdk-cell *cdkCellDef="let row"><img [src]="row.mainPicture!=null ? row.mainPicture.url : 'https:/placehold.it/120x60'" class="img-fluid"
           style="width: 120px; height: 60px;"> </td>
     </ng-container>
     <ng-container cdkColumnDef="Title">
