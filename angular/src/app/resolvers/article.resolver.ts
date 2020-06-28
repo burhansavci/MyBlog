@@ -33,6 +33,16 @@ export class ArticleResolver implements Resolve<Article[]> {
       : 1;
 
     if (state.url.includes('admin')) {
+      if (route.paramMap.has('id')) {
+        const id = Number(route.paramMap.get('id'));
+        return this.articleService.getArticleById(id).pipe(
+          catchError((error) => {
+            this.alertify.error('Problem retrieving article data');
+            this.router.navigate(['/']);
+            return of(null);
+          })
+        );
+      }
       return this.articleService.getArticles().pipe(
         catchError((error) => {
           this.alertify.error('Problem retrieving article data');
