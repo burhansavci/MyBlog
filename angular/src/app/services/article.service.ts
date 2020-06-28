@@ -91,4 +91,23 @@ export class ArticleService {
       })
     );
   }
+
+  updateArticle(article: any) {
+    this.loading = true;
+    const url = `${environment.baseUrl}articles`;
+    let headers = new HttpHeaders();
+    headers = headers.set(
+      'Authorization',
+      `Bearer ${localStorage.getItem('token')}`
+    );
+    return this.http.put(url, article, { headers }).pipe(
+      tap((x) => {
+        this.loading = false;
+      }),
+      catchError((error) => {
+        this.loading = false;
+        return of(null);
+      })
+    );
+  }
 }
