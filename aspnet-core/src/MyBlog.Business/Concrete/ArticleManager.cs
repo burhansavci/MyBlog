@@ -230,15 +230,19 @@ namespace MyBlog.Business.Concrete
             _articleTranslationRepository.Update(articleWithTranslationToBeUpdated);
             return new SuccessResult(string.Format(Messages.SuccessfulUpdate, nameof(Article)));
         }
-        public IResult DeleteArticle(ArticleDto articleDto)
+        public IResult DeleteArticle(ArticleForDeleteDto articleForDeleteDto)
         {
-            if (articleDto.ArticleId != null)
+            //TO DO: Implement transaction
+
+            var articleToBeDeleted = _mapper.Map<ArticleTranslation>(articleForDeleteDto);
+            _articleTranslationRepository.Delete(articleToBeDeleted);
+            var article = _articleRepository.GetIncluding(x => x.Id == articleForDeleteDto.Id, x => x.ArticleTranslations);
+
+            if (article.ArticleTranslations.Count == 0)
             {
-                var articleToBeSoftDeleted = _mapper.Map<Article>(articleDto);
+                var articleToBeSoftDeleted = _mapper.Map<Article>(article);
                 _articleRepository.SoftDelete(articleToBeSoftDeleted);
             }
-            var articleToBeDeleted = _mapper.Map<ArticleTranslation>(articleDto);
-            _articleTranslationRepository.Delete(articleToBeDeleted);
             return new SuccessResult(string.Format(Messages.SuccessfulDelete, nameof(Article)));
         }
     }

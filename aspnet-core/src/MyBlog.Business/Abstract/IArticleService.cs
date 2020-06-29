@@ -16,6 +16,6 @@ namespace MyBlog.Business.Abstract
         IDataResult<Page<ArticleForReturnDto>> GetArticlesByYearAndMonth(string languageCode, int year, int month, int pageNumber, int pageSize);
         IResult InsertArticle(ArticleForCreationDto articleForCreationDto);
         IResult UpdateArticle(ArticleForUpdateDto articleForUpdateDto);
-        IResult DeleteArticle(ArticleDto articleDto);
+        IResult DeleteArticle(ArticleForDeleteDto articleDto);
     }
 }

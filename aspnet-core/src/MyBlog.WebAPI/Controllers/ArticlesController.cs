@@ -83,9 +83,9 @@ namespace MyBlog.WebAPI.Controllers
         [Route("api/[controller]")]
         [Authorize]
         [HttpDelete]
-        public IActionResult DeleteArticle(ArticleDto articleDto)
+        public IActionResult DeleteArticle(ArticleForDeleteDto articleForDeleteDto)
         {
-            return Ok(_articleService.DeleteArticle(articleDto));
+            return Ok(_articleService.DeleteArticle(articleForDeleteDto));
         }
     }
 }

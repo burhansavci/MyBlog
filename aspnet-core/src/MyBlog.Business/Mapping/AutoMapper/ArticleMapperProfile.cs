@@ -36,6 +36,10 @@ namespace MyBlog.Business.Mapping.AutoMapper
                         d.Article = null;
                 });
 
+            CreateMap<ArticleForDeleteDto, ArticleTranslation>()
+                .ForMember(d => d.ArticleId, opt => opt.MapFrom(s => s.Id))
+                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.ArticleTranslationId));
+
             CreateMap<ArticleForUpdateDto, ArticleTranslation>()
                  .ForPath(d => d.Article.PublishDate, opt => opt.MapFrom(s => s.PublishDate))
                  .ForPath(d => d.Article.Id, opt => opt.MapFrom(s => s.Id))
