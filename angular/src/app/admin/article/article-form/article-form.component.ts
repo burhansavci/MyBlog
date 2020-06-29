@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CategoryService } from 'src/app/services/category.service';
 import { ArticleService } from 'src/app/services/article.service';
@@ -13,6 +13,7 @@ import { AlertifyService } from 'src/app/services/alertify.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Article } from 'src/app/models/article';
 import { Picture } from 'src/app/models/picture';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 Quill.register('modules/imageResize', ImageResize);
 @Component({
   selector: 'app-article-form',
@@ -32,6 +33,7 @@ export class ArticleFormComponent implements OnInit {
   }[] = [];
   isOpen: boolean = true;
   buttonMessage: string = 'Pull Up';
+  modalRef: BsModalRef;
   //Quill Config
   editorConfig = {
     imageResize: true,
@@ -47,7 +49,8 @@ export class ArticleFormComponent implements OnInit {
     public articleService: ArticleService,
     private alertifyService: AlertifyService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private modalService: BsModalService
   ) {}
 
   ngOnInit(): void {
@@ -159,6 +162,7 @@ export class ArticleFormComponent implements OnInit {
       );
     }
   }
+
   extractCloudinaryImagesFromContentMain(contentMain: string): Picture[] {
     const cloudinaryImgRegex: RegExp = /<img src="(http(s?):)\/\/res\.cloudinary\.com\/(?:[^\/]+\/)(?:(image)\/)?(?:(upload)\/)?\/?(?:v(\d+|\w{1,2})\/)?(?<publicId>[^\.^\s]+)/g;
     const matches: RegExpMatchArray = contentMain.match(cloudinaryImgRegex);
@@ -286,5 +290,27 @@ export class ArticleFormComponent implements OnInit {
     event.preventDefault();
     this.isOpen = !this.isOpen;
     this.buttonMessage = this.isOpen ? 'Pull Up' : 'Pull Down';
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
+  }
+
+  confirm(): void {
+    this.articleService.deleteArticle(this.article).subscribe(
+      (result) => {
+        this.alertifyService.success('Article was deleted successfully');
+        this.router.navigateByUrl('/admin/article/list');
+        this.modalRef.hide();
+      },
+      (error) => {
+        this.alertifyService.error(`An error occurred: ${error}`);
+        this.modalRef.hide();
+      }
+    );
+  }
+
+  decline(): void {
+    this.modalRef.hide();
   }
 }

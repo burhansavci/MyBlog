@@ -110,4 +110,27 @@ export class ArticleService {
       })
     );
   }
+
+  deleteArticle(article: Article) {
+    this.loading = true;
+    const url = `${environment.baseUrl}articles`;
+
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      }),
+      body: article,
+    };
+
+    return this.http.delete(url, options).pipe(
+      tap((x) => {
+        this.loading = false;
+      }),
+      catchError((error) => {
+        this.loading = false;
+        return of(null);
+      })
+    );
+  }
 }

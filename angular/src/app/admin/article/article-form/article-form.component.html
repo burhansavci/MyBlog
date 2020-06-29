@@ -1,3 +1,13 @@
+<ng-container *ngIf="article">
+  <button type="button" class="btn btn-danger btn-sm float-right mb-1" (click)="openModal(template)">Delete Article</button>
+  <ng-template #template>
+    <div class="modal-body text-center">
+      <p>Do you want to delete <strong>{{article.title}}</strong> article ?</p>
+      <button type="button" class="btn btn-danger" (click)="confirm()">Yes</button>
+      <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+    </div>
+  </ng-template>
+</ng-container>
 <form [formGroup]="articleForm" class="mb-3">
   <ng-container *ngIf="isOpen">
     <app-text-input formControlName="title" [type]="'text'" [label]="'Title'" [placeholder]="'Article Title'" [class]="'form-control-sm'"

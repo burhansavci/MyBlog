@@ -45,6 +45,7 @@ import { ArticleListComponent } from './admin/article/article-list/article-list.
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { AdminNavComponent } from './nav/admin-nav/admin-nav.component';
 import { ArticleFormComponent } from './admin/article/article-form/article-form.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { ArticleFormComponent } from './admin/article/article-form/article-form.
     PaginationModule.forRoot(),
     CollapseModule.forRoot(),
     AccordionModule.forRoot(),
+    ModalModule.forRoot(),
     QuillModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
@@ -102,7 +104,7 @@ import { ArticleFormComponent } from './admin/article/article-form/article-form.
     },
     CommentService,
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
-    JwtHelperService,
+    JwtHelperService
   ],
   bootstrap: [AppComponent],
 })
