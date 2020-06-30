@@ -21,21 +21,6 @@ namespace MyBlog.Business.Mapping.AutoMapper
                 .ForMember(d => d.ArticleTranslationId, opt => opt.MapFrom(s => s.Id))
                 .ForMember(d => d.UserId, opt => opt.MapFrom(s => s.Article.UserId));
 
-
-            CreateMap<ArticleDto, Article>()
-                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.UserId != null ? s.Id : s.ArticleId));
-
-            CreateMap<ArticleDto, ArticleTranslation>()
-                .ForPath(d => d.Article.PublishDate, opt => opt.MapFrom(s => s.PublishDate))
-                .ForPath(d => d.Article.Id, opt => opt.MapFrom(s => s.ArticleId))
-                .ForPath(d => d.Article.UserId, opt => opt.MapFrom(s => s.UserId))
-                .ForPath(d => d.Article.CategoryId, opt => opt.MapFrom(s => s.CategoryId))
-                .AfterMap((s, d) =>
-                {
-                    if (s.ArticleId != null || s.UserId == null)
-                        d.Article = null;
-                });
-
             CreateMap<ArticleForDeleteDto, ArticleTranslation>()
                 .ForMember(d => d.ArticleId, opt => opt.MapFrom(s => s.Id))
                 .ForMember(d => d.Id, opt => opt.MapFrom(s => s.ArticleTranslationId));
