@@ -31,14 +31,17 @@ namespace MyBlog.Business.Concrete
             _mapper = mapper;
         }
 
-        public IDataResult<List<ArticleForReturnDto>> GetArticles()
+        public IDataResult<List<Page<ArticleForReturnDto>>> GetArticles(int startPageNumber, int endPageNumber, int pageSize)
         {
             var articles = _articleTranslationRepository.GetAllIncluding(x => x.Article.IsActive,
                                                                          x => x.Article.Category.CategoryTranslations,
                                                                          x => x.Article.Pictures)
-                                                        .OrderByDescending(x => x.Article.PublishDate);
+                                                        .OrderByDescending(x => x.Article.PublishDate)
+                                                        .ProjectTo<ArticleForReturnDto>(_mapper.ConfigurationProvider);
 
-            return new SuccessDataResult<List<ArticleForReturnDto>>(Messages.SuccessOperation, _mapper.Map<List<ArticleForReturnDto>>(articles));
+            var articleForReturnDtoPages = Page<ArticleForReturnDto>.CreatePaginatedResultList(articles, startPageNumber, endPageNumber, pageSize);
+
+            return new SuccessDataResult<List<Page<ArticleForReturnDto>>>(Messages.SuccessOperation, articleForReturnDtoPages);
         }
 
         public IDataResult<Page<ArticleForReturnDto>> GetArticlesByLanguageCode(string languageCode, int pageNumber, int pageSize)

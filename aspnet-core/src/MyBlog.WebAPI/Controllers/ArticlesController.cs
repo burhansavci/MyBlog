@@ -15,11 +15,11 @@ namespace MyBlog.WebAPI.Controllers
         }
 
 
-        [Route("api/[controller]")]
+        [Route("api/[controller]/{startPageNumber}/{endPageNumber}/{pageSize}")]
         [HttpGet]
-        public IActionResult GetArticles()
+        public IActionResult GetArticles(int startPageNumber, int endPageNumber, int pageSize)
         {
-            return Ok(_articleService.GetArticles());
+            return Ok(_articleService.GetArticles(startPageNumber, endPageNumber, pageSize));
         }
 
         [Route("api/{languageCode}/[controller]/{pageNumber}/{pageSize}")]
@@ -67,7 +67,7 @@ namespace MyBlog.WebAPI.Controllers
         [Route("api/[controller]")]
         [Authorize]
         [HttpPost]
-        public IActionResult AddArticle([FromForm]ArticleForCreationDto articleForCreationDto)
+        public IActionResult AddArticle([FromForm] ArticleForCreationDto articleForCreationDto)
         {
             return Ok(_articleService.InsertArticle(articleForCreationDto));
         }
@@ -75,7 +75,7 @@ namespace MyBlog.WebAPI.Controllers
         [Route("api/[controller]")]
         [Authorize]
         [HttpPut]
-        public IActionResult UpdateArticle([FromForm]ArticleForUpdateDto articleForUpdateDto)
+        public IActionResult UpdateArticle([FromForm] ArticleForUpdateDto articleForUpdateDto)
         {
             return Ok(_articleService.UpdateArticle(articleForUpdateDto));
         }

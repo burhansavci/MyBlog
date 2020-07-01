@@ -9,7 +9,7 @@ namespace MyBlog.Business.Abstract
     {
         IDataResult<ArticleForReturnDto> GetArticleById(string languageCode, int id);
         IDataResult<Page<ArticleForReturnDto>> GetArticlesByCategoryId(string languageCode, int categoryId, int pageNumber, int pageSize);
-        IDataResult<List<ArticleForReturnDto>> GetArticles();
+        IDataResult<List<Page<ArticleForReturnDto>>> GetArticles(int startPageNumber, int endPageNumber, int pageSize);
         IDataResult<Page<ArticleForReturnDto>> GetArticlesByLanguageCode(string languageCode, int pageNumber, int pageSize);
         IDataResult<List<ArticleForArchiveReturnDto>> GetArticlesArchive(string languageCode);
         IDataResult<Page<ArticleForReturnDto>> GetArticlesByYear(string languageCode, int year, int pageNumber, int pageSize);
