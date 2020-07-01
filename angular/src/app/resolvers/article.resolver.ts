@@ -17,6 +17,8 @@ import { catchError, map } from 'rxjs/operators';
 export class ArticleResolver implements Resolve<Article[]> {
   pageNumber = 1;
   pageSize = 5;
+  startPageNumber = 1;
+  endPageNumber = 3;
 
   constructor(
     private articleService: ArticleService,
@@ -43,13 +45,15 @@ export class ArticleResolver implements Resolve<Article[]> {
           })
         );
       }
-      return this.articleService.getArticles().pipe(
-        catchError((error) => {
-          this.alertify.error('Problem retrieving article data');
-          this.router.navigate(['/']);
-          return of(null);
-        })
-      );
+      return this.articleService
+        .getArticles(this.startPageNumber, this.endPageNumber, this.pageSize)
+        .pipe(
+          catchError((error) => {
+            this.alertify.error('Problem retrieving article data');
+            this.router.navigate(['/']);
+            return of(null);
+          })
+        );
     }
 
     if (route.paramMap.has('title')) {

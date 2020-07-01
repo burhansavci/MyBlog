@@ -14,7 +14,9 @@ import { PaginatedResult } from '../models/paginated-result';
 export class ArticleService {
   baseUrl = `${environment.baseUrl}tr/articles/`;
   loading: boolean = false;
-  private dateResultSource = new BehaviorSubject<DataResult<Article[]>>(null);
+  private dateResultSource = new BehaviorSubject<
+    DataResult<PaginatedResult<Article[]>[]>
+  >(null);
   dataResult$ = this.dateResultSource.asObservable();
   constructor(private http: HttpClient) {}
 
@@ -22,10 +24,14 @@ export class ArticleService {
     return this.http.get<DataResult<Article>>(this.baseUrl + id);
   }
 
-  getArticles() {
-    const url = `${environment.baseUrl}articles`;
-    return this.http.get<DataResult<Article[]>>(url).pipe(
-      map((dataResult: DataResult<Article[]>) => {
+  getArticles(
+    startPageNumber?: number,
+    endPageNumber?: number,
+    pageSize?: number
+  ): Observable<DataResult<PaginatedResult<Article[]>[]>> {
+    const url = `${environment.baseUrl}articles/${startPageNumber}/${endPageNumber}/${pageSize}`;
+    return this.http.get<DataResult<PaginatedResult<Article[]>[]>>(url).pipe(
+      map((dataResult: DataResult<PaginatedResult<Article[]>[]>) => {
         this.dateResultSource.next(dataResult);
         return dataResult;
       })
