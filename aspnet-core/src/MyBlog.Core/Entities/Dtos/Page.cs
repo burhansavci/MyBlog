@@ -30,11 +30,31 @@ namespace MyBlog.Core.Entities.Dtos
             return new Page<T>(items, count, pageNumber, pageSize);
         }
 
+        public static List<Page<T>> CreatePaginatedResultList(IQueryable<T> query, int startPageNumber, int endPageNumber, int pageSize)
+        {
+            var paginatedResult = new List<Page<T>>();
+            for (var pageNumber = startPageNumber; pageNumber <= endPageNumber; pageNumber++)
+            {
+                paginatedResult.Add(CreatePaginatedResult(query, pageNumber, pageSize));
+            }
+            return paginatedResult;
+        }
+
         public static async Task<Page<T>> CreatePaginatedResultAsync(IQueryable<T> query, int pageNumber, int pageSize)
         {
             var count = await query.CountAsync();
             var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
             return new Page<T>(items, count, pageNumber, pageSize);
+        }
+
+        public static async Task<List<Page<T>>> CreatePaginatedResultListAsync(IQueryable<T> query, int startPageNumber, int endPageNumber, int pageSize)
+        {
+            var paginatedResult = new List<Page<T>>();
+            for (var pageNumber = startPageNumber; pageNumber <= endPageNumber; pageNumber++)
+            {
+                paginatedResult.Add(await CreatePaginatedResultAsync(query, pageNumber, pageSize));
+            }
+            return paginatedResult;
         }
     }
 }
