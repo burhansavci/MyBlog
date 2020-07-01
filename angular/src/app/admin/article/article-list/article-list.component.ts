@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DataResult } from 'src/app/models/data-result';
 import { PaginatedResult } from 'src/app/models/paginated-result';
 import { Article } from 'src/app/models/article';
 import { ArticleService } from 'src/app/services/article.service';
@@ -13,7 +12,7 @@ import { combineLatest } from 'rxjs';
   styleUrls: ['./article-list.component.css'],
 })
 export class ArticleListComponent implements OnInit {
-  dataResult: DataResult<Article[]>;
+  paginatedResults: PaginatedResult<Article[]>[];
   displayedColumns$ = new BehaviorSubject<string[]>([
     'Id',
     'Picture',
@@ -23,10 +22,12 @@ export class ArticleListComponent implements OnInit {
     'Publish Date',
   ]);
   currentPage: number = 1;
+  endPage: number = 5;
+  retrievedPageCount: number = 5;
   pageChanged$ = new BehaviorSubject<any>({ page: 1, itemsPerPage: 5 });
   pageSize$ = new BehaviorSubject<number>(5);
   dataOnPage$ = new BehaviorSubject<Article[]>([]);
-  data$: BehaviorSubject<Article[]>;
+  data$ = new BehaviorSubject<Article[]>([]);
   tableDataSource$ = new BehaviorSubject<Article[]>([]);
 
   sortKey$ = new BehaviorSubject<string>('publishDate');
@@ -39,16 +40,24 @@ export class ArticleListComponent implements OnInit {
 
   ngOnInit(): void {
     //Load data
-    this.route.data.subscribe((data) => {
-      this.dataResult = data.dataResult;
-      if (this.dataResult) {
-        this.data$ = new BehaviorSubject<Article[]>(this.dataResult.data);
+    this.route.data.subscribe((dataResult) => {
+      this.paginatedResults = dataResult.data;
+      if (this.paginatedResults) {
+        this.data$.next(
+          this.paginatedResults
+            .map((x) => x.items)
+            .reduce((x, y) => x.concat(y))
+        );
       }
     });
-    if (!this.dataResult) {
+    if (!this.paginatedResults) {
       this.articleService.dataResult$.subscribe((dataResult) => {
-        this.dataResult = dataResult;
-        this.data$ = new BehaviorSubject<Article[]>(this.dataResult.data);
+        this.paginatedResults = dataResult.data;
+        this.data$.next(
+          this.paginatedResults
+            .map((x) => x.items)
+            .reduce((x, y) => x.concat(y))
+        );
       });
     }
 
@@ -64,17 +73,42 @@ export class ArticleListComponent implements OnInit {
       }
     );
 
-    //Handle client-side pagination
+    //Handle pagination
     combineLatest(
       this.tableDataSource$,
       this.pageChanged$,
       this.pageSize$
     ).subscribe(([allSources, currentPage, pageSize]) => {
-      const startingIndex = (currentPage.page - 1) * pageSize;
       this.currentPage = currentPage.page;
-      const onPage = allSources.slice(startingIndex, startingIndex + pageSize);
-      this.dataOnPage$.next(onPage);
+      const startingIndex =
+        this.retrievedPageCount - (this.endPage - this.currentPage) - 1;
+
+      if (this.currentPage > this.endPage) {
+        this.handleServerSidePagination(pageSize);
+      } else if (this.currentPage <= this.endPage - this.retrievedPageCount) {
+        this.handleServerSidePagination(pageSize);
+      } else {
+        const onPage = allSources.slice(
+          startingIndex,
+          startingIndex + pageSize
+        );
+        this.dataOnPage$.next(onPage);
+      }
     });
+  }
+
+  handleServerSidePagination(pageSize: number) {
+    this.endPage = this.currentPage + this.retrievedPageCount - 1;
+    this.articleService
+      .getArticles(this.currentPage, this.endPage, pageSize)
+      .subscribe((dataResult) => {
+        this.paginatedResults = dataResult.data;
+        this.data$.next(
+          this.paginatedResults
+            .map((x) => x.items)
+            .reduce((x, y) => x.concat(y))
+        );
+      });
   }
 
   nestedSort(prop: any, arr: any[], sortDirection: string): any[] {

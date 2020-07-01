@@ -10,7 +10,7 @@ export class AdminHomeComponent implements OnInit {
   render: boolean = false;
 
   constructor(private articleService: ArticleService) {
-    this.articleService.getArticles().subscribe((dataResult) => {
+    this.articleService.getArticles(1, 5, 5).subscribe((dataResult) => {
       this.render = true;
     });
   }
