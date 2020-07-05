@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MyBlog.Business.Abstract;
 using MyBlog.Business.Constants;
+using MyBlog.Core.Entities.Dtos;
 using MyBlog.Core.Utilities.Results;
 using MyBlog.DataAccess.Abstract;
 using MyBlog.Entities.Concrete;
 using MyBlog.Entities.Dtos;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MyBlog.Business.Concrete
 {
@@ -22,10 +25,22 @@ namespace MyBlog.Business.Concrete
             _mapper = mapper;
         }
 
+        public IDataResult<List<Page<CategoryForReturnDto>>> GetCategories(int startPageNumber, int endPageNumber, int pageSize)
+        {
+            var categories = _categoryTranslationRepository.GetAllIncluding(x => x.Category.IsActive,
+                                                                            x => x.Category)
+                                                           .OrderByDescending(x => x.Category.CreatedDate)
+                                                           .ProjectTo<CategoryForReturnDto>(_mapper.ConfigurationProvider);
+
+            var categoryForReturnDtoPages = Page<CategoryForReturnDto>.CreatePaginatedResultList(categories, startPageNumber, endPageNumber, pageSize);
+
+            return new SuccessDataResult<List<Page<CategoryForReturnDto>>>(Messages.SuccessOperation, categoryForReturnDtoPages);
+        }
+
         public IDataResult<CategoryForReturnDto> GetCategoryByIdAndLanguage(int id, string languageCode)
         {
             var category = _categoryTranslationRepository.GetIncluding(x => x.Language.LanguageCode == languageCode &&
-                                                                            x.CategoryId == id, 
+                                                                            x.CategoryId == id,
                                                                        x => x.Category);
 
             return new SuccessDataResult<CategoryForReturnDto>(Messages.SuccessOperation, _mapper.Map<CategoryForReturnDto>(category));
@@ -33,7 +48,7 @@ namespace MyBlog.Business.Concrete
 
         public IDataResult<List<CategoryForReturnDto>> GetCategoriesByLanguage(string languageCode)
         {
-            var categories = _categoryTranslationRepository.GetAllIncludingList(x => x.LanguageCode == languageCode, 
+            var categories = _categoryTranslationRepository.GetAllIncludingList(x => x.LanguageCode == languageCode,
                                                                                 x => x.Category);
 
             return new SuccessDataResult<List<CategoryForReturnDto>>(Messages.SuccessOperation, _mapper.Map<List<CategoryForReturnDto>>(categories));
@@ -54,7 +69,7 @@ namespace MyBlog.Business.Concrete
         }
 
         public IResult DeleteCategory(CategoryDto categoryDto)
-        {         
+        {
             if (categoryDto.CategoryId != null)
             {
                 var categoryToBeSoftDeleted = _mapper.Map<Category>(categoryDto);

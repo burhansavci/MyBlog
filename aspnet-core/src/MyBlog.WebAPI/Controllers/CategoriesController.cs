@@ -14,6 +14,13 @@ namespace MyBlog.WebAPI.Controllers
             _categoryService = categoryService;
         }
 
+        [Route("api/[controller]/{startPageNumber}/{endPageNumber}/{pageSize}")]
+        [HttpGet]
+        public IActionResult GetCategories(int startPageNumber, int endPageNumber, int pageSize)
+        {
+            return Ok(_categoryService.GetCategories(startPageNumber, endPageNumber, pageSize));
+        }
+
         [Route("api/{languageCode}/[controller]/")]
         [HttpGet]
         public IActionResult GetCategoriesByLanguage(string languageCode)

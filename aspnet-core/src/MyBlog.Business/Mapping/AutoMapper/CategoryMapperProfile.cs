@@ -11,7 +11,8 @@ namespace MyBlog.Business.Mapping.AutoMapper
 
             CreateMap<CategoryTranslation, CategoryForReturnDto>()
                 .ForMember(d => d.CreatedDate, opt => opt.MapFrom(s => s.Category.CreatedDate))
-                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.CategoryId));
+                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.CategoryId))
+                .ForMember(d => d.CategoryTranslationId, opt => opt.MapFrom(s => s.Id));
 
 
             CreateMap<CategoryDto, Category>()
