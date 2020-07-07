@@ -13,6 +13,8 @@ import { LoginComponent } from './admin/login/login.component';
 import { ArticleListComponent } from './admin/article/article-list/article-list.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { ArticleFormComponent } from './admin/article/article-form/article-form.component';
+import { CategoryListComponent } from './admin/category/category-list/category-list.component';
+import { CategoryResolver } from './resolvers/category.resolver';
 
 const routes: Routes = [
   {
@@ -103,6 +105,16 @@ const routes: Routes = [
             path: 'update/:id',
             component: ArticleFormComponent,
             resolve: { dataResult: ArticleResolver },
+          },
+        ],
+      },
+      {
+        path: 'category',
+        children: [
+          {
+            path: 'list',
+            component: CategoryListComponent,
+            resolve: { dataResult: CategoryResolver },
           },
         ],
       },

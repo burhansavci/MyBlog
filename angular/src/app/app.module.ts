@@ -46,6 +46,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { AdminNavComponent } from './nav/admin-nav/admin-nav.component';
 import { ArticleFormComponent } from './admin/article/article-form/article-form.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { CategoryListComponent } from './admin/category/category-list/category-list.component';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     AdminLayoutComponent,
     AdminNavComponent,
     ArticleFormComponent,
+    CategoryListComponent,
   ],
   imports: [
     BrowserModule,
