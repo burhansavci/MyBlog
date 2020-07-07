@@ -58,7 +58,7 @@ export class ArticleFormComponent implements OnInit {
       this.article = data?.dataResult?.data;
       this.mainPictureUrl = this.article?.mainPicture.url;
     });
-    this.categoryService.getCategories().subscribe((dateResult) => {
+    this.categoryService.getCategoriesByLanguageCode().subscribe((dateResult) => {
       this.categories = dateResult.data;
     });
     this.languageService.getLanguages().subscribe((dateResult) => {
