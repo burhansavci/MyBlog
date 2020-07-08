@@ -38,9 +38,9 @@ namespace MyBlog.WebAPI.Controllers
         [Route("api/[controller]")]
         [Authorize]
         [HttpPost]
-        public IActionResult AddCategory(CategoryDto categoryDto)
+        public IActionResult AddCategory(CategoryForCreationDto categoryForCreationDto)
         {
-            return Ok(_categoryService.InsertCategory(categoryDto));
+            return Ok(_categoryService.InsertCategory(categoryForCreationDto));
         }
 
         [Route("api/[controller]")]

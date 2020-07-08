@@ -54,10 +54,10 @@ namespace MyBlog.Business.Concrete
             return new SuccessDataResult<List<CategoryForReturnDto>>(Messages.SuccessOperation, _mapper.Map<List<CategoryForReturnDto>>(categories));
         }
 
-        public IResult InsertCategory(CategoryDto categoryDto)
+        public IResult InsertCategory(CategoryForCreationDto categoryForCreationDto)
         {
-            var categoryToBeInserted = _mapper.Map<CategoryTranslation>(categoryDto);
-            _categoryTranslationRepository.Insert(categoryToBeInserted);
+            var categoryToBeInserted = _mapper.Map<CategoryTranslation>(categoryForCreationDto);
+            var insertedArticle = _categoryTranslationRepository.Insert(categoryToBeInserted);
             return new SuccessResult(string.Format(Messages.SuccessfulInsert, nameof(Category)));
         }
 
