@@ -31,6 +31,17 @@ export class CategoryResolver implements Resolve<Category[]> {
     state: RouterStateSnapshot
   ): Observable<Category[]> {
 
+    if (route.paramMap.has('id')) {
+      const id = Number(route.paramMap.get('id'));
+      return this.categoryService.getCategoryById(id).pipe(
+        catchError((error) => {
+          this.alertify.error('Problem retrieving category data');
+          this.router.navigate(['/']);
+          return of(null);
+        })
+      );
+    }
+
     return this.categoryService
       .getCategories(this.startPageNumber, this.endPageNumber, this.pageSize)
       .pipe(

@@ -1,0 +1,39 @@
+<ng-container *ngIf="category">
+  <button type="button" class="btn btn-danger btn-sm float-right mb-1" (click)="openModal(template)">Delete Article</button>
+  <ng-template #template>
+    <div class="modal-body text-center">
+      <p>Do you want to delete <strong>{{category.name}}</strong> article ?</p>
+      <button type="button" class="btn btn-danger" (click)="confirm()">Yes</button>
+      <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+    </div>
+  </ng-template>
+</ng-container>
+<form [formGroup]="categoryForm" class="mb-3">
+  <ng-container *ngIf="isOpen">
+    <app-text-input formControlName="name" [type]="'text'" [label]="'Name'" [placeholder]="'Category Title'" [class]="'form-control-sm'"
+      [labelClass]="'col-form-label col-form-label-sm'"></app-text-input>
+    <div class="form-row">
+      <div class="col">
+        <app-textarea-input formControlName="description" [rows]='3' [label]="'Description'" [placeholder]="'Category Description'"
+          [class]="'form-control-sm'" [labelClass]="'col-form-label col-form-label-sm'">
+        </app-textarea-input>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col">
+        <div class="form-group" *ngIf="languages">
+          <label for="Language" class="col-form-label col-form-label-sm">Language</label>
+          <select formControlName="languageCode" class="form-control form-control-sm">
+            <option value selected disabled>Select Language</option>
+            <option *ngFor="let language of languages" [value]="language.languageCode">{{language.name}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <button type="submit" (click)="onSubmit()" [disabled]="categoryForm.pristine || categoryForm.invalid || categoryService.loading"
+    class="btn btn-primary">Submit <i *ngIf="categoryService.loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></i>
+  </button>
+  <button type="reset" class="btn btn-danger ml-1">Reset</button>
+</form>
+

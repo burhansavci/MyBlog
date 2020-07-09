@@ -15,6 +15,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { ArticleFormComponent } from './admin/article/article-form/article-form.component';
 import { CategoryListComponent } from './admin/category/category-list/category-list.component';
 import { CategoryResolver } from './resolvers/category.resolver';
+import { CategoryFormComponent } from './admin/category/category-form/category-form.component';
 
 const routes: Routes = [
   {
@@ -114,6 +115,15 @@ const routes: Routes = [
           {
             path: 'list',
             component: CategoryListComponent,
+            resolve: { dataResult: CategoryResolver },
+          },
+          {
+            path: 'add',
+            component: CategoryFormComponent,
+          },
+          {
+            path: 'update/:id',
+            component: CategoryFormComponent,
             resolve: { dataResult: CategoryResolver },
           },
         ],
