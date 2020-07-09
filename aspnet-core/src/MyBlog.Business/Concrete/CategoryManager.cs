@@ -46,6 +46,13 @@ namespace MyBlog.Business.Concrete
             return new SuccessDataResult<CategoryForReturnDto>(Messages.SuccessOperation, _mapper.Map<CategoryForReturnDto>(category));
         }
 
+        public IDataResult<CategoryForReturnDto> GetCategoryById(int id)
+        {
+            var category = _categoryTranslationRepository.GetIncluding(x => x.CategoryId == id,
+                                                                       x => x.Category);
+
+            return new SuccessDataResult<CategoryForReturnDto>(Messages.SuccessOperation, _mapper.Map<CategoryForReturnDto>(category));
+        }
         public IDataResult<List<CategoryForReturnDto>> GetCategoriesByLanguage(string languageCode)
         {
             var categories = _categoryTranslationRepository.GetAllIncludingList(x => x.LanguageCode == languageCode,

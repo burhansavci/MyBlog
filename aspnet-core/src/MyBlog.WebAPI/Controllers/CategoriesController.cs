@@ -34,6 +34,12 @@ namespace MyBlog.WebAPI.Controllers
         {
             return Ok(_categoryService.GetCategoryByIdAndLanguage(id, languageCode));
         }
+        [Route("api/categories/{id}")]
+        [HttpGet]
+        public IActionResult GetCategoryById(int id)
+        {
+            return Ok(_categoryService.GetCategoryById(id));
+        }
 
         [Route("api/[controller]")]
         [Authorize]

@@ -11,6 +11,7 @@ namespace MyBlog.Business.Abstract
         IDataResult<List<Page<CategoryForReturnDto>>> GetCategories(int startPageNumber, int endPageNumber, int pageSize);
         IDataResult<CategoryForReturnDto> GetCategoryByIdAndLanguage(int id, string languageCode);
         IDataResult<List<CategoryForReturnDto>> GetCategoriesByLanguage(string languageCode);
+        IDataResult<CategoryForReturnDto> GetCategoryById(int id);
         IResult InsertCategory(CategoryForCreationDto categoryForCreationDto);
         IResult UpdateCategory(CategoryDto categoryDto);
         IResult DeleteCategory(CategoryDto categoryDto);
