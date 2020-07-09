@@ -22,8 +22,8 @@ export class ArticleListComponent implements OnInit {
     'Publish Date',
   ]);
   currentPage: number = 1;
-  endPage: number = 5;
-  retrievedPageCount: number = 5;
+  endPage: number = 3;
+  retrievedPageCount: number = 3;
   pageChanged$ = new BehaviorSubject<any>({ page: 1, itemsPerPage: 5 });
   pageSize$ = new BehaviorSubject<number>(5);
   dataOnPage$ = new BehaviorSubject<Article[]>([]);
@@ -81,8 +81,7 @@ export class ArticleListComponent implements OnInit {
     ).subscribe(([allSources, currentPage, pageSize]) => {
       this.currentPage = currentPage.page;
       const startingIndex =
-        this.retrievedPageCount - (this.endPage - this.currentPage) - 1;
-
+        ((this.currentPage - 1) % this.retrievedPageCount) * pageSize;
       if (this.currentPage > this.endPage) {
         this.handleServerSidePagination(pageSize);
       } else if (this.currentPage <= this.endPage - this.retrievedPageCount) {
