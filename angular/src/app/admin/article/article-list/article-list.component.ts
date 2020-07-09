@@ -97,9 +97,11 @@ export class ArticleListComponent implements OnInit {
   }
 
   handleServerSidePagination(pageSize: number) {
-    this.endPage = this.currentPage + this.retrievedPageCount - 1;
+    const startPage =
+      this.currentPage - ((this.currentPage - 1) % this.retrievedPageCount);
+    this.endPage = startPage + this.retrievedPageCount - 1;
     this.articleService
-      .getArticles(this.currentPage, this.endPage, pageSize)
+      .getArticles(startPage, this.endPage, pageSize)
       .subscribe((dataResult) => {
         this.paginatedResults = dataResult.data;
         this.data$.next(
