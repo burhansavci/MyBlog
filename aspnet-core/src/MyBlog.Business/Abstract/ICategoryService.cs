@@ -13,7 +13,7 @@ namespace MyBlog.Business.Abstract
         IDataResult<List<CategoryForReturnDto>> GetCategoriesByLanguage(string languageCode);
         IDataResult<CategoryForReturnDto> GetCategoryById(int id);
         IResult InsertCategory(CategoryForCreationDto categoryForCreationDto);
-        IResult UpdateCategory(CategoryDto categoryDto);
+        IResult UpdateCategory(CategoryForUpdateDto categoryForUpdateDto);
         IResult DeleteCategory(CategoryDto categoryDto);
     }
 }

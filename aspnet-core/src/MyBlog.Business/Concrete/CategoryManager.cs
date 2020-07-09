@@ -64,13 +64,13 @@ namespace MyBlog.Business.Concrete
         public IResult InsertCategory(CategoryForCreationDto categoryForCreationDto)
         {
             var categoryToBeInserted = _mapper.Map<CategoryTranslation>(categoryForCreationDto);
-            var insertedArticle = _categoryTranslationRepository.Insert(categoryToBeInserted);
+            _categoryTranslationRepository.Insert(categoryToBeInserted);
             return new SuccessResult(string.Format(Messages.SuccessfulInsert, nameof(Category)));
         }
 
-        public IResult UpdateCategory(CategoryDto categoryDto)
+        public IResult UpdateCategory(CategoryForUpdateDto categoryForUpdateDto)
         {
-            var categoryToBeUpdated = _mapper.Map<CategoryTranslation>(categoryDto);
+            var categoryToBeUpdated = _mapper.Map<CategoryTranslation>(categoryForUpdateDto);
             _categoryTranslationRepository.Update(categoryToBeUpdated);
             return new SuccessResult(string.Format(Messages.SuccessfulUpdate, nameof(Category)));
         }

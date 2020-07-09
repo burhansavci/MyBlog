@@ -52,9 +52,9 @@ namespace MyBlog.WebAPI.Controllers
         [Route("api/[controller]")]
         [Authorize]
         [HttpPut]
-        public IActionResult UpdateCategory(CategoryDto categoryDto)
+        public IActionResult UpdateCategory(CategoryForUpdateDto categoryForUpdateDto)
         {
-            return Ok(_categoryService.UpdateCategory(categoryDto));
+            return Ok(_categoryService.UpdateCategory(categoryForUpdateDto));
         }
 
         [Route("api/[controller]")]

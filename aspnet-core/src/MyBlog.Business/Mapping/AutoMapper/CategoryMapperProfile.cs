@@ -14,6 +14,11 @@ namespace MyBlog.Business.Mapping.AutoMapper
                 .ForMember(d => d.Id, opt => opt.MapFrom(s => s.CategoryId))
                 .ForMember(d => d.CategoryTranslationId, opt => opt.MapFrom(s => s.Id));
 
+            CreateMap<CategoryForUpdateDto, CategoryTranslation>()
+                .ForPath(d => d.Category.CreatedDate, opt => opt.MapFrom(s => s.CreatedDate))
+                .ForPath(d => d.Category.Id, opt => opt.MapFrom(s => s.Id))
+                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.CategoryTranslationId));
+
             CreateMap<CategoryForCreationDto, CategoryTranslation>()
                .ForPath(d => d.Category.CreatedDate, opt => opt.MapFrom(s => s.CreatedDate));
 
