@@ -75,15 +75,19 @@ namespace MyBlog.Business.Concrete
             return new SuccessResult(string.Format(Messages.SuccessfulUpdate, nameof(Category)));
         }
 
-        public IResult DeleteCategory(CategoryDto categoryDto)
+        public IResult DeleteCategory(CategoryForDeleteDto categoryForDeleteDto)
         {
-            if (categoryDto.CategoryId != null)
+            //TO DO: Implement transaction
+
+            var categoryToBeDeleted = _mapper.Map<CategoryTranslation>(categoryForDeleteDto);
+            _categoryTranslationRepository.Delete(categoryToBeDeleted);
+            var category = _categoryRepository.GetIncluding(x => x.Id == categoryForDeleteDto.Id, x => x.CategoryTranslations);
+
+            if (category.CategoryTranslations.Count == 0)
             {
-                var categoryToBeSoftDeleted = _mapper.Map<Category>(categoryDto);
+                var categoryToBeSoftDeleted = _mapper.Map<Category>(category);
                 _categoryRepository.SoftDelete(categoryToBeSoftDeleted);
             }
-            var categoryToBeDeleted = _mapper.Map<CategoryTranslation>(categoryDto);
-            _categoryTranslationRepository.Delete(categoryToBeDeleted);
             return new SuccessResult(string.Format(Messages.SuccessfulDelete, nameof(Category)));
         }
 

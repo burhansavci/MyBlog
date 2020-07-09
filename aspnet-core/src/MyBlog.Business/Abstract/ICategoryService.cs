@@ -14,6 +14,6 @@ namespace MyBlog.Business.Abstract
         IDataResult<CategoryForReturnDto> GetCategoryById(int id);
         IResult InsertCategory(CategoryForCreationDto categoryForCreationDto);
         IResult UpdateCategory(CategoryForUpdateDto categoryForUpdateDto);
-        IResult DeleteCategory(CategoryDto categoryDto);
+        IResult DeleteCategory(CategoryForDeleteDto categoryForDeleteDto);
     }
 }

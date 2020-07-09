@@ -60,9 +60,9 @@ namespace MyBlog.WebAPI.Controllers
         [Route("api/[controller]")]
         [Authorize]
         [HttpDelete]
-        public IActionResult DeleteCategory(CategoryDto categoryDto)
+        public IActionResult DeleteCategory(CategoryForDeleteDto categoryForDeleteDto)
         {
-            return Ok(_categoryService.DeleteCategory(categoryDto));
+            return Ok(_categoryService.DeleteCategory(categoryForDeleteDto));
         }
     }
 }
