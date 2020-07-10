@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MyBlog.Business.Abstract;
 using MyBlog.Business.Constants;
+using MyBlog.Core.Entities.Dtos;
 using MyBlog.Core.Utilities.Results;
 using MyBlog.DataAccess.Abstract;
 using MyBlog.Entities.Concrete;
@@ -25,10 +27,16 @@ namespace MyBlog.Business.Concrete
             return new SuccessDataResult<LanguageDto>(Messages.SuccessOperation, _mapper.Map<LanguageDto>(language));
         }
 
-        public IDataResult<List<LanguageDto>> GetLanguages()
-        {
+        public IDataResult<List<LanguageDto>> GetLanguages() { 
             var languages = _languageRepository.GetAllList();
             return new SuccessDataResult<List<LanguageDto>>(Messages.SuccessOperation, _mapper.Map<List<LanguageDto>>(languages));
+        }
+
+        public IDataResult<List<Page<LanguageDto>>> GetPaginatedLanguages(int startPageNumber, int endPageNumber, int pageSize)
+        {
+            var languages = _languageRepository.GetAll().ProjectTo<LanguageDto>(_mapper.ConfigurationProvider);
+            var languageDtos =Page<LanguageDto>.CreatePaginatedResultList(languages, startPageNumber, endPageNumber, pageSize);
+            return new SuccessDataResult<List<Page<LanguageDto>>>(Messages.SuccessOperation, languageDtos);
         }
 
         public IResult InsertLanguage(LanguageDto languageDto)

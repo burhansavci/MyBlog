@@ -16,9 +16,15 @@ namespace MyBlog.WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetLanguages()
-        {
+        public IActionResult GetLanguages() { 
             return Ok(_languageService.GetLanguages());
+        }
+
+        [Route("{startPageNumber}/{endPageNumber}/{pageSize}")]
+        [HttpGet]
+        public IActionResult GetPaginatedLanguages(int startPageNumber, int endPageNumber, int pageSize)
+        {
+            return Ok(_languageService.GetPaginatedLanguages(startPageNumber, endPageNumber, pageSize));
         }
 
         [HttpGet("{languageCode}")]
