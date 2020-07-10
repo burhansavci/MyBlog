@@ -28,7 +28,7 @@ export class CategoryListComponent implements OnInit {
   data$ = new BehaviorSubject<Category[]>([]);
   tableDataSource$ = new BehaviorSubject<Category[]>([]);
 
-  sortKey$ = new BehaviorSubject<string>('publishDate');
+  sortKey$ = new BehaviorSubject<string>('createdDate');
   sortDirection$ = new BehaviorSubject<string>('desc');
 
   constructor(
@@ -94,6 +94,7 @@ export class CategoryListComponent implements OnInit {
       }
     });
   }
+
   handleServerSidePagination(pageSize: number) {
     const startPage =
       this.currentPage - ((this.currentPage - 1) % this.retrievedPageCount);
