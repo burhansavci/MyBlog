@@ -25,18 +25,6 @@ namespace MyBlog.Business.Mapping.AutoMapper
 
             CreateMap<CategoryForCreationDto, CategoryTranslation>()
                .ForPath(d => d.Category.CreatedDate, opt => opt.MapFrom(s => s.CreatedDate));
-
-            CreateMap<CategoryDto, Category>()
-                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.CategoryId));
-
-            CreateMap<CategoryDto, CategoryTranslation>()
-                .ForPath(d => d.Category.CreatedDate, opt => opt.MapFrom(s => s.CreatedDate))
-                .ForPath(d => d.Category.Id, opt => opt.MapFrom(s => s.CategoryId))
-                .AfterMap((s, d) =>
-                {
-                    if (s.CategoryId != null || s.LanguageCode == null)
-                        d.Category = null;
-                });
         }
     }
 }
