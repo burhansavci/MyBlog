@@ -1,0 +1,34 @@
+<button class="btn btn-primary float-right mb-1 btn-sm" [routerLink]="['/admin/language/add']">Add Language</button>
+<div class="table-responsive">
+  <table cdk-table [dataSource]="dataOnPage$" class="table table-hover table-striped">
+    <ng-container cdkColumnDef="LanguageCode">
+      <th cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('languageCode')">
+        <i class="fas fa-long-arrow-alt-up"
+          [ngClass]="(sortDirection$.value==='asc'&&sortKey$.value === 'languageCode')?'text-info':'text-muted'"></i>
+        <i class="fas fa-long-arrow-alt-down"
+          [ngClass]="(sortDirection$.value==='desc' &&sortKey$.value === 'languageCode')?'text-info':'text-muted'"></i> LanguageCode </th>
+      <td cdk-cell *cdkCellDef="let row"> {{row.languageCode}} </td>
+    </ng-container>
+    <ng-container cdkColumnDef="Name">
+      <th cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('name')">
+        <i class="fas fa-long-arrow-alt-up" [ngClass]="(sortDirection$.value==='asc'&&sortKey$.value === 'name')?'text-info':'text-muted'"></i>
+        <i class="fas fa-long-arrow-alt-down" [ngClass]="(sortDirection$.value==='desc' &&sortKey$.value === 'name')?'text-info':'text-muted'"></i>
+        Name </th>
+      <td cdk-cell *cdkCellDef="let row"> {{row.name}} </td>
+    </ng-container>
+    <ng-container cdkColumnDef="Default">
+      <th cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('isDefault')">
+        <i class="fas fa-long-arrow-alt-up" [ngClass]="(sortDirection$.value==='asc'&&sortKey$.value === 'isDefault')?'text-info':'text-muted'"></i>
+        <i class="fas fa-long-arrow-alt-down" [ngClass]="(sortDirection$.value==='desc' &&sortKey$.value === 'isDefault')?'text-info':'text-muted'"></i>
+        Default </th>
+      <td cdk-cell *cdkCellDef="let row"> {{row.isDefault|transformBoolean}} </td>
+    </ng-container>
+    <tr cdk-header-row *cdkHeaderRowDef="displayedColumns$.value"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: displayedColumns$.value" style="cursor:pointer;" [routerLink]="['/admin/language/update',row.id]"></tr>
+  </table>
+</div>
+<div class="d-flex justify-content-center bg-light">
+  <pagination [boundaryLinks]="true" [totalItems]="paginatedResults[0].totalCount" [itemsPerPage]="5" [(ngModel)]="currentPage"
+    (pageChanged)="pageChanged$.next($event)" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+  </pagination>
+</div>

@@ -48,6 +48,8 @@ import { ArticleFormComponent } from './admin/article/article-form/article-form.
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { CategoryListComponent } from './admin/category/category-list/category-list.component';
 import { CategoryFormComponent } from './admin/category/category-form/category-form.component';
+import { LanguageListComponent } from './admin/language/language-list/language-list.component';
+import { TransformBooleanPipe } from './pipes/transform-boolean.pipe';
 
 @NgModule({
   declarations: [
@@ -77,6 +79,8 @@ import { CategoryFormComponent } from './admin/category/category-form/category-f
     ArticleFormComponent,
     CategoryListComponent,
     CategoryFormComponent,
+    LanguageListComponent,
+    TransformBooleanPipe
   ],
   imports: [
     BrowserModule,

@@ -16,6 +16,8 @@ import { ArticleFormComponent } from './admin/article/article-form/article-form.
 import { CategoryListComponent } from './admin/category/category-list/category-list.component';
 import { CategoryResolver } from './resolvers/category.resolver';
 import { CategoryFormComponent } from './admin/category/category-form/category-form.component';
+import { LanguageResolver } from './resolvers/language.resolver';
+import { LanguageListComponent } from './admin/language/language-list/language-list.component';
 
 const routes: Routes = [
   {
@@ -125,6 +127,16 @@ const routes: Routes = [
             path: 'update/:id',
             component: CategoryFormComponent,
             resolve: { dataResult: CategoryResolver },
+          },
+        ],
+      },
+      {
+        path: 'language',
+        children: [
+          {
+            path: 'list',
+            component: LanguageListComponent,
+            resolve: { dataResult: LanguageResolver },
           },
         ],
       },
