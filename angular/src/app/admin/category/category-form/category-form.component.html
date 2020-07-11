@@ -1,8 +1,8 @@
 <ng-container *ngIf="category">
-  <button type="button" class="btn btn-danger btn-sm float-right mb-1" (click)="openModal(template)">Delete Article</button>
+  <button type="button" class="btn btn-danger btn-sm float-right mb-1" (click)="openModal(template)">Delete Category</button>
   <ng-template #template>
     <div class="modal-body text-center">
-      <p>Do you want to delete <strong>{{category.name}}</strong> article ?</p>
+      <p>Do you want to delete <strong>{{category.name}}</strong> category ?</p>
       <button type="button" class="btn btn-danger" (click)="confirm()">Yes</button>
       <button type="button" class="btn btn-primary" (click)="decline()">No</button>
     </div>
