@@ -24,7 +24,7 @@
       <td cdk-cell *cdkCellDef="let row"> {{row.isDefault|transformBoolean}} </td>
     </ng-container>
     <tr cdk-header-row *cdkHeaderRowDef="displayedColumns$.value"></tr>
-    <tr cdk-row *cdkRowDef="let row; columns: displayedColumns$.value" style="cursor:pointer;" [routerLink]="['/admin/language/update',row.id]"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: displayedColumns$.value" style="cursor:pointer;" [routerLink]="['/admin/language/update',row.languageCode]"></tr>
   </table>
 </div>
 <div class="d-flex justify-content-center bg-light">
