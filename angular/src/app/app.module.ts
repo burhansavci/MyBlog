@@ -50,6 +50,7 @@ import { CategoryListComponent } from './admin/category/category-list/category-l
 import { CategoryFormComponent } from './admin/category/category-form/category-form.component';
 import { LanguageListComponent } from './admin/language/language-list/language-list.component';
 import { TransformBooleanPipe } from './pipes/transform-boolean.pipe';
+import { LanguageFormComponent } from './admin/language/language-form/language-form.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import { TransformBooleanPipe } from './pipes/transform-boolean.pipe';
     CategoryListComponent,
     CategoryFormComponent,
     LanguageListComponent,
-    TransformBooleanPipe
+    TransformBooleanPipe,
+    LanguageFormComponent
   ],
   imports: [
     BrowserModule,

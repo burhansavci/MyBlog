@@ -1,0 +1,24 @@
+<ng-container *ngIf="language">
+  <button type="button" class="btn btn-danger btn-sm float-right mb-1" (click)="openModal(template)">Delete Language</button>
+  <ng-template #template>
+    <div class="modal-body text-center">
+      <p>Do you want to delete <strong>{{language.name}}</strong> language ?</p>
+      <button type="button" class="btn btn-danger" (click)="confirm()">Yes</button>
+      <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+    </div>
+  </ng-template>
+</ng-container>
+<form [formGroup]="languageForm" class="mb-3">
+  <app-text-input formControlName="name" [type]="'text'" [label]="'Name'" [placeholder]="'Language Name'" [class]="'form-control-sm'"
+    [labelClass]="'col-form-label col-form-label-sm'"></app-text-input>
+  <app-text-input formControlName="languageCode" [type]="'text'" [label]="'Code'" [placeholder]="'Language Code'" [class]="'form-control-sm'"
+    [labelClass]="'col-form-label col-form-label-sm'"></app-text-input>
+    <div class="form-group form-check">
+      <input type="checkbox" class="form-check-input" formControlName="isDefault">
+      <label class="form-check-label" for="Default">Default</label>
+    </div>
+  <button type="submit" (click)="onSubmit()" [disabled]="languageForm.pristine || languageForm.invalid || languageService.loading"
+    class="btn btn-primary">Submit <i *ngIf="languageService.loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></i>
+  </button>
+  <button type="reset" class="btn btn-danger ml-1">Reset</button>
+</form>

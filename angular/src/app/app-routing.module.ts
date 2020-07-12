@@ -18,6 +18,7 @@ import { CategoryResolver } from './resolvers/category.resolver';
 import { CategoryFormComponent } from './admin/category/category-form/category-form.component';
 import { LanguageResolver } from './resolvers/language.resolver';
 import { LanguageListComponent } from './admin/language/language-list/language-list.component';
+import { LanguageFormComponent } from './admin/language/language-form/language-form.component';
 
 const routes: Routes = [
   {
@@ -136,6 +137,15 @@ const routes: Routes = [
           {
             path: 'list',
             component: LanguageListComponent,
+            resolve: { dataResult: LanguageResolver },
+          },
+          {
+            path: 'add',
+            component: LanguageFormComponent,
+          },
+          {
+            path: 'update/:languageCode',
+            component: LanguageFormComponent,
             resolve: { dataResult: LanguageResolver },
           },
         ],

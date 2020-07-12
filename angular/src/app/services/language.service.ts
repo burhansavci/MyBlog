@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse,
+  HttpResponse,
+} from '@angular/common/http';
 import { Language } from '../models/language';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 import { DataResult } from '../models/data-result';
 import { PaginatedResult } from '../models/paginated-result';
-import { map } from 'rxjs/operators';
+import { map, tap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -40,6 +45,64 @@ export class LanguageService {
   getLanguageByCode(languageCode: string) {
     return this.http.get<DataResult<Language>>(
       `${this.baseUrl}/${languageCode}`
+    );
+  }
+
+  addLanguage(language: Language){
+    this.loading = true;
+    let headers = new HttpHeaders();
+    headers = headers.set(
+      'Authorization',
+      `Bearer ${localStorage.getItem('token')}`
+    );
+    return this.http.post(this.baseUrl, language, { headers }).pipe(
+      tap((x) => {
+        this.loading = false;
+      }),
+      catchError((error) => {
+        this.loading = false;
+        return of(null);
+      })
+    );
+  }
+
+  updateLanguage(language: Language) {
+    this.loading = true;
+    let headers = new HttpHeaders();
+    headers = headers.set(
+      'Authorization',
+      `Bearer ${localStorage.getItem('token')}`
+    );
+    return this.http.put(this.baseUrl, language, { headers }).pipe(
+      tap((x) => {
+        this.loading = false;
+      }),
+      catchError((error) => {
+        this.loading = false;
+        return of(null);
+      })
+    );
+  }
+
+  deleteLanguage(language: Language) {
+    this.loading = true;
+
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      }),
+      body: language,
+    };
+
+    return this.http.delete(this.baseUrl, options).pipe(
+      tap((x) => {
+        this.loading = false;
+      }),
+      catchError((error) => {
+        this.loading = false;
+        return of(null);
+      })
     );
   }
 }
