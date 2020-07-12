@@ -10,5 +10,11 @@ namespace MyBlog.DataAccess.Concrete.EntityFrameworkCore.Repositories
         public EfCoreLanguageRepository(DbContext dbContext) : base(dbContext)
         {
         }
+        public void SoftDelete(Language language)
+        {
+            language.IsActive = false;
+            _dbContext.Entry(language).Property(c => c.IsActive).IsModified = true;
+            _dbContext.SaveChanges();
+        }
     }
 }
