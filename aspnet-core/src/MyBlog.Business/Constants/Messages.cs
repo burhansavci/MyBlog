@@ -12,5 +12,6 @@
         public const string SuccessfulUpdate = "{0} was successfully updated.";
         public const string SuccessfulDelete = "{0} was successfully deleted.";
         public const string SuccessOperation = "Operation was successful";
+        public const string CannotCascadeDelete = "{0} object cannot be deleted bacause of exist relationships {1}";
     }
 }
