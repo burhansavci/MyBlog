@@ -48,8 +48,11 @@ namespace MyBlog.Business.Concrete
             if (languageToBeInserted.IsDefault)
             {
                 var defaultLanguage = _languageRepository.Get(x => x.IsDefault && x.IsActive);
-                defaultLanguage.IsDefault = false;
-                _languageRepository.Update(defaultLanguage);
+                if (defaultLanguage != null)
+                {
+                    defaultLanguage.IsDefault = false;
+                    _languageRepository.Update(defaultLanguage);
+                }
             }
             _languageRepository.Insert(languageToBeInserted);
             return new SuccessResult(string.Format(Messages.SuccessfulInsert, nameof(Language)));
