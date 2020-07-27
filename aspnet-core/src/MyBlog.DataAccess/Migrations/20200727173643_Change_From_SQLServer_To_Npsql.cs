@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MyBlog.DataAccess.Migrations
 {
-    public partial class Initial_Migrations : Migration
+    public partial class Change_From_SQLServer_To_Npsql : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,15 +15,14 @@ namespace MyBlog.DataAccess.Migrations
                 name: "Languages",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     language_code = table.Column<string>(unicode: false, fixedLength: true, maxLength: 5, nullable: false),
                     name = table.Column<string>(unicode: false, maxLength: 50, nullable: false),
-                    is_default = table.Column<bool>(nullable: false)
+                    is_default = table.Column<bool>(nullable: false),
+                    is_active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("language_pkey", x => x.Id);
+                    table.PrimaryKey("language_pkey", x => x.language_code);
                 });
 
             migrationBuilder.CreateTable(
@@ -31,8 +31,9 @@ namespace MyBlog.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    created_date = table.Column<DateTime>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    created_date = table.Column<DateTime>(nullable: false),
+                    is_active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,7 +46,7 @@ namespace MyBlog.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     password_hash = table.Column<byte[]>(nullable: false),
                     password_salt = table.Column<byte[]>(nullable: false),
                     username = table.Column<string>(maxLength: 50, nullable: false),
@@ -62,11 +63,11 @@ namespace MyBlog.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(maxLength: 50, nullable: false),
                     description = table.Column<string>(maxLength: 1024, nullable: true),
                     category_id = table.Column<int>(nullable: false),
-                    language_id = table.Column<int>(nullable: false)
+                    language_code = table.Column<string>(unicode: false, fixedLength: true, maxLength: 5, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -79,10 +80,10 @@ namespace MyBlog.DataAccess.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "category_translation_language_id_fkey",
-                        column: x => x.language_id,
+                        name: "category_translation_language_code_fkey",
+                        column: x => x.language_code,
                         principalTable: "Languages",
-                        principalColumn: "Id",
+                        principalColumn: "language_code",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -92,9 +93,10 @@ namespace MyBlog.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     publish_date = table.Column<DateTime>(nullable: false),
                     view_count = table.Column<int>(nullable: false),
+                    is_active = table.Column<bool>(nullable: false),
                     category_id = table.Column<int>(nullable: false),
                     user_id = table.Column<int>(nullable: false)
                 },
@@ -123,12 +125,12 @@ namespace MyBlog.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     title = table.Column<string>(maxLength: 100, nullable: false),
                     content_summary = table.Column<string>(maxLength: 1024, nullable: false),
                     content_main = table.Column<string>(nullable: false),
                     article_id = table.Column<int>(nullable: false),
-                    language_id = table.Column<int>(nullable: false)
+                    language_code = table.Column<string>(unicode: false, fixedLength: true, maxLength: 5, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -141,10 +143,10 @@ namespace MyBlog.DataAccess.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "article_translation_language_id_fkey",
-                        column: x => x.language_id,
+                        name: "article_translation_language_code_fkey",
+                        column: x => x.language_code,
                         principalTable: "Languages",
-                        principalColumn: "Id",
+                        principalColumn: "language_code",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -154,7 +156,7 @@ namespace MyBlog.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(maxLength: 50, nullable: false),
                     content_main = table.Column<string>(nullable: false),
                     publish_date = table.Column<DateTime>(nullable: false),
@@ -186,7 +188,7 @@ namespace MyBlog.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     is_main = table.Column<bool>(nullable: false),
                     url = table.Column<string>(nullable: false),
                     public_id = table.Column<string>(maxLength: 255, nullable: false),
@@ -211,10 +213,10 @@ namespace MyBlog.DataAccess.Migrations
                 column: "article_id");
 
             migrationBuilder.CreateIndex(
-                name: "article_translation_ix_language_id",
+                name: "article_translation_ix_language_code",
                 schema: "dbo",
                 table: "Article_Translations",
-                column: "language_id");
+                column: "language_code");
 
             migrationBuilder.CreateIndex(
                 name: "article_ix_category_id",
@@ -235,10 +237,10 @@ namespace MyBlog.DataAccess.Migrations
                 column: "category_id");
 
             migrationBuilder.CreateIndex(
-                name: "category_translation_ix_language_id",
+                name: "category_translation_ix_language_code",
                 schema: "dbo",
                 table: "Category_Translations",
-                column: "language_id");
+                column: "language_code");
 
             migrationBuilder.CreateIndex(
                 name: "comment_ix_article_id",

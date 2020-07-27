@@ -2,47 +2,51 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyBlog.DataAccess.Concrete.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MyBlog.DataAccess.Migrations
 {
     [DbContext(typeof(MyBlogDbContext))]
-    [Migration("20200408194346_Added_Unique_Constraint_To_Language")]
-    partial class Added_Unique_Constraint_To_Language
+    [Migration("20200727173643_Change_From_SQLServer_To_Npsql")]
+    partial class Change_From_SQLServer_To_Npsql
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.2")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
+                .HasAnnotation("ProductVersion", "3.1.3")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("MyBlog.Entities.Concrete.Article", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int>("CategoryId")
                         .HasColumnName("category_id")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnName("is_active")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("PublishDate")
                         .HasColumnName("publish_date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("UserId")
                         .HasColumnName("user_id")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("ViewCount")
                         .HasColumnName("view_count")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id")
                         .HasName("id");
@@ -60,32 +64,36 @@ namespace MyBlog.DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int>("ArticleId")
                         .HasColumnName("article_id")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("ContentMain")
                         .IsRequired()
                         .HasColumnName("content_main")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ContentSummary")
                         .IsRequired()
                         .HasColumnName("content_summary")
-                        .HasColumnType("nvarchar(1024)")
+                        .HasColumnType("character varying(1024)")
                         .HasMaxLength(1024);
 
-                    b.Property<int>("LanguageId")
-                        .HasColumnName("language_id")
-                        .HasColumnType("int");
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasColumnName("language_code")
+                        .HasColumnType("character(5)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(5)
+                        .IsUnicode(false);
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnName("title")
-                        .HasColumnType("nvarchar(100)")
+                        .HasColumnType("character varying(100)")
                         .HasMaxLength(100);
 
                     b.HasKey("Id")
@@ -94,8 +102,8 @@ namespace MyBlog.DataAccess.Migrations
                     b.HasIndex("ArticleId")
                         .HasName("article_translation_ix_article_id");
 
-                    b.HasIndex("LanguageId")
-                        .HasName("article_translation_ix_language_id");
+                    b.HasIndex("LanguageCode")
+                        .HasName("article_translation_ix_language_code");
 
                     b.ToTable("Article_Translations","dbo");
                 });
@@ -104,12 +112,16 @@ namespace MyBlog.DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnName("created_date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnName("is_active")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id")
                         .HasName("article_pkey");
@@ -121,26 +133,30 @@ namespace MyBlog.DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int>("CategoryId")
                         .HasColumnName("category_id")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Description")
                         .HasColumnName("description")
-                        .HasColumnType("nvarchar(1024)")
+                        .HasColumnType("character varying(1024)")
                         .HasMaxLength(1024);
 
-                    b.Property<int>("LanguageId")
-                        .HasColumnName("language_id")
-                        .HasColumnType("int");
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasColumnName("language_code")
+                        .HasColumnType("character(5)")
+                        .IsFixedLength(true)
+                        .HasMaxLength(5)
+                        .IsUnicode(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("name")
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("character varying(50)")
                         .HasMaxLength(50);
 
                     b.HasKey("Id")
@@ -149,8 +165,8 @@ namespace MyBlog.DataAccess.Migrations
                     b.HasIndex("CategoryId")
                         .HasName("category_translation_ix_category_id");
 
-                    b.HasIndex("LanguageId")
-                        .HasName("category_translation_ix_language_id");
+                    b.HasIndex("LanguageCode")
+                        .HasName("category_translation_ix_language_code");
 
                     b.ToTable("Category_Translations","dbo");
                 });
@@ -159,31 +175,31 @@ namespace MyBlog.DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int>("ArticleId")
                         .HasColumnName("article_id")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("ContentMain")
                         .IsRequired()
                         .HasColumnName("content_main")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("name")
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("character varying(50)")
                         .HasMaxLength(50);
 
                     b.Property<int?>("ParentId")
                         .HasColumnName("parent_id")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("PublishDate")
                         .HasColumnName("publish_date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id")
                         .HasName("comment_pkey");
@@ -199,36 +215,30 @@ namespace MyBlog.DataAccess.Migrations
 
             modelBuilder.Entity("MyBlog.Entities.Concrete.Language", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("IsDefault")
-                        .HasColumnName("is_default")
-                        .HasColumnType("bit");
-
                     b.Property<string>("LanguageCode")
-                        .IsRequired()
                         .HasColumnName("language_code")
-                        .HasColumnType("char(5)")
+                        .HasColumnType("character(5)")
                         .IsFixedLength(true)
                         .HasMaxLength(5)
                         .IsUnicode(false);
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnName("is_active")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnName("is_default")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("name")
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("character varying(50)")
                         .HasMaxLength(50)
                         .IsUnicode(false);
 
-                    b.HasKey("Id")
+                    b.HasKey("LanguageCode")
                         .HasName("language_pkey");
-
-                    b.HasIndex("LanguageCode")
-                        .IsUnique()
-                        .HasName("language_code_unique");
 
                     b.ToTable("Languages");
                 });
@@ -237,27 +247,27 @@ namespace MyBlog.DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int>("ArticleId")
                         .HasColumnName("article_id")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsMain")
                         .HasColumnName("is_main")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("PublicId")
                         .IsRequired()
                         .HasColumnName("public_id")
-                        .HasColumnType("nvarchar(255)")
+                        .HasColumnType("character varying(255)")
                         .HasMaxLength(255);
 
                     b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnName("url")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id")
                         .HasName("picture_pkey");
@@ -272,29 +282,29 @@ namespace MyBlog.DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnName("email")
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("character varying(50)")
                         .HasMaxLength(50);
 
                     b.Property<byte[]>("PasswordHash")
                         .IsRequired()
                         .HasColumnName("password_hash")
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("bytea");
 
                     b.Property<byte[]>("PasswordSalt")
                         .IsRequired()
                         .HasColumnName("password_salt")
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("bytea");
 
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnName("username")
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("character varying(50)")
                         .HasMaxLength(50);
 
                     b.HasKey("Id")
@@ -331,8 +341,8 @@ namespace MyBlog.DataAccess.Migrations
 
                     b.HasOne("MyBlog.Entities.Concrete.Language", "Language")
                         .WithMany("ArticleTranslations")
-                        .HasForeignKey("LanguageId")
-                        .HasConstraintName("article_translation_language_id_fkey")
+                        .HasForeignKey("LanguageCode")
+                        .HasConstraintName("article_translation_language_code_fkey")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
@@ -348,8 +358,8 @@ namespace MyBlog.DataAccess.Migrations
 
                     b.HasOne("MyBlog.Entities.Concrete.Language", "Language")
                         .WithMany("CategoryTranslations")
-                        .HasForeignKey("LanguageId")
-                        .HasConstraintName("category_translation_language_id_fkey")
+                        .HasForeignKey("LanguageCode")
+                        .HasConstraintName("category_translation_language_code_fkey")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

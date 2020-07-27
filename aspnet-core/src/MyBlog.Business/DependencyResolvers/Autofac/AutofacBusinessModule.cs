@@ -30,7 +30,7 @@ namespace MyBlog.Business.DependencyResolvers.Autofac
                 var dbContextOptions = new DbContextOptions<MyBlogDbContext>(new Dictionary<Type, IDbContextOptionsExtension>());
                 var optionsBuilder = new DbContextOptionsBuilder<MyBlogDbContext>(dbContextOptions)
                     .UseApplicationServiceProvider(serviceProvider)
-                    .UseSqlServer(configuration.GetConnectionString("MyBlogConnectionString"),
+                    .UseNpgsql(configuration.GetConnectionString("MyBlogConnectionString"),
                         serverOptions => serverOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(30), null));
 
                 return optionsBuilder.Options;

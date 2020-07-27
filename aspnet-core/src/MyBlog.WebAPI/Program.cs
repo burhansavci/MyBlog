@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using MyBlog.Business.DependencyResolvers.Autofac;
 using MyBlog.DataAccess.Concrete.EntityFrameworkCore;
 using MyBlog.DataAccess.Concrete.EntityFrameworkCore.Seed;
+using System;
 using System.Threading.Tasks;
 
 namespace MyBlog.WebAPI
@@ -18,8 +19,15 @@ namespace MyBlog.WebAPI
             using (var scope = host.Services.GetAutofacRoot().BeginLifetimeScope())
             {
                 var context = scope.Resolve<MyBlogDbContext>();
-                await context.Database.MigrateAsync();
-                await MyBlogDbContextSeed.SeedUsersAsync(context);
+                try
+                {
+                    await context.Database.MigrateAsync();
+                    await MyBlogDbContextSeed.SeedUsersAsync(context);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occured during migration {ex}");
+                } 
             }
             host.Run();
         }
