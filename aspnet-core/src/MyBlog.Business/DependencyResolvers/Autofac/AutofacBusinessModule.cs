@@ -28,10 +28,34 @@ namespace MyBlog.Business.DependencyResolvers.Autofac
                 var serviceProvider = componentContext.Resolve<IServiceProvider>();
                 var configuration = componentContext.Resolve<IConfiguration>();
                 var dbContextOptions = new DbContextOptions<MyBlogDbContext>(new Dictionary<Type, IDbContextOptionsExtension>());
+                string connectionString;
+                if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+                {
+                    // Use connection string from file.
+                    connectionString = configuration.GetConnectionString("MyBlogConnectionString");
+                }
+                else
+                {
+                    // Use connection string provided at runtime by Heroku.
+                    var connectionUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+
+                    // Parse connection URL to connection string for Npgsql
+                    connectionUrl = connectionUrl.Replace("postgres://", string.Empty);
+                    var pgUserPassword = connectionUrl.Split("@")[0];
+                    var pgHostPortDb = connectionUrl.Split("@")[1];
+                    var pgHostPort = pgHostPortDb.Split("/")[0];
+                    var pgDb = pgHostPortDb.Split("/")[1];
+                    var pgUser = pgUserPassword.Split(":")[0];
+                    var pgPassword = pgUserPassword.Split(":")[1];
+                    var pgHost = pgHostPort.Split(":")[0];
+                    var pgPort = pgHostPort.Split(":")[1];
+                    connectionString = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPassword};Database={pgDb}";
+                }
+
+
                 var optionsBuilder = new DbContextOptionsBuilder<MyBlogDbContext>(dbContextOptions)
                     .UseApplicationServiceProvider(serviceProvider)
-                    .UseNpgsql(configuration.GetConnectionString("MyBlogConnectionString"),
-                        serverOptions => serverOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(30), null));
+                    .UseNpgsql(connectionString,serverOptions => serverOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(30), null));
 
                 return optionsBuilder.Options;
             }).As<DbContextOptions<MyBlogDbContext>>()
