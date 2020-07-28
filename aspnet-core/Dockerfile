@@ -20,5 +20,4 @@ RUN dotnet publish MyBlog.WebAPI.csproj -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENV ASPNETCORE_URLS="http://*:$PORT"
-ENTRYPOINT ["dotnet", "MyBlog.WebAPI.dll"]
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet MyBlog.WebAPI.dll
