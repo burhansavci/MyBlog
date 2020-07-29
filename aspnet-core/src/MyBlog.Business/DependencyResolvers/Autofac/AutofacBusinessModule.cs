@@ -59,19 +59,19 @@ namespace MyBlog.Business.DependencyResolvers.Autofac
 
                 return optionsBuilder.Options;
             }).As<DbContextOptions<MyBlogDbContext>>()
-              .InstancePerLifetimeScope();
+              .InstancePerDependency();
 
             builder.Register(context => context.Resolve<DbContextOptions<MyBlogDbContext>>())
                    .As<DbContextOptions>()
-                   .InstancePerLifetimeScope();
+                   .InstancePerDependency();
 
             builder.RegisterType(typeof(MyBlogDbContext))
                    .As(typeof(DbContext))
-                   .InstancePerLifetimeScope();
+                   .InstancePerDependency();
 
             builder.RegisterType(typeof(MyBlogDbContext))
                    .AsSelf()
-                   .InstancePerLifetimeScope();
+                   .InstancePerDependency();
 
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
 
