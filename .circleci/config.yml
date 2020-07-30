@@ -1,33 +1,27 @@
 version: 2.1
 jobs:
-  build:
+  build_and_deploy:
     machine: true
     steps:
       - checkout
+
       # build image
       - run: |
           docker info
           docker build -t myblog:v1 -f ./aspnet-core/Dockerfile ./aspnet-core
 
-  deploy:
-   machine: true
-   steps:
-     - checkout
-     # deploy image
-     - run: |     
+      # deploy image
+      - run: |
           docker login --username=$HEROKU_USERNAME --password=$HEROKU_API_KEY registry.heroku.com
           docker tag myblog:v1 registry.heroku.com/$HEROKU_APP_NAME/web
           docker push registry.heroku.com/$HEROKU_APP_NAME/web                
           curl https://cli-assets.heroku.com/install.sh | sh
           heroku container:release web -a $HEROKU_APP_NAME
-          
+
 workflows:
   build_and_deploy:
     jobs:
-      - build
-      - deploy:
-          requires:
-            - build
+      - build:
           filters:
             branches:
               only: master
