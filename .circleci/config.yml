@@ -1,11 +1,10 @@
 version: 2.1
-jobs:
-  - build:
+   build:
+     jobs:
       filters:
         branches:
           only:
             - master
-
         machine: true
         steps:
           - checkout
