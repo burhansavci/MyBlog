@@ -28,7 +28,7 @@ export class CommentAddComponent implements OnInit {
     this.commentForm = new FormGroup({
       name: new FormControl('', [
         Validators.required,
-        Validators.maxLength(5),
+        Validators.maxLength(50),
       ]),
       contentMain: new FormControl('', [
         Validators.required,
@@ -45,12 +45,27 @@ export class CommentAddComponent implements OnInit {
 
   onSubmit() {
     if (this.commentForm.valid) {
+      if (!this.commentForm.controls.articleId.value) {
+        this.commentForm.controls.articleId.setValue(
+          Number(this.route.snapshot.paramMap.get('id'))
+        );
+      }
+      if (!this.commentForm.controls.publishDate.value)
+        this.commentForm.controls.publishDate.setValue(new Date());
+
       this.commentService.addComment(this.commentForm.value).subscribe(
         (data) => {
-          this.alertify.success('Your comment successfully added.');
-          this.onAddComment.emit(true);
+          if (data === null) {
+            this.commentForm.reset();
+            this.alertify.error('An error occurred. Please try again later.');
+          } else {
+            this.commentForm.reset();
+            this.alertify.success('Your comment successfully added.');
+            this.onAddComment.emit(true);
+          }
         },
         (error) => {
+          this.commentForm.reset();
           this.alertify.error('An error occurred. Please try again later.');
         }
       );
