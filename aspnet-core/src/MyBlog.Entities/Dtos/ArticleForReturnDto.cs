@@ -14,6 +14,7 @@ namespace MyBlog.Entities.Dtos
         public string ContentMain { get; set; }
         public DateTime PublishDate { get; set; }
         public int ViewCount { get; set; }
+        public int CommentCount { get; set; }
         public string LanguageCode { get; set; }
         public CategoryForReturnDto Category { get; set; }
         public List<PictureForReturnDto> Pictures { get; set; }

@@ -49,7 +49,8 @@ namespace MyBlog.Business.Concrete
             var articles = _articleTranslationRepository.GetAllIncluding(x => x.Language.LanguageCode == languageCode &&
                                                                               x.Article.IsActive,
                                                                          x => x.Article.Category.CategoryTranslations,
-                                                                         x => x.Article.Pictures)
+                                                                         x => x.Article.Pictures,
+                                                                         x => x.Article.Comments)
                                                         .OrderByDescending(x => x.Article.PublishDate);
 
             var articleTranslationPage = Page<ArticleTranslation>.CreatePaginatedResult(articles, pageNumber, pageSize);
@@ -89,7 +90,8 @@ namespace MyBlog.Business.Concrete
                                                                           x.ArticleId == id &&
                                                                           x.Article.IsActive,
                                                                      x => x.Article.Category.CategoryTranslations,
-                                                                     x => x.Article.Pictures);
+                                                                     x => x.Article.Pictures,
+                                                                     x => x.Article.Comments);
 
             return new SuccessDataResult<ArticleForReturnDto>(Messages.SuccessOperation, _mapper.Map<ArticleForReturnDto>(article));
         }
