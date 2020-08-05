@@ -10,6 +10,7 @@ export interface Article {
   contentMain: string;
   publishDate: Date;
   viewCount: number;
+  commentCount: number;
   languageCode: string;
   category: Category;
   pictures: Picture[];

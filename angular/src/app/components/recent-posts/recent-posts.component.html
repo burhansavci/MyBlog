@@ -9,8 +9,7 @@
     <p class="text-muted">Posted On: (<time data-toggle="article.publishDate">{{article.publishDate|date}}</time>)</p>
     <div class="badge badge-primary">{{article.category.name}}</div>
     <div>
-      <span class="badge badge-primary">{{article.viewCount}} views</span>
-      <span class="badge badge-primary"> 3 comments</span>
+      <span class="badge badge-success"><i class="fa fa-comment"></i> {{article.commentCount}} Comments</span>
     </div>
     <p>{{article.contentSummary|slice:0:80}}...</p>
   </a>
