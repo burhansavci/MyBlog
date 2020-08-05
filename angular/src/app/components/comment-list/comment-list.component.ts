@@ -16,10 +16,9 @@ import { Comment } from 'src/app/models/comment';
   styleUrls: ['./comment-list.component.css'],
 })
 export class CommentListComponent implements OnInit, OnChanges {
-  comments: Comment[];
+  comments: Comment[] = [];
   isOpen: boolean = false;
   @Input() articleId: number;
-  @Input() subComments: Comment[];
   @Input() refresh: boolean = false;
 
   constructor(
@@ -28,26 +27,24 @@ export class CommentListComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    if (this.articleId && !this.subComments) {
+    if (this.articleId) {
       this.loadComments(this.articleId);
-    } else {
-      this.comments = this.subComments;
     }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.articleId && changes.refresh && !this.subComments) {
+    if (
+      this.articleId &&
+      !changes.refresh.firstChange &&
+      changes.refresh.currentValue
+    ) {
       this.loadComments(this.articleId);
-    } else {
-      this.comments = this.subComments;
     }
   }
 
   refreshComments(changed: boolean) {
-    if (this.articleId && changed && !this.subComments) {
+    if (this.articleId && changed) {
       this.loadComments(this.articleId);
-    } else {
-      this.comments = this.subComments;
     }
   }
 

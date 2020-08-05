@@ -1,8 +1,8 @@
-<section id="comments">
+<section id="comments" class="mt-3">
   <h2>Comments</h2>
   <hr />
   <app-comment-list [articleId]="articleId" [refresh]="changed"></app-comment-list>
   <hr />
-  <h3 class="h4">Add Comment</h3>
+  <h3 class="h4">Leave a Comment</h3>
   <app-comment-add (onAddComment)="refreshCommentList($event)"></app-comment-add>
 </section>

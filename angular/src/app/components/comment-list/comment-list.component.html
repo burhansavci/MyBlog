@@ -1,18 +1,39 @@
-<div [ngClass]="[comment.parentId ? 'media mb-3' : 'media']" *ngFor="let comment of comments">
-  <i [ngClass]="[comment.parentId ? 'fas fa-user-alt fa-3x mr-3' : 'fas fa-user-alt fa-4x mr-3']" style="color:#DDDDDD;"></i>
-  <div class="media-body">
-    <h6 class="mb-0">{{comment.name}}</h6>
-    <p class="mb-0 text-left"> {{comment.contentMain}} </p>
-    <hr class="mb-0" style="margin-top: 0.5rem;" />
-    <div  class="d-flex justify-content-end">
-      <div class="mb-1">
-        <small class="mr-1"><time datetime="comment.publishDate|date">{{comment.publishDate|date}}</time></small>
-        <a *ngIf="!comment.parentId" type="button" [id]="'button'+comment.id" (click)="handleReply(comment.id)" style="border-left: 1px solid rgba(0, 0, 0, 0.1);">
-          <small class="ml-1"> <span class="btn-label"><i class="fas fa-reply fa-fw text-primary"></i></span>Reply </small>
-        </a>
+<ng-template [ngIf]="comments.length>0" [ngIfElse]="showMessage">
+  <!-- Comments -->
+  <div class="media" *ngFor="let comment of comments">
+    <i class="fas fa-user-alt fa-4x mr-3" style="color:#DDDDDD;"></i>
+    <div class="media-body">
+      <h6 class="mb-0">{{comment.name}}</h6>
+      <p class="mb-0 text-left"> {{comment.contentMain}} </p>
+      <hr class="mb-0" style="margin-top: 0.5rem;" />
+      <div class="d-flex justify-content-end">
+        <div class="mb-1">
+          <small class="mr-1"><time datetime="comment.publishDate|date">{{comment.publishDate|date}}</time></small>
+          <a type="button" [id]="'button'+comment.id" (click)="handleReply(comment.id)" style="border-left: 1px solid rgba(0, 0, 0, 0.1);">
+            <small class="ml-1"> <span class="btn-label"><i class="fas fa-reply fa-fw text-primary"></i></span>Reply </small>
+          </a>
+        </div>
       </div>
+      <app-comment-add [class]="'mb-3'" [hidden]="true" [id]="comment.id" (onAddComment)="refreshComments($event)"></app-comment-add>
+      <!-- SubComments -->
+      <ng-container *ngIf="comment.subComments.length>0">
+        <div class="media mb-3" *ngFor="let subComment of comment.subComments">
+          <i class="fas fa-user-alt fa-3x mr-3" style="color:#DDDDDD;"></i>
+          <div class="media-body">
+            <h6 class="mb-0">{{subComment.name}}</h6>
+            <p class="mb-0 text-left"> {{subComment.contentMain}} </p>
+            <hr class="mb-0" style="margin-top: 0.5rem;" />
+            <div class="d-flex justify-content-end">
+              <div class="mb-1">
+                <small class="mr-1"><time datetime="subComment.publishDate|date">{{subComment.publishDate|date}}</time></small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
     </div>
-    <app-comment-add [class]="'mb-3'" [hidden]="true" [id]="comment.id" (onAddComment)="refreshComments($event)"></app-comment-add>
-    <app-comment-list [subComments]="comment.subComments" *ngIf="comment.subComments"></app-comment-list>
   </div>
-</div>
+</ng-template>
+<ng-template #showMessage>
+  <div> No comments yet. Be the first to comment !</div>
+</ng-template>
